@@ -1,5 +1,6 @@
 package cristina.mastellaro.BE_Capstone.services;
 
+import cristina.mastellaro.BE_Capstone.email.EmailSender;
 import cristina.mastellaro.BE_Capstone.entities.User;
 import cristina.mastellaro.BE_Capstone.exceptions.AlreadyUsedException;
 import cristina.mastellaro.BE_Capstone.exceptions.NotFoundException;
@@ -19,6 +20,8 @@ public class UserService {
     private UserRepository uRepo;
     @Autowired
     private PasswordEncoder pEncoder;
+    @Autowired
+    private EmailSender eSender;
 
     public User findUserById(UUID id) {
         return uRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
@@ -34,6 +37,12 @@ public class UserService {
         User userToSave = new User(newUser.name(), newUser.surname(), newUser.username(), newUser.email(), pEncoder.encode(newUser.password()));
 
         uRepo.save(userToSave);
+
+        try {
+            eSender.sendRegistrationEmail(userToSave.getEmail());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         log.info("The user has been saved!");
 
