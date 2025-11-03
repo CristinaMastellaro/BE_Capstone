@@ -6,4 +6,8 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException(UUID id) {
         super("No element with id " + id + " found");
     }
+
+    public NotFoundException(String username) {
+        super("No user with username " + username + " found");
+    }
 }

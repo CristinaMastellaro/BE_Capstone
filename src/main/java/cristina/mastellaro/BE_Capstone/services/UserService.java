@@ -39,4 +39,11 @@ public class UserService {
 
         return userToSave;
     }
+
+    public User findUserByUsername(String username) {
+        User user = uRepo.findByUsername(username);
+        if (user == null) throw new NotFoundException(username);
+
+        return user;
+    }
 }

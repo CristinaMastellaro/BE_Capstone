@@ -27,15 +27,21 @@ public class JwsFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer "))
             throw new UnauthorizedException("Insert token");
+
         String accessToken = authHeader.substring(7);
+
         jwtTools.verifyToken(accessToken);
+
         UUID utenteId = jwtTools.extractIdFromToken(accessToken);
         User found = uServ.findUserById(utenteId);
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(found, null, found.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        
         filterChain.doFilter(request, response);
     }
 
