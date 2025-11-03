@@ -1,4 +1,4 @@
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import { Form, Button, Container } from "react-bootstrap";
 import "../css/login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -23,21 +23,25 @@ const Login = () => {
         username: username,
         password: password,
       }),
-    }).then((res) => {
-      if (res.ok) {
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          res.json().then((data) => {
+            setError(data.message);
+          });
+          throw new Error("Error!");
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        localStorage.setItem("token", data.token);
         navigate("/homepage");
-      } else {
-        res.json().then((data) => {
-          // const stringError: string[] = [];
-          // console.log(data);
-          // data.message.forEach((e: React.FormEvent) =>
-          //   stringError.push(e + " ")
-          // );
-          setError(data.message);
-        });
-        throw new Error("Error!");
-      }
-    });
+      })
+      .catch(() => {
+        console.log("Error");
+      });
   };
 
   return (
@@ -82,13 +86,10 @@ const Login = () => {
           >
             Submit
           </Button>
-          {error.length != 0 && (
+          {error != "" && (
             <p className="ms-4 text-danger small mt-3 mb-0 d-flex align-items-center">
               <BiInfoCircle className="me-2" /> {error}
             </p>
-            // <Alert className="mt-3 small" variant="danger">
-            //   {error}
-            // </Alert>
           )}
           <hr className="my-4" />
           <p>
