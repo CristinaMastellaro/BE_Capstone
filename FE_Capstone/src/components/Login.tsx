@@ -60,7 +60,7 @@ const Login = () => {
             <Form.Control
               className="w-75"
               type="text"
-              placeholder="Enter email"
+              placeholder="Enter username"
               onChange={(e) => setUsername(e.target.value)}
               value={username}
             />
@@ -84,7 +84,7 @@ const Login = () => {
             type="submit"
             className=" align-self-center"
           >
-            Submit
+            Login
           </Button>
           {error != "" && (
             <p className="ms-4 text-danger small mt-3 mb-0 d-flex align-items-center">

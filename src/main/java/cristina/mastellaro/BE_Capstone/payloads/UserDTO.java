@@ -16,7 +16,7 @@ public record UserDTO(
         String email,
         @NotBlank(message = "The password must not be blank")
         @Size(min = 8, message = "The password must be at least 8 characters long")
-        @Pattern(regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", message = "The password must have at least 8 characters and contain at least one letter, one number and one special character")
+        @Pattern(regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", message = "The password must contain at least one letter, one number and one special character")
         String password
 ) {
 }
