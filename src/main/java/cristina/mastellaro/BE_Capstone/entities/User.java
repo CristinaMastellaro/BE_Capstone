@@ -1,11 +1,17 @@
 package cristina.mastellaro.BE_Capstone.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -14,7 +20,8 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @ToString
-public class User {
+@JsonIgnoreProperties({"password", "userRole", "authorities", "enabled", "accountNonExpired", "credentialsNonExpired", "accountNonLocked"})
+public class User implements UserDetails {
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
@@ -24,6 +31,7 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private UserRoles userRole;
 
     public User(String name, String surname, String username, String email, String password) {
         this.name = name;
@@ -31,5 +39,11 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.userRole = UserRoles.SIMPLEUSER;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(userRole.name()));
     }
 }

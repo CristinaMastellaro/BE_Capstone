@@ -2,6 +2,7 @@ package cristina.mastellaro.BE_Capstone.security;
 
 import cristina.mastellaro.BE_Capstone.entities.User;
 import cristina.mastellaro.BE_Capstone.exceptions.UnauthorizedException;
+import cristina.mastellaro.BE_Capstone.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @Component
 public class JwsFilter extends OncePerRequestFilter {
     @Autowired
-    UserService uServ;
+    private UserService uServ;
     @Autowired
     private JwtTools jwtTools;
 
@@ -32,13 +33,14 @@ public class JwsFilter extends OncePerRequestFilter {
         String accessToken = authHeader.substring(7);
         jwtTools.verifyToken(accessToken);
         UUID utenteId = jwtTools.extractIdFromToken(accessToken);
-        User found = uServ.getUtenteById(utenteId);
+        User found = uServ.findUserById(utenteId);
         Authentication authentication = new UsernamePasswordAuthenticationToken(found, null, found.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
 
-    protected boolean shouldNotFIlter(HttpServletRequest request) throws ServletException {
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         return new AntPathMatcher().match("/auth/**", request.getServletPath());
     }
 }
