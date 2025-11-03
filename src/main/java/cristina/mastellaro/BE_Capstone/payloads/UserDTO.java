@@ -8,14 +8,14 @@ import jakarta.validation.constraints.Size;
 public record UserDTO(
         String name,
         String surname,
-        @NotBlank
-        @Size(min = 4)
+        @NotBlank(message = "The username must not be blank")
+        @Size(min = 4, message = "The username must be at least 4 characters long")
         String username,
-        @NotBlank
-        @Email
+        @NotBlank(message = "The email must not be blank")
+        @Email(message = "Write an email in the correct form")
         String email,
-        @NotBlank
-        @Size(min = 8)
+        @NotBlank(message = "The password must not be blank")
+        @Size(min = 8, message = "The password must be at least 8 characters long")
         @Pattern(regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", message = "The password must have at least 8 characters and contain at least one letter, one number and one special character")
         String password
 ) {
