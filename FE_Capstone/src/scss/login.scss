@@ -17,8 +17,8 @@
 /* HTML: <div class="loader"></div> */
 .loader {
   width: 25px;
-  aspect-ratio: 0.75;
-  --c: no-repeat linear-gradient(#0000007f 0 0);
+  aspect-ratio: 0.95;
+  --c: no-repeat linear-gradient(#f9f8f8de 0 0);
   background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
   animation: l7 1s infinite linear alternate;
 }

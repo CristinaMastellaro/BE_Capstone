@@ -1,5 +1,5 @@
 import { Form, Button, Container } from "react-bootstrap";
-import "../css/login.css";
+import "../scss/login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";

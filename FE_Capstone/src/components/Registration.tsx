@@ -1,5 +1,5 @@
 import { Form, Button, Container } from "react-bootstrap";
-import "../css/login.css";
+import "../scss/login.scss";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BiInfoCircle } from "react-icons/bi";
@@ -151,11 +151,11 @@ const Registration = () => {
           <Button
             variant="primary"
             type="submit"
-            className=" align-self-center"
+            className=" align-self-center w-50"
           >
-            Register
+            {loading ? <Loader /> : "Register"}
           </Button>
-          {loading && <Loader />}
+          {/* {loading && <Loader />} */}
         </div>
       </Form>
     </Container>

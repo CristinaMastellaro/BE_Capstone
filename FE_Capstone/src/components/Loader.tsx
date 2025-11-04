@@ -1,8 +1,8 @@
-import "../css/login.css";
+import "../scss/login.scss";
 
 const Loader = () => {
   return (
-    <div className="d-flex justify-content-center mt-3">
+    <div className="d-flex justify-content-center">
       <div className="loader"></div>
     </div>
   );

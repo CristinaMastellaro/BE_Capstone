@@ -19,6 +19,7 @@
     "react-router-dom": "^7.9.5",
     "redux-persist": "^6.0.0",
     "redux-persist-transform-encrypt": "^5.1.1",
+    "sass": "^1.93.3",
     "vite-plugin-pwa": "^1.1.0"
   },
   "devDependencies": {
