@@ -3,17 +3,20 @@ import "../scss/login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
+import Loader from "./Loader";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const login = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     fetch("http://localhost:8888/auth/login", {
       method: "POST",
       headers: {
@@ -37,9 +40,11 @@ const Login = () => {
       .then((data) => {
         console.log(data);
         localStorage.setItem("token", data.token);
+        setIsLoading(false);
         navigate("/homepage");
       })
       .catch(() => {
+        setIsLoading(false);
         console.log("Error");
       });
   };
@@ -84,7 +89,7 @@ const Login = () => {
             type="submit"
             className=" align-self-center"
           >
-            Login
+            {isLoading ? <Loader /> : "Login"}
           </Button>
           {error != "" && (
             <p className="ms-4 text-danger small mt-3 mb-0 d-flex align-items-center">

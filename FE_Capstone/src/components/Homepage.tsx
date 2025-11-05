@@ -2,10 +2,24 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import MoodType from "../types/MoodType";
+import { findSongs } from "../redux/actions";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../redux/store";
+
 const Homepage = () => {
-  const [mood, setMood] = useState("");
+  const [mood, setMood] = useState("Relaxed");
   const [options, setOptions] = useState<string[]>([]);
   const token = localStorage.getItem("token");
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const findMoodSongs = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("mood", mood);
+    dispatch(findSongs(mood));
+    navigate("/playlist/" + mood);
+  };
 
   const getMoods = () => {
     fetch("http://localhost:8888/moods", {
@@ -29,6 +43,10 @@ const Homepage = () => {
       .catch((err) => console.log(err));
   };
 
+  const handleChange = (event: React.ChangeEvent<{ value: string }>): void => {
+    setMood(event.target.value);
+  };
+
   useEffect(() => {
     getMoods();
   }, []);
@@ -38,15 +56,24 @@ const Homepage = () => {
       <section className="mt-5 mx-3" style={{ height: "50vh" }}>
         {/* Emoticon? */}
         <h5>How are you feeling today? </h5>
-        <Form className="h-75 d-flex flex-column">
+        <Form className="h-75 d-flex flex-column" onSubmit={findMoodSongs}>
           {/* <Form.Group className="mb-3">
           <Form.Control type="text" placeholder="I'm feeling..." />
         </Form.Group> */}
-          <div className="flex-gro-1">
+          <div>
             <Form.Group className="mb-3">
-              <Form.Select id="moodChoices">
+              <Form.Select
+                id="moodChoices"
+                name="moodChoices"
+                defaultValue="Relaxed"
+                onChange={handleChange}
+              >
                 {options.map((option) => (
-                  <option key={option} onClick={() => setMood(option)}>
+                  <option
+                    key={option}
+                    value={option}
+                    // onClick={() => setMood(option)}
+                  >
                     {option}
                   </option>
                 ))}

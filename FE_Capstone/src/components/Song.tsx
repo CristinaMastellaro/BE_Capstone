@@ -1,16 +1,9 @@
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import "../scss/song.scss";
 import { useRef, useState } from "react";
+import ShowSongType from "../types/ShowSongType";
 
-interface SongProps {
-  id: string;
-  cover: string;
-  author: string;
-  title: string;
-  preview: string;
-}
-
-const Song = ({ id, cover, author, title, preview }: SongProps) => {
+const Song = ({ id, cover, author, title, preview }: ShowSongType) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 

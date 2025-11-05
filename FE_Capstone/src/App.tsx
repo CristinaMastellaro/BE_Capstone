@@ -14,7 +14,7 @@ function App() {
           <Route element={<Login />} path="/" />
           <Route element={<Registration />} path="/register" />
           <Route element={<Homepage />} path="/homepage" />
-          <Route element={<Playlist />} path="/playlist" />
+          <Route element={<Playlist />} path="/playlist/:specification" />
         </Routes>
       </BrowserRouter>
     </>

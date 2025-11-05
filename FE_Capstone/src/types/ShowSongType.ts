@@ -1,4 +1,4 @@
-export default interface SongType {
+export default interface ShowSongType {
   id: string;
   cover: string;
   title: string;
