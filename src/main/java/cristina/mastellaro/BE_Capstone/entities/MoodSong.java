@@ -24,4 +24,10 @@ public class MoodSong {
     private Mood mood;
     @ManyToOne
     private Song song;
+
+    public MoodSong(Mood mood, Song song) {
+        this.date = LocalDate.now();
+        this.mood = mood;
+        this.song = song;
+    }
 }
