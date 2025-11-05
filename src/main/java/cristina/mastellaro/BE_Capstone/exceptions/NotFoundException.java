@@ -10,4 +10,8 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException(String username) {
         super("No user with username " + username + " found");
     }
+
+    public NotFoundException(String mood, String typeMood) {
+        super("No mood named " + mood + " found");
+    }
 }

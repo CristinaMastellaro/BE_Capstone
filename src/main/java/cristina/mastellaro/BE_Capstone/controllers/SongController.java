@@ -1,6 +1,5 @@
 package cristina.mastellaro.BE_Capstone.controllers;
 
-import cristina.mastellaro.BE_Capstone.entities.Song;
 import cristina.mastellaro.BE_Capstone.services.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,8 @@ public class SongController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Song saveSong() {
+//    public Song saveSong() {
+    public void saveSong() {
     }
 
 

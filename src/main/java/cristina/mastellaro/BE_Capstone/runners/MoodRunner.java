@@ -15,7 +15,7 @@ public class MoodRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<String> moods = List.of("Sad", "Happy", "Angry", "I don't know", "Quiet", "Relaxed", "Annoyed", "Energetic", "In love", "Other");
+        List<String> moods = List.of("Happy", "Angry", "Annoyed", "Energetic", "In love", "Quiet", "Relaxed", "Sad", "I don't know", "Other");
         moods.forEach(mood -> {
             if (!mServ.existsMoodByName(mood)) {
                 mServ.saveMood(mood);
