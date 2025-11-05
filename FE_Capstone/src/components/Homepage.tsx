@@ -3,7 +3,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 const Homepage = () => {
   const [mood, setMood] = useState("");
-  const [options, setOptions] = useState<string[]>([]);
+  const [
+    options,
+    // , setOptions
+  ] = useState<string[]>([]);
 
   const getMoods = () => {
     fetch("http://localhost:8888/moods")
