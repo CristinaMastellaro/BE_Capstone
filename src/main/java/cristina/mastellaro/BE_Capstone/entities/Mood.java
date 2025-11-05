@@ -23,13 +23,13 @@ public class Mood {
     @Setter(AccessLevel.NONE)
     private UUID id;
     @Column(nullable = false)
-    private String mood;
+    private String name;
 
     @OneToMany(mappedBy = "mood")
     @JsonIgnore
     private List<MoodSong> songs = new ArrayList<>();
 
     public Mood(String mood) {
-        this.mood = mood;
+        this.name = mood;
     }
 }

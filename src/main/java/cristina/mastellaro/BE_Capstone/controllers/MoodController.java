@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/moods")
 public class MoodController {
@@ -14,11 +16,18 @@ public class MoodController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mood saveMood() {
+//    public Mood saveMood() {
+    public void saveMood() {
     }
 
     @GetMapping("/{moodName}")
-    public Mood getMoodByName() {
+//    public Mood findMoodByName() {
+    public void findMoodByName() {
+    }
+
+    @GetMapping
+    public List<Mood> findAllMoods() {
+        return mServ.findAllMoods();
     }
 
 }
