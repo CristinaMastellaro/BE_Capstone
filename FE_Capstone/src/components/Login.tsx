@@ -37,7 +37,7 @@ const Login = () => {
       .then((data) => {
         console.log(data);
         localStorage.setItem("token", data.token);
-        navigate("/playlist");
+        navigate("/homepage");
       })
       .catch(() => {
         console.log("Error");
