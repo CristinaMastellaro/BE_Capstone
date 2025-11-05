@@ -65,7 +65,7 @@ const Registration = () => {
         onSubmit={registration}
       >
         <div className="d-flex flex-column myForm registrationForm">
-          <h1 className="text-center mb-4">Registration</h1>
+          <h1 className="text-center mb-4">Sign up</h1>
           <Form.Group
             className="mb-3 d-flex flex-column align-items-center"
             controlId="formName"

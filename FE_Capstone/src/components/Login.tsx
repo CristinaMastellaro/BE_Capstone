@@ -94,7 +94,7 @@ const Login = () => {
           <hr className="my-4" />
           <p>
             If you don't have an account,{" "}
-            <Link to="/register">register here</Link>.
+            <Link to="/register">sign up here</Link>.
           </p>
         </div>
       </Form>
