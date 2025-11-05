@@ -79,7 +79,7 @@ const Playlist = () => {
 
   return (
     <>
-      <Container fluid className="p-0">
+      <Container fluid className="p-0 playlist">
         <section className="hero"></section>
         <section>
           <h1 className="my-4 ms-5">Mood name</h1>

@@ -1,7 +1,6 @@
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import "../scss/song.scss";
 import { useRef, useState } from "react";
-import { Button } from "react-bootstrap";
 
 interface SongProps {
   id: string;
@@ -21,7 +20,6 @@ const Song = ({ id, cover, author, title, preview }: SongProps) => {
         data-audio-id={id}
         title="Play preview"
         onClick={() => {
-          console.log("Ho cliccato");
           if (isPlaying) {
             audioRef.current?.pause();
             setIsPlaying(false);

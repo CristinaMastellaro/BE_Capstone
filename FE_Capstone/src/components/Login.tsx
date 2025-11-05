@@ -1,7 +1,7 @@
 import { Form, Button, Container } from "react-bootstrap";
 import "../scss/login.scss";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
 
 const Login = () => {
@@ -10,34 +10,7 @@ const Login = () => {
 
   const [error, setError] = useState("");
 
-  const [token, setToken] = useState("");
-
   const navigate = useNavigate();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  const [music, setMusic] = useState("");
-  const searchMusic = () => {
-    fetch("https://striveschool-api.herokuapp.com/api/deezer/search?q=sea")
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error("Errore!");
-        }
-      })
-      .then((data) => {
-        console.log(data);
-        // console.log(data.results.trackmatches.track[0].url);
-        setMusic(data.data[0].preview);
-        console.log("data", data.data[0].preview);
-      })
-      .catch(() => console.log("Errore!"));
-  };
-
-  useEffect(() => {
-    searchMusic();
-    console.log("music", music);
-  }, []);
 
   const login = (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,7 +37,7 @@ const Login = () => {
       .then((data) => {
         console.log(data);
         localStorage.setItem("token", data.token);
-        navigate("/homepage");
+        navigate("/playlist");
       })
       .catch(() => {
         console.log("Error");
@@ -73,30 +46,6 @@ const Login = () => {
 
   return (
     <Container fluid className="vh-100">
-      {music && (
-        <>
-          <button
-            data-audio-id="150"
-            title="Play preview"
-            onClick={() => {
-              audioRef.current?.play();
-            }}
-          >
-            <i className="bi bi-play-fill"></i>
-          </button>
-          <audio ref={audioRef} src={music} controls />
-          {/* <audio
-            id="150"
-            src={music}
-            onClick={() => {
-              const audio = new Audio(
-                "https://cdnt-preview.dzcdn.net/api/1/1/b/7/4/0/b7419e01790c48b04399022b697e8db2.mp3?hdnea=exp=1762254216~acl=/api/1/1/b/7/4/0/b7419e01790c48b04399022b697e8db2.mp3"
-              );
-              audioRef.current?.play();
-            }}
-          ></audio> */}
-        </>
-      )}
       <Form
         className="d-flex flex-column align-items-center justify-content-center h-100"
         onSubmit={login}
