@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import MoodType from "../types/MoodType";
 import { findSongs } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../redux/store";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 
 const Homepage = () => {
   const [mood, setMood] = useState("Relaxed");
@@ -14,10 +14,14 @@ const Homepage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const savedMoodInStore = useAppSelector((state) => state.allSongs.moodName);
+
   const findMoodSongs = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("mood", mood);
-    dispatch(findSongs(mood));
+    if (savedMoodInStore !== mood) {
+      if (mood === "I don't know") setMood("Confused");
+      dispatch(findSongs(mood));
+    }
     navigate("/playlist/" + mood);
   };
 
@@ -69,21 +73,21 @@ const Homepage = () => {
                 onChange={handleChange}
               >
                 {options.map((option) => (
-                  <option
-                    key={option}
-                    value={option}
-                    // onClick={() => setMood(option)}
-                  >
+                  <option key={option} value={option}>
                     {option}
                   </option>
                 ))}
               </Form.Select>
             </Form.Group>
-            {mood === "Other" && (
+            {(!options.includes(mood) || mood === "Other") && (
               <Form.Group className="mb-3">
                 {/* Ti prego, controlla la grammatica */}
                 <Form.Label>Oh, in which special mood are you?</Form.Label>
-                <Form.Control type="text" placeholder="I really feel..." />
+                <Form.Control
+                  type="text"
+                  placeholder="I really feel..."
+                  onChange={handleChange}
+                />
               </Form.Group>
             )}
           </div>

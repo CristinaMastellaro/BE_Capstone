@@ -9,7 +9,7 @@ function delay(ms: number) {
 
 export const findSongs = (mood: string) => {
   return async (dispatch: AppDispatchFunction) => {
-    //TODO: cancella questo token e mettilo da un'altra parte!
+    //TODO cancella questo token e mettilo da un'altra parte!
     const token = "61e0428b8968ad6b102f45b29277ba45";
     const AllFoundSongs: ShowSongType[] = [];
 
@@ -24,7 +24,7 @@ export const findSongs = (mood: string) => {
       const data = await res.json();
       for (let i = 0; i < data.tracks.track.length; i++) {
         if (AllFoundSongs.length < 30) {
-          if (i === 15) await delay(4000);
+          if (i === 15) await delay(2000);
           const basicInfo = [
             data.tracks.track[i].name,
             data.tracks.track[i].artist.name,
@@ -50,9 +50,11 @@ export const findSongs = (mood: string) => {
             const data2 = await secondRes.json();
             console.log("data2", data2);
             for (let j = 0; j < data2.data.length; j++) {
+              if (j === 8 || j === 16) await delay(2000);
               if (
-                data2.data[j].title.includes(basicInfo[0]) &&
-                data2.data[j].artist.name === basicInfo[1]
+                data2.data[j].title_short.includes(basicInfo[0]) &&
+                data2.data[j].artist.name === basicInfo[1] &&
+                foundSong.id === ""
               ) {
                 foundSong = {
                   id: data2.data[j].id.toString(),
@@ -61,6 +63,7 @@ export const findSongs = (mood: string) => {
                   author: data2.data[j].artist.name,
                   preview: data2.data[j].preview,
                 };
+                j = data2.data.length;
                 console.log("foundSong", foundSong);
               }
             }
@@ -76,7 +79,7 @@ export const findSongs = (mood: string) => {
     }
     dispatch({
       type: ALL_SONGS_MOOD,
-      payload: AllFoundSongs,
+      payload: [mood, AllFoundSongs],
     });
   };
 };

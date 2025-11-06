@@ -28,3 +28,7 @@
 .song img:hover, .song .dots-menu:hover {
     cursor: pointer
 }
+
+.song img:focus, .song img:active {
+    border: 0;
+}
