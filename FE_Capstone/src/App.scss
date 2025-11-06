@@ -1,0 +1,35 @@
+$new-primary: rgba(148, 187, 233, 1);
+$new-secondary: rgba(238, 174, 202, 1);
+$new-light: rgb(245, 249, 233);
+$new-dark: #2B2D42;
+
+// $new-theme-colors: (
+//   'myBlue': $new-primary,
+//   'myPink': $new-secondary,
+//   'myLight': $new-light,
+//   'myDark': $new-dark,
+// );
+
+// $theme-colors: map-merge($theme-colors, $new-theme-colors);
+
+.container, .container-fluid {
+    background-color: #2B2D42;
+    // background-color: $new-secondary;
+    // background: #EEAECA;
+    // background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+    color: rgb(245, 249, 233);
+}
+
+.my-btn-blue {
+    border-radius: 10px;
+    background-color: $new-primary;
+    color: black;
+    padding: 0.5em 1.5em;
+    border: 0;
+    -webkit-box-shadow: 0px 0px 5px 3px rgba(126,126,126,0.81); 
+  box-shadow: 0px 0px 5px 3px rgba(126, 126, 126, 0.238) !important; 
+}
+
+// #080705
+// #2B2D42
+// #353531

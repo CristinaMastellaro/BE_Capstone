@@ -17,12 +17,16 @@ const Playlist = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const phrasesForLoading = [
-    "We're searching for your music",
+    "Following the sound of your mood",
     "Last.fm API was used for this reasearch",
-    "In mood for some music",
-    "No, we haven't forgotten about you. \nThe API is just slow",
+    "Is that the perfect song?",
+    "Maybe not",
+    "No, we haven't forgotten about you. How can we?",
     "There's an Italian saying that goes: 'The one who walks slowlys walks safely and goes far'. \nOur connection is taking this saying to the next level",
+    "So... You've been here for a while. Care to talk about your favourite song?",
   ];
+
+  const [phrase, setPhrase] = useState(phrasesForLoading[0]);
 
   useEffect(() => {
     if (songs !== undefined) {
@@ -30,14 +34,24 @@ const Playlist = () => {
     }
   }, [songs]);
 
+  useEffect(() => {
+    if (isLoading) {
+      let change = 1;
+      setInterval(() => {
+        setPhrase(phrasesForLoading[change]);
+        if (change === phrasesForLoading.length - 1) {
+          change = 0;
+        } else change++;
+      }, 5000);
+    }
+  }, []);
+
   return (
     <>
       <Container fluid className="p-0 playlist pb-5">
         {isLoading ? (
           <div className="d-flex flex-column justify-content-center align-items-center vh-100 w-75 mx-auto text-center">
-            {phrasesForLoading.map((phrase) => (
-              <p key={phrase}>{phrase}</p>
-            ))}
+            <p className="mb-5">{phrase}</p>
             <Loader />
           </div>
         ) : (

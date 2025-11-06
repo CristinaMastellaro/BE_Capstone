@@ -10,11 +10,7 @@ import {
   BiRepeat,
   BiVolumeFull,
 } from "react-icons/bi";
-import {
-  useAppDispatch,
-  useAppDispatchFunction,
-  useAppSelector,
-} from "../redux/store";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 import Loader from "./Loader";
 import {
   isPlayingSong,
@@ -49,7 +45,7 @@ const PlayerMusic = () => {
   const [classRepeat, setClassRepeat] = useState("");
   const [classShuffle, setClassShuffle] = useState("");
 
-  const dispatch = useAppDispatchFunction();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (isOnRepeat) {
@@ -97,7 +93,6 @@ const PlayerMusic = () => {
   };
 
   useEffect(() => {
-    console.log("isPlaying?", isPlaying);
     if (isPlaying) {
       audioRef.current?.play();
       requestAnimationFrame(whilePlaying);

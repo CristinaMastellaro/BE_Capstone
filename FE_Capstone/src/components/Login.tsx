@@ -1,4 +1,4 @@
-import { Form, Button, Container } from "react-bootstrap";
+import { Form, Container } from "react-bootstrap";
 import "../scss/login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -85,18 +85,14 @@ const Login = () => {
               value={password}
             />
           </Form.Group>
-          <Button
-            variant="primary"
-            type="submit"
-            className=" align-self-center"
-          >
-            {isLoading ? <Loader /> : "Login"}
-          </Button>
           {error != "" && (
-            <p className="ms-4 text-danger small mt-3 mb-0 d-flex align-items-center">
+            <p className="ms-4 text-danger small mb-3 d-flex align-items-center">
               <BiInfoCircle className="me-2" /> {error}
             </p>
           )}
+          <button type="submit" className="my-btn-blue align-self-center">
+            {isLoading ? <Loader /> : "Login"}
+          </button>
           <hr className="my-4" />
           <p>
             If you don't have an account,{" "}

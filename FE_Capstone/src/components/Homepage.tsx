@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import MoodType from "../types/MoodType";
 import { findSongs } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import PlayerMusic from "./PlayerMusic";
+import { Container } from "react-bootstrap";
 
 const Homepage = () => {
   const [mood, setMood] = useState("Relaxed");
@@ -70,47 +70,54 @@ const Homepage = () => {
 
   return (
     <>
-      <section
-        className="mt-5 mx-3vh-50"
-        // style={{ height: "50vh" }}
-      >
-        {/* Emoticon? */}
-        <h5>How are you feeling today? </h5>
-        <Form className="h-75 d-flex flex-column" onSubmit={findMoodSongs}>
-          <div>
-            <Form.Group className="mb-3">
-              <Form.Select
-                id="moodChoices"
-                name="moodChoices"
-                defaultValue="Relaxed"
-                onChange={handleChange}
-              >
-                {options.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-            {(!options.includes(mood) || mood === "Other") && (
-              <Form.Group className="mb-3">
-                {/* Ti prego, controlla la grammatica */}
-                <Form.Label>Oh, in which special mood are you?</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="I really feel..."
+      <Container fluid>
+        <section
+          className="pt-5  vh-100 text-center d-flex flex-column align-items-center"
+          // style={{ height: "50vh" }}
+        >
+          {/* Emoticon? */}
+          <h1 className="mb-4">How are you feeling today? </h1>
+          <Form className="w-75 d-flex " onSubmit={findMoodSongs}>
+            <div className="flex-grow-1 me-3">
+              <Form.Group>
+                <Form.Select
+                  id="moodChoices"
+                  name="moodChoices"
+                  defaultValue="Relaxed"
                   onChange={handleChange}
-                />
+                >
+                  {options.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </Form.Select>
               </Form.Group>
-            )}
-          </div>
-          <Button variant="primary" type="submit">
-            Music time!
-          </Button>
-        </Form>
-      </section>
-      {/* {(currentSong as ShowSongType).id !== "" && <PlayerMusic />} */}
-      <PlayerMusic />
+              {(!options.includes(mood) || mood === "Other") && (
+                <Form.Group className="mt-3 flex-grow-1">
+                  {/* Ti prego, controlla la grammatica */}
+                  <Form.Label className="text-start">
+                    Oh, in which special mood are you?
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="I really feel..."
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="w-25 align-self-center my-btn-blue"
+            >
+              Music time!
+            </button>
+          </Form>
+        </section>
+        {/* {(currentSong as ShowSongType).id !== "" && <PlayerMusic />} */}
+        <PlayerMusic />
+      </Container>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { Form, Button, Container } from "react-bootstrap";
+import { Form, Container } from "react-bootstrap";
 import "../scss/login.scss";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -59,7 +59,7 @@ const Registration = () => {
   };
 
   return (
-    <Container fluid>
+    <Container fluid className="vh-100">
       <Form
         className="d-flex flex-column align-items-center justify-content-center h-100"
         onSubmit={registration}
@@ -148,13 +148,9 @@ const Registration = () => {
           <p className="small text-secondary mb-4">
             The fields with (*) are mandatory.
           </p>
-          <Button
-            variant="primary"
-            type="submit"
-            className=" align-self-center w-50"
-          >
+          <button type="submit" className=" align-self-center w-50 my-btn-blue">
             {loading ? <Loader /> : "Register"}
-          </Button>
+          </button>
           {/* {loading && <Loader />} */}
         </div>
       </Form>
