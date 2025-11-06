@@ -5,6 +5,7 @@ import MoodType from "../types/MoodType";
 import { findSongs } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/store";
+import PlayerMusic from "./PlayerMusic";
 
 const Homepage = () => {
   const [mood, setMood] = useState("Relaxed");
@@ -72,9 +73,6 @@ const Homepage = () => {
         {/* Emoticon? */}
         <h5>How are you feeling today? </h5>
         <Form className="h-75 d-flex flex-column" onSubmit={findMoodSongs}>
-          {/* <Form.Group className="mb-3">
-          <Form.Control type="text" placeholder="I'm feeling..." />
-        </Form.Group> */}
           <div>
             <Form.Group className="mb-3">
               <Form.Select
@@ -107,6 +105,7 @@ const Homepage = () => {
           </Button>
         </Form>
       </section>
+      <PlayerMusic />
     </>
   );
 };

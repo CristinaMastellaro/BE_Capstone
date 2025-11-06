@@ -6,9 +6,11 @@ import {
 } from "@reduxjs/toolkit";
 import allSongsReducer from "../reducers/allSongsReducer";
 import { useDispatch, useSelector } from "react-redux";
+import playerReducer from "../reducers/playerReducer";
 
 const rootReducer = combineReducers({
   allSongs: allSongsReducer,
+  player: playerReducer,
 });
 
 const store = configureStore({

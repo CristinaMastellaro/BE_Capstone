@@ -1,6 +1,7 @@
 import ShowSongType from "../../types/ShowSongType";
 import { AppDispatchFunction } from "../store";
 
+// For mood playlist
 export const ALL_SONGS_MOOD = "ALL_SONGS_MOOD";
 
 function delay(ms: number) {
@@ -81,5 +82,55 @@ export const findSongs = (mood: string) => {
       type: ALL_SONGS_MOOD,
       payload: [mood, AllFoundSongs],
     });
+  };
+};
+
+// For music player
+export const CURRENT_SONG = "CURRENT_SONG";
+export const CURRENT_PLAYLIST = "CURRENT_PLAYLIST";
+export const RESET_PLAYLIST = "RESET_PLAYLIST";
+export const IS_PLAYING = "IS_PLAYING";
+export const IS_ON_REPEAT = "IS_ON_REPEAT";
+export const IS_SHUFFLED = "IS_SHUFFLED";
+// Attenta che se la canzone non è in una playlist... Cosa succede?
+
+export const saveCurrentSong = (song: ShowSongType) => {
+  return {
+    type: CURRENT_SONG,
+    payload: song,
+  };
+};
+
+export const resetPlaylist = () => {
+  return {
+    type: RESET_PLAYLIST,
+  };
+};
+
+export const saveCurrentPlaylist = (playlist: ShowSongType) => {
+  return {
+    type: CURRENT_PLAYLIST,
+    payload: playlist,
+  };
+};
+
+export const isPlayingSong = (isPlaying: boolean) => {
+  return {
+    type: IS_PLAYING,
+    payload: isPlaying,
+  };
+};
+
+export const isRepeatingSong = (isRepeating: boolean) => {
+  return {
+    type: IS_ON_REPEAT,
+    payload: isRepeating,
+  };
+};
+
+export const isShufflingSongs = (isShuffle: boolean) => {
+  return {
+    type: IS_SHUFFLED,
+    payload: isShuffle,
   };
 };
