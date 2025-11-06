@@ -10,12 +10,17 @@ import {
   BiRepeat,
   BiVolumeFull,
 } from "react-icons/bi";
-import { useAppDispatch, useAppSelector } from "../redux/store";
+import {
+  useAppDispatch,
+  useAppDispatchFunction,
+  useAppSelector,
+} from "../redux/store";
 import Loader from "./Loader";
 import {
   isPlayingSong,
   isRepeatingSong,
   isShufflingSongs,
+  saveCurrentSong,
 } from "../redux/actions";
 import ShowSongType from "../types/ShowSongType";
 
@@ -24,6 +29,9 @@ const PlayerMusic = () => {
 
   const currentSong = useAppSelector(
     (state) => state.player.currentSong as ShowSongType
+  );
+  const currentPlaylist = useAppSelector(
+    (state) => state.player.currentPlaylist as ShowSongType[]
   );
   const isPlaying = useAppSelector(
     (state) => state.player.isPlaying as boolean
@@ -35,47 +43,96 @@ const PlayerMusic = () => {
     (state) => state.player.isOnRepeat as boolean
   );
 
-  const [shuffle, setShuffle] = useState(isShuffle);
-  const [repeat, setRepeat] = useState(isOnRepeat);
+  const showPlayer = useAppSelector(
+    (state) => (state.player.currentSong as ShowSongType).id === ""
+  );
   const [classRepeat, setClassRepeat] = useState("");
   const [classShuffle, setClassShuffle] = useState("");
 
-  const [play, setPlay] = useState(isPlaying);
-
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatchFunction();
 
   useEffect(() => {
-    dispatch(isPlayingSong(play));
-  }, [play]);
-
-  useEffect(() => {
-    if (isPlaying) {
-      audioRef.current?.pause();
-    } else {
-      audioRef.current?.play();
-    }
-  }, [isPlaying]);
-
-  useEffect(() => {
-    if (repeat) {
+    if (isOnRepeat) {
       setClassRepeat("selected");
     } else {
       setClassRepeat("");
     }
-    dispatch(isRepeatingSong(repeat));
-  }, [repeat]);
+  }, [isOnRepeat]);
 
   useEffect(() => {
-    if (shuffle) {
+    if (isShuffle) {
       setClassShuffle("selected");
     } else {
       setClassShuffle("");
     }
-    dispatch(isShufflingSongs(shuffle));
-  }, [shuffle]);
+  }, [isShuffle]);
+
+  // Elements to make the buttons and volume work
+
+  const [valueTimeMusic, setValueTimeMusic] = useState(
+    audioRef.current === null ? 0 : audioRef.current.currentTime
+  );
+
+  const calculateTime = (secs: number) => {
+    const minutes = Math.floor(secs / 60);
+    const seconds = Math.floor(secs % 60);
+    const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+    if (Number(returnedSeconds) > 28) {
+      goNext();
+      setValueTimeMusic(0);
+      audioRef.current!.currentTime = 0;
+    }
+    return `${minutes}:${returnedSeconds}`;
+  };
+
+  let rAF = null;
+  const whilePlaying = () => {
+    setValueTimeMusic(Math.floor(audioRef.current!.currentTime));
+    // setStyleRange(true)
+    // elementsPlayer.style.setProperty(
+    //   "--seek-before-width",
+    //   `${(timeMusic.value / timeMusic.max) * 100}%`
+    // );
+    rAF = requestAnimationFrame(whilePlaying);
+  };
+
+  useEffect(() => {
+    console.log("isPlaying?", isPlaying);
+    if (isPlaying) {
+      audioRef.current?.play();
+      requestAnimationFrame(whilePlaying);
+    } else {
+      audioRef.current?.pause();
+      cancelAnimationFrame(rAF);
+    }
+  }, [isPlaying]);
+
+  const goNext = () => {
+    let index = currentPlaylist.indexOf(currentSong);
+    if (isShuffle) {
+      index = Math.floor(Math.random() * currentPlaylist.length);
+    } else {
+      if (index === currentPlaylist.length - 1) {
+        index = 0;
+      } else index++;
+    }
+    const newSong = currentPlaylist[index];
+    console.log("newSong", newSong);
+    dispatch(saveCurrentSong(newSong));
+  };
+
+  // Volume
+  const [volumeValue, setVolumeValue] = useState(80);
 
   return (
-    <Container fluid className="music-player justify-content-between">
+    <Container
+      fluid
+      className={
+        showPlayer
+          ? "music-player justify-content-between d-none"
+          : "music-player justify-content-between"
+      }
+    >
       {/* Info songs */}
       {currentSong ? (
         <Row className="p-2 justify-content-between justify-content-lg-start align-items-center flex-nowrap w-100">
@@ -85,7 +142,12 @@ const PlayerMusic = () => {
               alt="Cover of the song"
               className="me-3 img-player-music"
             />
-            <audio className="d-none" ref={audioRef} src={"preview"} controls />
+            <audio
+              className="d-none"
+              ref={audioRef}
+              src={currentSong.preview}
+              controls
+            />
             <div className="flex-grow-1 d-flex flex-column justify-content-center">
               <p className="mb-0 fw-bold">{currentSong.title}</p>
               <p className="mb-0">{currentSong.author}</p>
@@ -97,41 +159,70 @@ const PlayerMusic = () => {
               <BiShuffle
                 className={" d-none d-md-block icon " + classShuffle}
                 onClick={() => {
-                  setShuffle(!shuffle);
+                  dispatch(isShufflingSongs(!isShuffle));
                 }}
               />
-              <BiSkipPrevious className="fs-3 icon" />
-              {play ? (
+              <BiSkipPrevious
+                className="fs-3 icon"
+                onClick={() => {
+                  let index = currentPlaylist.indexOf(currentSong);
+                  if (isShuffle) {
+                    index = Math.floor(Math.random() * currentPlaylist.length);
+                  } else {
+                    if (index === 0) {
+                      index = currentPlaylist.length - 1;
+                    } else {
+                      index--;
+                    }
+                  }
+                  const newSong = currentPlaylist[index];
+                  dispatch(saveCurrentSong(newSong));
+                }}
+              />
+              {isPlaying ? (
                 <BiPause
                   className="fs-1 icon"
                   onClick={() => {
-                    setPlay(false);
+                    dispatch(isPlayingSong(false));
+                    // cancelAnimationFrame(rAF);
                   }}
                 />
               ) : (
                 <BiPlay
                   className="fs-1 icon"
                   onClick={() => {
-                    setPlay(true);
+                    dispatch(isPlayingSong(true));
+                    // requestAnimationFrame(whilePlaying);
                   }}
                 />
               )}
-              <BiSkipNext className="fs-3 icon" />
+              <BiSkipNext className="fs-3 icon" onClick={goNext} />
               <BiRepeat
                 className={" d-none d-md-block icon " + classRepeat}
                 onClick={() => {
-                  setRepeat(!repeat);
+                  dispatch(isRepeatingSong(!isOnRepeat));
                 }}
               />
             </div>
             <div className="d-none d-lg-flex justify-content-between align-items-center">
-              <span id="currentTime">0:00</span>
+              <span id="currentTime">{calculateTime(valueTimeMusic)}</span>
               <input
                 type="range"
                 id="timeMusic"
                 max="29"
-                value="0"
+                value={valueTimeMusic}
                 className="w-75"
+                // onInput={() => {
+                //   if (audioRef.current!.paused) {
+                //     cancelAnimationFrame(rAF);
+                //   }
+                // }}
+                onChange={() => {
+                  //   audioRef.current!.currentTime = valueTimeMusic;
+                  if (!audioRef.current!.paused) {
+                    requestAnimationFrame(whilePlaying);
+                  }
+                }}
               />
               <span>0:29</span>
             </div>
@@ -144,7 +235,19 @@ const PlayerMusic = () => {
           >
             <BiVolumeFull className="opacity-50" />
             <div className="d-flex">
-              <input type="range" min="0" max="100" />
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={volumeValue}
+                onChange={(e) => {
+                  console.log("e.currentTarget.value", e.currentTarget.value);
+                  setVolumeValue(Number(e.currentTarget.value) / 100);
+                }}
+                style={{
+                  background: `linear-gradient(to right, white ${volumeValue}%, grey ${volumeValue}%)`,
+                }}
+              />
             </div>
           </Col>
         </Row>

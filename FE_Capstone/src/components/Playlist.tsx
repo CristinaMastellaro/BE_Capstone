@@ -10,7 +10,6 @@ import PlayerMusic from "./PlayerMusic";
 const Playlist = () => {
   const { specification } = useParams();
   const songs = useAppSelector((state: IRootState) => {
-    console.log("specification", specification);
     if (specification !== undefined) {
       return state.allSongs.moods[specification];
     }
@@ -29,12 +28,11 @@ const Playlist = () => {
     if (songs !== undefined) {
       setIsLoading(false);
     }
-    console.log("I entered the useEffect!");
   }, [songs]);
 
   return (
     <>
-      <Container fluid className="p-0 playlist">
+      <Container fluid className="p-0 playlist pb-5">
         {isLoading ? (
           <div className="d-flex flex-column justify-content-center align-items-center vh-100 w-75 mx-auto text-center">
             {phrasesForLoading.map((phrase) => (

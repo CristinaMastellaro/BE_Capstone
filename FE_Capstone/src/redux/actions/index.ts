@@ -16,7 +16,7 @@ export const findSongs = (mood: string) => {
 
     try {
       const res = await fetch(
-        `http://ws.audioscrobbler.com/2.0/?method=tag.getTopTracks&tag=${mood}&api_key=${token}&format=json`
+        `http://ws.audioscrobbler.com/2.0/?method=tag.getTopTracks&tag=${mood.toLowerCase()}&api_key=${token}&format=json`
       );
 
       if (!res.ok) {
@@ -53,8 +53,11 @@ export const findSongs = (mood: string) => {
             for (let j = 0; j < data2.data.length; j++) {
               if (j === 8 || j === 16) await delay(2000);
               if (
-                data2.data[j].title_short.includes(basicInfo[0]) &&
-                data2.data[j].artist.name === basicInfo[1] &&
+                data2.data[j].title_short
+                  .toLowerCase()
+                  .includes(basicInfo[0].toLowerCase()) &&
+                data2.data[j].artist.name.toLowerCase() ===
+                  basicInfo[1].toLowerCase() &&
                 foundSong.id === ""
               ) {
                 foundSong = {

@@ -34,6 +34,7 @@ const playerReducer = (
       return {
         ...state,
         currentSong: action.payload,
+        isPlaying: true,
       };
     case RESET_PLAYLIST:
       return {

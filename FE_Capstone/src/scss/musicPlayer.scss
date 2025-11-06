@@ -50,28 +50,6 @@ input[type="range"]::-webkit-slider-thumb {
   width: 90%;
 }
 
-.cont-player-sm p {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.cont-player-lg {
-  z-index: 2;
-}
-
-.info {
-  max-width: 90%;
-}
-
-.apple {
-  filter: invert(75%);
-}
-
-.apple-col {
-  background-color: #4d4d4d;
-}
-
 .selected {
   color: red;
 }

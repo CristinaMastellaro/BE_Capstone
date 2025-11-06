@@ -1,6 +1,6 @@
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import "../scss/song.scss";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import ShowSongType from "../types/ShowSongType";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import {
@@ -17,7 +17,7 @@ interface SongProps {
 
 const Song = ({ song, playlist }: SongProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
   const dispatch = useAppDispatch();
 
   const savedPlaylist = useAppSelector((state) => state.player.currentPlaylist);
@@ -28,13 +28,14 @@ const Song = ({ song, playlist }: SongProps) => {
         data-audio-id={song.id}
         title="Play preview"
         onClick={() => {
-          if (isPlaying) {
-            setIsPlaying(false);
-          } else {
-            setIsPlaying(true);
-          }
+          // if (isPlaying) {
+          //   setIsPlaying(false);
+          // } else {
+          //   setIsPlaying(true);
+          // }
+          dispatch(isPlayingSong(false));
           dispatch(saveCurrentSong(song));
-          dispatch(isPlayingSong(isPlaying));
+          dispatch(isPlayingSong(true));
           const rememberStartingPlaylist = savedPlaylist;
           if (rememberStartingPlaylist !== playlist) {
             dispatch(resetPlaylist);

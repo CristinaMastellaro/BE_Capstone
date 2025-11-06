@@ -17,14 +17,16 @@ const Homepage = () => {
 
   const savedMoodInStore = useAppSelector((state) => state.allSongs.moodName);
   const songs = useAppSelector((state) => {
-    console.log(
-      "state.allSongs.moods[mood].length",
-      state.allSongs.moods[mood]
-    );
+    // console.log(
+    //   "state.allSongs.moods[mood].length",
+    //   state.allSongs.moods[mood]
+    // );
     if (mood !== undefined) {
       return state.allSongs.moods[mood];
     }
   });
+
+  // const currentSong = useAppSelector((state) => state.player.currentSong);
 
   const findMoodSongs = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +53,6 @@ const Homepage = () => {
         }
       })
       .then((data: MoodType[]) => {
-        console.log("data", data);
         const moods: string[] = [];
         data.forEach((singleMood) => moods.push(singleMood.name));
         setOptions(moods);
@@ -69,7 +70,10 @@ const Homepage = () => {
 
   return (
     <>
-      <section className="mt-5 mx-3" style={{ height: "50vh" }}>
+      <section
+        className="mt-5 mx-3vh-50"
+        // style={{ height: "50vh" }}
+      >
         {/* Emoticon? */}
         <h5>How are you feeling today? </h5>
         <Form className="h-75 d-flex flex-column" onSubmit={findMoodSongs}>
@@ -105,6 +109,7 @@ const Homepage = () => {
           </Button>
         </Form>
       </section>
+      {/* {(currentSong as ShowSongType).id !== "" && <PlayerMusic />} */}
       <PlayerMusic />
     </>
   );
