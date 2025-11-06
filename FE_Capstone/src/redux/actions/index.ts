@@ -10,7 +10,7 @@ function delay(ms: number) {
 export const findSongs = (mood: string) => {
   return async (dispatch: AppDispatchFunction) => {
     //TODO cancella questo token e mettilo da un'altra parte!
-    const token = "61e0428b8968ad6b102f45b29277ba45";
+    const token = localStorage.getItem("tokenLastFm");
     const AllFoundSongs: ShowSongType[] = [];
 
     try {

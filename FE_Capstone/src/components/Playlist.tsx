@@ -24,6 +24,8 @@ const Playlist = () => {
     "We're searching for your music",
     "Last.fm API was used for this reasearch",
     "In mood for some music",
+    "No, we haven't forgotten about you. \nThe API is just slow",
+    "There's an Italian saying that goes: 'The one who walks slowlys walks safely and goes far'. \nOur connection is taking this saying to the next level",
   ];
 
   useEffect(() => {
@@ -37,7 +39,7 @@ const Playlist = () => {
     <>
       <Container fluid className="p-0 playlist">
         {isLoading ? (
-          <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+          <div className="d-flex flex-column justify-content-center align-items-center vh-100 w-75 mx-auto text-center">
             {phrasesForLoading.map((phrase) => (
               <p key={phrase}>{phrase}</p>
             ))}

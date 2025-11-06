@@ -15,12 +15,23 @@ const Homepage = () => {
   const navigate = useNavigate();
 
   const savedMoodInStore = useAppSelector((state) => state.allSongs.moodName);
+  const songs = useAppSelector((state) => {
+    console.log(
+      "state.allSongs.moods[mood].length",
+      state.allSongs.moods[mood]
+    );
+    if (mood !== undefined) {
+      return state.allSongs.moods[mood];
+    }
+  });
 
   const findMoodSongs = (e: React.FormEvent) => {
     e.preventDefault();
     if (savedMoodInStore !== mood) {
       if (mood === "I don't know") setMood("Confused");
-      dispatch(findSongs(mood));
+      if (songs === undefined) {
+        dispatch(findSongs(mood));
+      }
     }
     navigate("/playlist/" + mood);
   };

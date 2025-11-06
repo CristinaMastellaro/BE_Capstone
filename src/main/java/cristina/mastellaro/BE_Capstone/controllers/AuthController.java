@@ -20,6 +20,8 @@ public class AuthController {
     private UserService uServ;
     @Autowired
     private LoginService lServ;
+    @Autowired
+    private String lastFmApiKey;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -35,7 +37,7 @@ public class AuthController {
         if (validation.hasErrors()) {
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(fE -> fE.getDefaultMessage()).toList());
         }
-        return new LoginResponseDTO(dto.username(), lServ.verifyUserAndGetToken(dto));
+        return new LoginResponseDTO(dto.username(), lServ.verifyUserAndGetToken(dto), lastFmApiKey);
     }
 
 }

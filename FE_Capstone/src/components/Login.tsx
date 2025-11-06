@@ -40,6 +40,7 @@ const Login = () => {
       .then((data) => {
         console.log(data);
         localStorage.setItem("token", data.token);
+        localStorage.setItem("tokenLastFm", data.tokenLastFm);
         setIsLoading(false);
         navigate("/homepage");
       })
