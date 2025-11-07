@@ -4,9 +4,6 @@ import MoodType from "../types/MoodType";
 import { findSongs } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/store";
-import PlayerMusic from "./PlayerMusic";
-import { Col, Container, Row } from "react-bootstrap";
-import CustomNavbar from "./CustomNav";
 
 const Homepage = () => {
   const [mood, setMood] = useState("Relaxed");
@@ -27,8 +24,10 @@ const Homepage = () => {
 
   const findMoodSongs = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("mood", mood);
+    // if (mood === "I don't know") {setMood("confused");}
+    // console.log("mood", mood);
     if (savedMoodInStore !== mood) {
-      if (mood === "I don't know") setMood("Confused");
       if (songs === undefined) {
         dispatch(findSongs(mood));
       }
@@ -65,71 +64,58 @@ const Homepage = () => {
     getMoods();
   }, []);
 
+  useEffect(() => {
+    if (mood === "I don't know") setMood("confused");
+  }, [mood]);
+
   return (
     <>
-      <Container fluid>
-        <Row className="">
-          <Col
-            lg={3}
-            xl={2}
-            className="d-none d-lg-block p-0 bg-black vh-100 px-3 pt-4"
-          >
-            <CustomNavbar />
-          </Col>
-          <Col xs={12} lg={9} xl={10} className="px-0">
-            <section
-              className="pt-5 vh-100 text-center d-flex flex-column align-items-center align-self-end"
-              // style={{ height: "50vh" }}
-            >
-              {/* Emoticon? */}
-              <h3>Hi {username || "gorgeous"}!</h3>
-              <h1 className="mb-4">How are you feeling today? </h1>
-              <Form
-                className="w-75 d-flex flex-column flex-lg-row"
-                onSubmit={findMoodSongs}
+      <section className="pt-5 vh-100 text-center d-flex flex-column align-items-center align-self-end">
+        {/* Emoticon? */}
+        <h3>Hi {username || "gorgeous"}!</h3>
+        <h1 className="mb-4">How are you feeling today? </h1>
+        <Form
+          className="w-75 d-flex flex-column flex-lg-row"
+          onSubmit={findMoodSongs}
+        >
+          <div className="flex-grow-1 me-3">
+            <Form.Group>
+              <Form.Select
+                id="moodChoices"
+                name="moodChoices"
+                defaultValue="Relaxed"
+                onChange={handleChange}
               >
-                <div className="flex-grow-1 me-3">
-                  <Form.Group>
-                    <Form.Select
-                      id="moodChoices"
-                      name="moodChoices"
-                      defaultValue="Relaxed"
-                      onChange={handleChange}
-                    >
-                      {options.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </Form.Group>
-                  {(!options.includes(mood) || mood === "Other") && (
-                    <Form.Group className="mt-3 flex-grow-1">
-                      {/* Ti prego, controlla la grammatica */}
-                      <Form.Label className="text-start">
-                        Oh, in which special mood are you?
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="I really feel..."
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-                  )}
-                </div>
-                <button
-                  type="submit"
-                  className="mt-3 mt-lg-0 w-auto align-self-center my-btn-blue"
-                >
-                  Music time!
-                </button>
-              </Form>
-            </section>
-          </Col>
-        </Row>
-        {/* {(currentSong as ShowSongType).id !== "" && <PlayerMusic />} */}
-        <PlayerMusic />
-      </Container>
+                {options.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            {(!options.includes(mood) || mood === "Other") &&
+              mood.toLowerCase() !== "confused" && (
+                <Form.Group className="mt-3 flex-grow-1">
+                  {/* Ti prego, controlla la grammatica */}
+                  <Form.Label className="text-start">
+                    Oh, in which special mood are you?
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="I really feel..."
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              )}
+          </div>
+          <button
+            type="submit"
+            className="mt-3 mt-lg-0 w-auto align-self-center my-btn-blue"
+          >
+            Music time!
+          </button>
+        </Form>
+      </section>
     </>
   );
 };

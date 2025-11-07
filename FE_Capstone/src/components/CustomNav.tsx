@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const CustomNavbar = () => {
   return (
     <>
-      {/* <div className="vh-100 px-3 pt-4 position-fixed"> */}
+      {/* <div className="position-fixed"> */}
       {/* <h1 className="mb-4">Sound Adventure</h1> */}
       <h1 className="mb-4">Moody</h1>
       {/* <div className="border border-1 p-2 rounded-2 d-flex gap-1 align-items-center mb-3">
@@ -16,7 +16,7 @@ const CustomNavbar = () => {
             className="bg-dark border-0 w-100 text-white"
           />
         </div> */}
-      <div className="mt-4">
+      <div className="mt-4 ">
         <Link
           to="/homepage"
           className="mt-2 p-1 options text-white text-decoration-none"

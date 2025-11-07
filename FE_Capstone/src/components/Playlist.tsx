@@ -1,12 +1,9 @@
-import { Col, Container, Row } from "react-bootstrap";
 import "../scss/playlist.scss";
 import Song from "./Song";
 import { IRootState, useAppSelector } from "../redux/store";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
-import PlayerMusic from "./PlayerMusic";
-import CustomNavbar from "./CustomNav";
 
 const Playlist = () => {
   const { specification } = useParams();
@@ -49,38 +46,33 @@ const Playlist = () => {
 
   return (
     <>
-      <Container fluid className="playlist">
-        <Row>
-          <Col
-            // className="m-0 px-0 d-none d-lg-block p-0 bg-black"
-            lg={3}
-            xl={2}
-            className="d-none d-lg-block p-0 bg-black vh-100 px-3 pt-4"
-          >
-            <CustomNavbar />
-          </Col>
-          <Col className="m-0 px-0" lg={9} xl={10}>
-            {isLoading ? (
-              <div className="d-flex flex-column justify-content-center align-items-center vh-100 w-75 mx-auto text-center">
-                <p className="mb-5">{phrase}</p>
-                <Loader />
+      {isLoading ? (
+        <div className="d-flex flex-column justify-content-center align-items-center vh-100 w-75 mx-auto text-center">
+          <p className="mb-5">{phrase}</p>
+          <Loader />
+        </div>
+      ) : (
+        <>
+          <div style={{ minHeight: "100vh" }}>
+            <section className="hero">
+              <div className="change-hero">
+                <h1 className="my-4 ms-5">
+                  {specification
+                    ? specification[0].toUpperCase() +
+                      specification.substring(1)
+                    : "Playlist"}
+                </h1>
               </div>
-            ) : (
-              <>
-                <section className="hero"></section>
-                <section className="pb-5">
-                  <h1 className="my-4 ms-5">{specification}</h1>
-                  {songs &&
-                    songs.map((song) => (
-                      <Song key={song.id} song={song} playlist={songs} />
-                    ))}
-                </section>
-              </>
-            )}
-          </Col>
-        </Row>
-        <PlayerMusic />
-      </Container>
+            </section>
+            <section className="pb-5">
+              {songs &&
+                songs.map((song) => (
+                  <Song key={song.id} song={song} playlist={songs} />
+                ))}
+            </section>
+          </div>
+        </>
+      )}
     </>
   );
 };
