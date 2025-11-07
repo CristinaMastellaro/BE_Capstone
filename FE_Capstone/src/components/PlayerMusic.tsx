@@ -209,7 +209,7 @@ const PlayerMusic = () => {
                 id="timeMusic"
                 max="29"
                 value={valueTimeMusic}
-                className="w-75"
+                style={{ width: "65%" }}
                 onChange={() => {
                   if (!audioRef.current!.paused) {
                     requestAnimationFrame(whilePlaying);

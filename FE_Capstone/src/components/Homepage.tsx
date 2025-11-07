@@ -24,9 +24,6 @@ const Homepage = () => {
 
   const findMoodSongs = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("mood", mood);
-    // if (mood === "I don't know") {setMood("confused");}
-    // console.log("mood", mood);
     if (savedMoodInStore !== mood) {
       if (songs === undefined) {
         dispatch(findSongs(mood));

@@ -32,6 +32,7 @@ const Playlist = () => {
     }
   }, [songs]);
 
+  // TODO: non penso che questa cosa si fermi mai
   useEffect(() => {
     if (isLoading) {
       let change = 1;
@@ -65,6 +66,13 @@ const Playlist = () => {
               </div>
             </section>
             <section className="pb-5">
+              {songs && songs.length < 5 && (
+                <p className="w-75 mx-auto mt-3">
+                  Your feelings are so deep, but our system isn't smart enough
+                  yet to understand which songs are fitted for "{specification}
+                  "". Want to give it another try with a more generic word?
+                </p>
+              )}
               {songs &&
                 songs.map((song) => (
                   <Song key={song.id} song={song} playlist={songs} />

@@ -19,7 +19,6 @@ export const findSongs = (mood: string) => {
     //TODO cancella questo token e mettilo da un'altra parte!
     const token = localStorage.getItem("tokenLastFm");
     const AllFoundSongs: ShowSongType[] = [];
-    console.log("mood", mood);
 
     try {
       const res = await fetch(
