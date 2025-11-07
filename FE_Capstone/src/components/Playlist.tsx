@@ -1,4 +1,4 @@
-import { Container } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import "../scss/playlist.scss";
 import Song from "./Song";
 import { IRootState, useAppSelector } from "../redux/store";
@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import PlayerMusic from "./PlayerMusic";
+import CustomNavbar from "./CustomNav";
 
 const Playlist = () => {
   const { specification } = useParams();
@@ -48,24 +49,35 @@ const Playlist = () => {
 
   return (
     <>
-      <Container fluid className="p-0 playlist pb-5">
-        {isLoading ? (
-          <div className="d-flex flex-column justify-content-center align-items-center vh-100 w-75 mx-auto text-center">
-            <p className="mb-5">{phrase}</p>
-            <Loader />
-          </div>
-        ) : (
-          <>
-            <section className="hero"></section>
-            <section>
-              <h1 className="my-4 ms-5">{specification}</h1>
-              {songs &&
-                songs.map((song) => (
-                  <Song key={song.id} song={song} playlist={songs} />
-                ))}
-            </section>
-          </>
-        )}
+      <Container fluid className="p-0 playlist">
+        <Row className="w-100">
+          <Col
+            className="m-0 px-0 d-none d-lg-block p-0 bg-black"
+            lg={3}
+            xl={2}
+          >
+            <CustomNavbar />
+          </Col>
+          <Col className="m-0 px-0" lg={9} xl={10}>
+            {isLoading ? (
+              <div className="d-flex flex-column justify-content-center align-items-center vh-100 w-75 mx-auto text-center">
+                <p className="mb-5">{phrase}</p>
+                <Loader />
+              </div>
+            ) : (
+              <>
+                <section className="hero"></section>
+                <section className="pb-5">
+                  <h1 className="my-4 ms-5">{specification}</h1>
+                  {songs &&
+                    songs.map((song) => (
+                      <Song key={song.id} song={song} playlist={songs} />
+                    ))}
+                </section>
+              </>
+            )}
+          </Col>
+        </Row>
         <PlayerMusic />
       </Container>
     </>
