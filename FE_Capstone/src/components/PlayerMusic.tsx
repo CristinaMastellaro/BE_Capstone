@@ -76,7 +76,7 @@ const PlayerMusic = () => {
     return `${minutes}:${returnedSeconds}`;
   };
 
-  let rAF = null;
+  let rAF: number;
   const whilePlaying = () => {
     setValueTimeMusic(Math.floor(audioRef.current!.currentTime));
     // setStyleRange(true)
