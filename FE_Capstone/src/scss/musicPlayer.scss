@@ -1,10 +1,20 @@
 .music-player {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0.5em;
+    left: 1em;
+    right: 1em;
+    width: 90%;
     background-color: rgb(56, 56, 56);
     color: white;
+    border-radius: 20px;
+    // background-color: #2B2D42
+}
+
+.song-info-player {
+  width: 60%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 input[type="range"] {
@@ -51,11 +61,11 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .selected {
-  color: red;
+  color: rgb(241, 156, 193);
 }
 
 .icon:hover {
-  color: red;
+  color: rgb(122, 179, 245);
   cursor: pointer;
 }
 

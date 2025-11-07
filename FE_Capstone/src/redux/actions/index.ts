@@ -79,23 +79,12 @@ export const findSongs = (mood: string) => {
             }
             if (foundSong.id !== "") AllFoundSongs.push(foundSong);
           } catch (err) {
-            const result = err.message;
-            if (typeof err === "string") {
-              console.log(err);
-            } else if (err instanceof Error) {
-              if (err.message.includes("Response status: 429"))
-                await delay(2000);
-            }
+            console.log(err);
           }
         }
       }
     } catch (err) {
-      const result = err.message;
-      if (typeof err === "string") {
-        console.log(err);
-      } else if (err instanceof Error) {
-        if (err.message.includes("Response status: 429")) await delay(2000);
-      }
+      console.log(err);
     }
     dispatch({
       type: ALL_SONGS_MOOD,

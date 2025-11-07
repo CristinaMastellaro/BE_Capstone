@@ -3,7 +3,6 @@ import "../scss/song.scss";
 import ShowSongType from "../types/ShowSongType";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import {
-  isPlayingSong,
   resetPlaylist,
   saveCurrentPlaylist,
   saveCurrentSong,

@@ -73,24 +73,8 @@ const PlayerMusic = () => {
     const minutes = Math.floor(secs / 60);
     const seconds = Math.floor(secs % 60);
     const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-    // if (Number(returnedSeconds) > 28) {
-    //   setValueTimeMusic(0);
-    //   audioRef.current!.currentTime = 0;
-    //   goNext();
-    // } else {
     return `${minutes}:${returnedSeconds}`;
-    // }
   };
-
-  // useEffect(() => {
-  //   if (valueTimeMusic >= 29) {
-  //     setValueTimeMusic(0);
-  //     if (audioRef.current) {
-  //       audioRef.current.currentTime = 0;
-  //     }
-  //     goNext();
-  //   }
-  // }, [valueTimeMusic]);
 
   let rAF = null;
   const whilePlaying = () => {
@@ -111,7 +95,7 @@ const PlayerMusic = () => {
       audioRef.current?.pause();
       cancelAnimationFrame(rAF);
     }
-  }, [isPlaying, currentSong]);
+  }, [isPlaying, currentSong, valueTimeMusic]);
 
   const goNext = () => {
     let index = currentPlaylist.indexOf(currentSong);
@@ -140,8 +124,8 @@ const PlayerMusic = () => {
     >
       {/* Info songs */}
       {currentSong ? (
-        <Row className="p-2 justify-content-between justify-content-lg-start align-items-center flex-nowrap w-100">
-          <Col className="d-flex">
+        <Row className=" p-2 justify-content-between justify-content-lg-start align-items-center flex-nowrap w-100">
+          <Col className="d-flex" xs={8} lg={5}>
             <img
               src={currentSong.cover}
               alt="Cover of the song"
@@ -157,16 +141,18 @@ const PlayerMusic = () => {
                 if (audioRef.current) {
                   audioRef.current.currentTime = 0;
                 }
-                goNext();
+                if (!isOnRepeat) goNext();
               }}
             />
-            <div className="flex-grow-1 d-flex flex-column justify-content-center">
-              <p className="mb-0 fw-bold">{currentSong.title}</p>
-              <p className="mb-0">{currentSong.author}</p>
+            <div className="flex-grow-1 d-flex flex-column justify-content-center w-100">
+              <p className="mb-0 fw-bold song-info-player">
+                {currentSong.title}
+              </p>
+              <p className="mb-0 song-info-player">{currentSong.author}</p>
             </div>
           </Col>
           {/* Player buttons */}
-          <Col>
+          <Col xs={4} lg={4}>
             <div className="d-flex gap-2 align-items-center justify-content-end justify-content-md-center opacity-50">
               <BiShuffle
                 className={" d-none d-md-block icon " + classShuffle}
@@ -224,13 +210,7 @@ const PlayerMusic = () => {
                 max="29"
                 value={valueTimeMusic}
                 className="w-75"
-                // onInput={() => {
-                //   if (audioRef.current!.paused) {
-                //     cancelAnimationFrame(rAF);
-                //   }
-                // }}
                 onChange={() => {
-                  //   audioRef.current!.currentTime = valueTimeMusic;
                   if (!audioRef.current!.paused) {
                     requestAnimationFrame(whilePlaying);
                   }
