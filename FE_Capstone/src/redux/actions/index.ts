@@ -14,16 +14,11 @@ export const setLoginUsername = (username: string) => {
 // For mood playlist
 export const ALL_SONGS_MOOD = "ALL_SONGS_MOOD";
 
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 export const findSongs = (mood: string) => {
   return async (dispatch: AppDispatchFunction) => {
     //TODO cancella questo token e mettilo da un'altra parte!
     const token = localStorage.getItem("tokenLastFm");
     const AllFoundSongs: ShowSongType[] = [];
-    console.log("mood", mood);
 
     try {
       const res = await fetch(
