@@ -1,6 +1,6 @@
 .music-player {
     position: fixed;
-    bottom: 0.5em;
+    bottom: 4.5em;
     left: 1em;
     right: 1em;
     width: 90%;
@@ -8,6 +8,10 @@
     color: white;
     border-radius: 20px;
     // background-color: #2B2D42
+}
+
+@media screen and (min-width: 992px) {
+  .music-player{bottom: 0.5em;}
 }
 
 .song-info-player {
