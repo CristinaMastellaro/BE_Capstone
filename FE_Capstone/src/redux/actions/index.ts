@@ -35,12 +35,10 @@ export const findSongs = (mood: string) => {
       const data = await res.json();
       for (let i = 0; i < data.tracks.track.length; i++) {
         if (AllFoundSongs.length < 30) {
-          if (i === 15) await delay(2000);
           const basicInfo = [
             data.tracks.track[i].name,
             data.tracks.track[i].artist.name,
           ];
-          console.log("basicInfo", basicInfo);
           let foundSong: ShowSongType = {
             id: "",
             cover: "",
@@ -59,9 +57,8 @@ export const findSongs = (mood: string) => {
               throw new Error("Response status: " + secondRes.status);
             }
             const data2 = await secondRes.json();
-            console.log("data2", data2);
+
             for (let j = 0; j < data2.data.length; j++) {
-              if (j === 8 || j === 16) await delay(2000);
               if (
                 data2.data[j].title_short
                   .toLowerCase()
@@ -78,18 +75,27 @@ export const findSongs = (mood: string) => {
                   preview: data2.data[j].preview,
                 };
                 j = data2.data.length;
-                console.log("foundSong", foundSong);
               }
             }
             if (foundSong.id !== "") AllFoundSongs.push(foundSong);
           } catch (err) {
-            console.log(err);
+            const result = err.message;
+            if (typeof err === "string") {
+              console.log(err);
+            } else if (err instanceof Error) {
+              if (err.message.includes("Response status: 429"))
+                await delay(2000);
+            }
           }
         }
-        console.log("AllFoundSongs", AllFoundSongs);
       }
     } catch (err) {
-      console.log(err);
+      const result = err.message;
+      if (typeof err === "string") {
+        console.log(err);
+      } else if (err instanceof Error) {
+        if (err.message.includes("Response status: 429")) await delay(2000);
+      }
     }
     dispatch({
       type: ALL_SONGS_MOOD,

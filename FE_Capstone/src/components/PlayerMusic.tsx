@@ -153,7 +153,6 @@ const PlayerMusic = () => {
               src={currentSong.preview}
               controls
               onEnded={() => {
-                console.log("I've ended!");
                 setValueTimeMusic(0);
                 if (audioRef.current) {
                   audioRef.current.currentTime = 0;
@@ -254,7 +253,6 @@ const PlayerMusic = () => {
                 max="100"
                 value={volumeValue}
                 onChange={(e) => {
-                  console.log("e.currentTarget.value", e.currentTarget.value);
                   setVolumeValue(Number(e.currentTarget.value) / 100);
                 }}
                 style={{

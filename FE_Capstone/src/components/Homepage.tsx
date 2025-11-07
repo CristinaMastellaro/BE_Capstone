@@ -72,9 +72,12 @@ const Homepage = () => {
           // style={{ height: "50vh" }}
         >
           {/* Emoticon? */}
-          <h3>Hi {username}!</h3>
+          <h3>Hi {username || "gorgeous"}!</h3>
           <h1 className="mb-4">How are you feeling today? </h1>
-          <Form className="w-75 d-flex " onSubmit={findMoodSongs}>
+          <Form
+            className="w-50 d-flex flex-column flex-lg-row"
+            onSubmit={findMoodSongs}
+          >
             <div className="flex-grow-1 me-3">
               <Form.Group>
                 <Form.Select
@@ -106,7 +109,7 @@ const Homepage = () => {
             </div>
             <button
               type="submit"
-              className="w-25 align-self-center my-btn-blue"
+              className="mt-3 mt-lg-0 w-auto align-self-center my-btn-blue"
             >
               Music time!
             </button>
