@@ -17,16 +17,12 @@ const Homepage = () => {
 
   const savedMoodInStore = useAppSelector((state) => state.allSongs.moodName);
   const songs = useAppSelector((state) => {
-    // console.log(
-    //   "state.allSongs.moods[mood].length",
-    //   state.allSongs.moods[mood]
-    // );
     if (mood !== undefined) {
       return state.allSongs.moods[mood];
     }
   });
 
-  // const currentSong = useAppSelector((state) => state.player.currentSong);
+  const username = useAppSelector((state) => state.user.name);
 
   const findMoodSongs = (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,6 +72,7 @@ const Homepage = () => {
           // style={{ height: "50vh" }}
         >
           {/* Emoticon? */}
+          <h3>Hi {username}!</h3>
           <h1 className="mb-4">How are you feeling today? </h1>
           <Form className="w-75 d-flex " onSubmit={findMoodSongs}>
             <div className="flex-grow-1 me-3">

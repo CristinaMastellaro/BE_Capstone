@@ -1,6 +1,16 @@
 import ShowSongType from "../../types/ShowSongType";
 import { AppDispatchFunction } from "../store";
 
+// For login
+export const SET_USERNAME = "SET_USERNAME";
+
+export const setLoginUsername = (username: string) => {
+  return {
+    type: SET_USERNAME,
+    payload: username,
+  };
+};
+
 // For mood playlist
 export const ALL_SONGS_MOOD = "ALL_SONGS_MOOD";
 

@@ -73,13 +73,24 @@ const PlayerMusic = () => {
     const minutes = Math.floor(secs / 60);
     const seconds = Math.floor(secs % 60);
     const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-    if (Number(returnedSeconds) > 28) {
-      goNext();
-      setValueTimeMusic(0);
-      audioRef.current!.currentTime = 0;
-    }
+    // if (Number(returnedSeconds) > 28) {
+    //   setValueTimeMusic(0);
+    //   audioRef.current!.currentTime = 0;
+    //   goNext();
+    // } else {
     return `${minutes}:${returnedSeconds}`;
+    // }
   };
+
+  // useEffect(() => {
+  //   if (valueTimeMusic >= 29) {
+  //     setValueTimeMusic(0);
+  //     if (audioRef.current) {
+  //       audioRef.current.currentTime = 0;
+  //     }
+  //     goNext();
+  //   }
+  // }, [valueTimeMusic]);
 
   let rAF = null;
   const whilePlaying = () => {
@@ -100,7 +111,7 @@ const PlayerMusic = () => {
       audioRef.current?.pause();
       cancelAnimationFrame(rAF);
     }
-  }, [isPlaying]);
+  }, [isPlaying, currentSong]);
 
   const goNext = () => {
     let index = currentPlaylist.indexOf(currentSong);
@@ -112,7 +123,6 @@ const PlayerMusic = () => {
       } else index++;
     }
     const newSong = currentPlaylist[index];
-    console.log("newSong", newSong);
     dispatch(saveCurrentSong(newSong));
   };
 
@@ -142,6 +152,14 @@ const PlayerMusic = () => {
               ref={audioRef}
               src={currentSong.preview}
               controls
+              onEnded={() => {
+                console.log("I've ended!");
+                setValueTimeMusic(0);
+                if (audioRef.current) {
+                  audioRef.current.currentTime = 0;
+                }
+                goNext();
+              }}
             />
             <div className="flex-grow-1 d-flex flex-column justify-content-center">
               <p className="mb-0 fw-bold">{currentSong.title}</p>

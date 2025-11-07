@@ -7,10 +7,12 @@ import {
 import allSongsReducer from "../reducers/allSongsReducer";
 import { useDispatch, useSelector } from "react-redux";
 import playerReducer from "../reducers/playerReducer";
+import usernameReducer from "../reducers/usernameReducer";
 
 const rootReducer = combineReducers({
   allSongs: allSongsReducer,
   player: playerReducer,
+  user: usernameReducer,
 });
 
 const store = configureStore({

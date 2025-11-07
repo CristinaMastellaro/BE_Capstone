@@ -17,12 +17,12 @@ const Playlist = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const phrasesForLoading = [
-    "Following the sound of your mood",
     "Last.fm API was used for this reasearch",
+    "Following the sound of your mood",
     "Is that the perfect song?",
-    "Maybe not",
-    "No, we haven't forgotten about you. How can we?",
+    "Maybe not. The adventure goes on",
     "There's an Italian saying that goes: 'The one who walks slowlys walks safely and goes far'. \nOur connection is taking this saying to the next level",
+    "No, we haven't forgotten about you. How can we?",
     "So... You've been here for a while. Care to talk about your favourite song?",
   ];
 

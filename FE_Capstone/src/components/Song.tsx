@@ -25,9 +25,9 @@ const Song = ({ song, playlist }: SongProps) => {
         data-audio-id={song.id}
         title="Play preview"
         onClick={() => {
-          dispatch(isPlayingSong(false));
+          // dispatch(isPlayingSong(false));
           dispatch(saveCurrentSong(song));
-          dispatch(isPlayingSong(true));
+          // dispatch(isPlayingSong(true));
           const rememberStartingPlaylist = savedPlaylist;
           if (rememberStartingPlaylist !== playlist) {
             dispatch(resetPlaylist);
