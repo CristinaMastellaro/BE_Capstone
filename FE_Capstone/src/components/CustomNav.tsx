@@ -24,10 +24,13 @@ const CustomNavbar = () => {
           <BiHome className="my-icons me-2 fs-4" />
           <span className="d-none d-lg-block">Home</span>
         </Link>
-        <div className="mt-2 p-1 options">
+        <Link
+          to="/library"
+          className="mt-2 p-1 options text-white text-decoration-none"
+        >
           <BiGrid className="my-icons me-2 fs-4" />
           <span className="d-none d-lg-block">Library</span>
-        </div>
+        </Link>
         <div className="mt-2 p-1 options">
           <BiBroadcast className="my-icons me-2 fs-4" />
           <span className="d-none d-lg-block">Notifications</span>

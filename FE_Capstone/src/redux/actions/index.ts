@@ -13,6 +13,8 @@ export const setLoginUsername = (username: string) => {
 
 // For mood playlist
 export const ALL_SONGS_MOOD = "ALL_SONGS_MOOD";
+export const ALL_MOODS_NAME = "ALL_MOODS_NAME";
+export const ADD_SINGLE_MOOD = "ADD_SINGLE_MOOD";
 
 export const findSongs = (mood: string) => {
   return async (dispatch: AppDispatchFunction) => {
@@ -86,6 +88,20 @@ export const findSongs = (mood: string) => {
       type: ALL_SONGS_MOOD,
       payload: [mood, AllFoundSongs],
     });
+  };
+};
+
+export const saveAllMoodsNames = (allMoodsName: string[]) => {
+  return {
+    type: ALL_MOODS_NAME,
+    payload: allMoodsName,
+  };
+};
+
+export const addSingleMood = (singleMood: string) => {
+  return {
+    type: ADD_SINGLE_MOOD,
+    payload: singleMood,
   };
 };
 
