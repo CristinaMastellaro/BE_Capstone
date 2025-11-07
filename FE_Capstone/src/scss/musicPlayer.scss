@@ -1,0 +1,76 @@
+.music-player {
+    position: fixed;
+    bottom: 0.5em;
+    left: 1em;
+    right: 1em;
+    width: 90%;
+    background-color: rgb(56, 56, 56);
+    color: white;
+    border-radius: 20px;
+    // background-color: #2B2D42
+}
+
+.song-info-player {
+  width: 60%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  width: 100%;
+  overflow: hidden;
+  opacity: 100% !important;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: grey;
+  height: 0.2rem;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 15px;
+  background: grey;
+  border-radius: 16px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -4px;
+  background-color: white;
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 50%;
+  box-shadow: -407px 0 0 400px white;
+}
+
+.cont-player-sm {
+  position: fixed;
+  bottom: 0.5em;
+  left: 0.5em;
+  right: 0.5em;
+  background-color: rgb(35, 35, 35);
+  z-index: 2;
+  width: 90%;
+}
+
+.selected {
+  color: rgb(241, 156, 193);
+}
+
+.icon:hover {
+  color: rgb(122, 179, 245);
+  cursor: pointer;
+}
+
+.img-player-music {
+    width: 3.5em;
+    height: 3.5em;
+    padding: 0.3em;
+}

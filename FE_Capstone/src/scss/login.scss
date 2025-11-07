@@ -1,0 +1,52 @@
+.container {
+  min-height: 100vh;
+}
+
+// #080705
+// #2B2D42
+// #353531
+.myForm {
+  // border: 1px solid black;
+  // background-color: #2B2D42;
+  background-color: #080705;
+  border-radius: 20px;
+  padding: 2em 3em 1em 3em;
+  -webkit-box-shadow: 0px 0px 5px 3px rgba(126,126,126,0.81); 
+  box-shadow: 0px 0px 5px 3px rgba(126, 126, 126, 0.159) !important; 
+}
+
+.registrationForm {
+  padding: 2em 6em;
+  max-width: 90%;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 25px;
+  aspect-ratio: 0.95;
+  --c: no-repeat linear-gradient(#f9f8f8de 0 0);
+  background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
+  animation: l7 1s infinite linear alternate;
+}
+@keyframes l7 {
+  0% {
+    background-size: 10% 50%, 10% 50%, 10% 50%;
+  }
+  20% {
+    background-size: 10% 20%, 10% 50%, 10% 50%;
+  }
+  40% {
+    background-size: 10% 100%, 10% 20%, 10% 50%;
+  }
+  60% {
+    background-size: 10% 50%, 10% 100%, 10% 20%;
+  }
+  80% {
+    background-size: 10% 50%, 10% 50%, 10% 100%;
+  }
+  100% {
+    background-size: 10% 50%, 10% 50%, 10% 50%;
+  }
+}

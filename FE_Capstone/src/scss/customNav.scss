@@ -1,0 +1,14 @@
+.my-icons {
+    color: rgb(122, 179, 245)
+}
+
+.options {
+    display: flex;
+    padding: 0.5em 0.5em !important;
+}
+
+.options:hover {
+    background-color: rgba(241, 156, 193, 0.318);
+    border-radius: 10px;
+    cursor: pointer;
+}
