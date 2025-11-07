@@ -76,7 +76,7 @@ const Homepage = () => {
           >
             <CustomNavbar />
           </Col>
-          <Col xs={12} lg={9} xl={10}>
+          <Col xs={12} lg={9} xl={10} className="px-0">
             <section
               className="pt-5 vh-100 text-center d-flex flex-column align-items-center align-self-end"
               // style={{ height: "50vh" }}

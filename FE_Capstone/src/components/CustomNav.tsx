@@ -1,7 +1,6 @@
 import { BiBroadcast, BiGrid, BiHome } from "react-icons/bi";
 import "../scss/customNav.scss";
 import { Link } from "react-router-dom";
-import { Col } from "react-bootstrap";
 
 const CustomNavbar = () => {
   return (

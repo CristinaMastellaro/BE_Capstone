@@ -49,12 +49,13 @@ const Playlist = () => {
 
   return (
     <>
-      <Container fluid className="p-0 playlist">
-        <Row className="w-100">
+      <Container fluid className="playlist">
+        <Row>
           <Col
-            className="m-0 px-0 d-none d-lg-block p-0 bg-black"
+            // className="m-0 px-0 d-none d-lg-block p-0 bg-black"
             lg={3}
             xl={2}
+            className="d-none d-lg-block p-0 bg-black vh-100 px-3 pt-4"
           >
             <CustomNavbar />
           </Col>
