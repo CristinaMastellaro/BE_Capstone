@@ -34,6 +34,10 @@ public class SongService {
         return sRepo.findById(id).orElseThrow(() -> new NotFoundException(UUID.fromString(id)));
     }
 
+    public boolean existsSongById(String id) {
+        return sRepo.existsById(id);
+    }
+
 
 //    public List<Song> saveAllSongs(List<Song>) {
 //

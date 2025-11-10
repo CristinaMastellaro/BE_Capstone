@@ -1,33 +1,29 @@
 package cristina.mastellaro.BE_Capstone.controllers;
 
-import cristina.mastellaro.BE_Capstone.entities.Song;
+import cristina.mastellaro.BE_Capstone.entities.Playlist;
+import cristina.mastellaro.BE_Capstone.entities.User;
 import cristina.mastellaro.BE_Capstone.exceptions.PayloadValidationException;
-import cristina.mastellaro.BE_Capstone.payloads.SongDTO;
-import cristina.mastellaro.BE_Capstone.services.SongService;
+import cristina.mastellaro.BE_Capstone.payloads.PlaylistDTO;
+import cristina.mastellaro.BE_Capstone.services.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/songs")
-public class SongController {
+@RequestMapping("/playlists")
+public class PlaylistController {
     @Autowired
-    private SongService sServ;
+    private PlaylistService pServ;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-//    public Song saveSong() {
-    public Song saveSong(@RequestBody @Validated SongDTO newSong, BindingResult validation) {
+    public Playlist savePlaylist(@AuthenticationPrincipal User user, @RequestBody @Validated PlaylistDTO newPlaylist, BindingResult validation) {
         if (validation.hasErrors())
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(fL -> fL.getDefaultMessage()).toList());
-        return sServ.saveSong(newSong);
-    }
-
-    @GetMapping("/{idSong}")
-    public Song findSongById(@PathVariable String idSong) {
-        return sServ.findSongById(idSong);
+        return pServ.savePlaylist(user, newPlaylist);
     }
 
 

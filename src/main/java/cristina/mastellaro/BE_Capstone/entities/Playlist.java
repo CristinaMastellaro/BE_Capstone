@@ -29,8 +29,17 @@ public class Playlist {
             inverseJoinColumns = @JoinColumn(name = "song_id"))
     private List<Song> songs;
 
-    public Playlist(String name, List<Song> songs) {
+    @ManyToOne
+    private User user;
+
+    public Playlist(String name, User user) {
         this.name = name;
+        this.user = user;
+    }
+
+    public Playlist(String name, User user, List<Song> songs) {
+        this.name = name;
+        this.user = user;
         this.songs = songs;
     }
 }
