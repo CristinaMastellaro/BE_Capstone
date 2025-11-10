@@ -41,8 +41,8 @@ const Homepage = () => {
   };
 
   const getMoods = () => {
-    // fetch("http://localhost:8888/moods", {
-    fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/moods", {
+    fetch("http://localhost:8888/moods", {
+      // fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/moods", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -69,7 +69,7 @@ const Homepage = () => {
 
   useEffect(() => {
     getMoods();
-    dispatch(setFavFromDb);
+    // dispatch(setFavFromDb);
   }, []);
 
   useEffect(() => {

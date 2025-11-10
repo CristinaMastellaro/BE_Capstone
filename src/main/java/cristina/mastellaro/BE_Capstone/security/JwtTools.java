@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Component
 public class JwtTools {
-    @Value("${JWT.SECRET}")
+    @Value("${JWT_SECRET}")
     private String secret;
 
     public String createToken(User user) {

@@ -27,28 +27,39 @@ public class Song {
     @Column(nullable = false)
     private String preview;
     private String cover;
+    @Column(nullable = false)
+    private String artist;
 
     @OneToMany(mappedBy = "song")
     @JsonIgnore
     private List<MoodSong> moods = new ArrayList<>();
-    @ManyToMany
-    @JoinTable(name = "song_artist",
-            joinColumns = @JoinColumn(name = "song_id"),
-            inverseJoinColumns = @JoinColumn(name = "artist_id"))
-    private List<Artist> artists = new ArrayList<>();
-    @ManyToOne
-    private Album album;
+//    @ManyToMany
+//    @JoinTable(name = "song_artist",
+//            joinColumns = @JoinColumn(name = "song_id"),
+//            inverseJoinColumns = @JoinColumn(name = "artist_id"))
+//    private List<Artist> artists = new ArrayList<>();
+//    @ManyToOne
+//    private Album album;
 //    @OneToMany(mappedBy = "")
 //@JsonIgnore
 //    private List<Playlist> playlists;
 
-    public Song(String id, String title, int duration, String preview, String cover, Album album
+    public Song(String id, String title, String artist, String preview, String cover) {
+        this.id = id;
+        this.title = title;
+        this.artist = artist;
+        this.preview = preview;
+        this.cover = cover;
+    }
+
+    public Song(String id, String title, String artist, int duration, String preview, String cover
     ) {
         this.id = id;
         this.title = title;
+        this.artist = artist;
         this.duration = duration;
         this.preview = preview;
         this.cover = cover;
-        this.album = album;
+//        this.album = album;
     }
 }
