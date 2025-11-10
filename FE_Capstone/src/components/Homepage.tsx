@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import MoodType from "../types/MoodType";
-import { addSingleMood, findSongs, saveAllMoodsNames } from "../redux/actions";
+import {
+  addSingleMood,
+  findSongs,
+  saveAllMoodsNames,
+  setFavFromDb,
+} from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 
@@ -36,7 +41,8 @@ const Homepage = () => {
   };
 
   const getMoods = () => {
-    fetch("http://localhost:8888/moods", {
+    // fetch("http://localhost:8888/moods", {
+    fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/moods", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -63,6 +69,7 @@ const Homepage = () => {
 
   useEffect(() => {
     getMoods();
+    dispatch(setFavFromDb);
   }, []);
 
   useEffect(() => {

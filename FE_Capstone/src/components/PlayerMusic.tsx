@@ -79,11 +79,6 @@ const PlayerMusic = () => {
   let rAF: number;
   const whilePlaying = () => {
     setValueTimeMusic(Math.floor(audioRef.current!.currentTime));
-    // setStyleRange(true)
-    // elementsPlayer.style.setProperty(
-    //   "--seek-before-width",
-    //   `${(timeMusic.value / timeMusic.max) * 100}%`
-    // );
     rAF = requestAnimationFrame(whilePlaying);
   };
 
@@ -124,7 +119,7 @@ const PlayerMusic = () => {
     >
       {/* Info songs */}
       {currentSong ? (
-        <Row className=" p-2 justify-content-between justify-content-lg-start align-items-center flex-nowrap w-100">
+        <Row className="p-2 justify-content-between justify-content-lg-start align-items-center flex-nowrap w-100">
           <Col className="d-flex" xs={8} lg={5}>
             <img
               src={currentSong.cover}

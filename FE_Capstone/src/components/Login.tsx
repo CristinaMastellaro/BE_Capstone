@@ -20,7 +20,8 @@ const Login = () => {
   const login = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    fetch("http://localhost:8888/auth/login", {
+    // fetch("http://localhost:8888/auth/login", {
+    fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

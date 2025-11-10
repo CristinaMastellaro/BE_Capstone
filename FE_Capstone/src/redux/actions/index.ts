@@ -154,3 +154,29 @@ export const isShufflingSongs = (isShuffle: boolean) => {
     payload: isShuffle,
   };
 };
+
+// For favourites
+export const ADD_NEW_FAVOURITE = "ADD_NEW_FAVOURITE";
+export const DELETE_FAVOURITE = "DELETE_FAVOURITE";
+export const SET_FAVOURITES_FROM_DB = "SET_FAVOURITES_FROM_DB";
+
+export const addNewFavourite = (newFav: ShowSongType) => {
+  return {
+    type: ADD_NEW_FAVOURITE,
+    payload: newFav,
+  };
+};
+
+export const deleteFavourite = (favToDel: ShowSongType) => {
+  return {
+    type: DELETE_FAVOURITE,
+    payload: favToDel,
+  };
+};
+
+export const setFavFromDb = (favourites: ShowSongType[]) => {
+  return {
+    type: SET_FAVOURITES_FROM_DB,
+    payload: favourites,
+  };
+};

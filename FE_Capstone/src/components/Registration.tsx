@@ -22,19 +22,23 @@ const Registration = () => {
     setLoading(true);
     setErrors([]);
 
-    fetch("http://localhost:8888/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: name,
-        surname: surname,
-        email: email,
-        username: username,
-        password: password,
-      }),
-    })
+    // fetch("http://localhost:8888/auth/register", {
+    fetch(
+      "https://wispy-sara-cristina-private-75ea3df9.koyeb.app/auth/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          surname: surname,
+          email: email,
+          username: username,
+          password: password,
+        }),
+      }
+    )
       .then((res) => {
         if (res.ok) {
           setLoading(false);

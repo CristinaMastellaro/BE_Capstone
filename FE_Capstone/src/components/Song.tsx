@@ -1,8 +1,10 @@
-import { BiDotsVerticalRounded } from "react-icons/bi";
+import { BiDotsVerticalRounded, BiHeart, BiSolidHeart } from "react-icons/bi";
 import "../scss/song.scss";
 import ShowSongType from "../types/ShowSongType";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import {
+  addNewFavourite,
+  deleteFavourite,
   resetPlaylist,
   saveCurrentPlaylist,
   saveCurrentSong,
@@ -15,6 +17,9 @@ interface SongProps {
 
 const Song = ({ song, playlist }: SongProps) => {
   const dispatch = useAppDispatch();
+  const isFavourite = useAppSelector((state) =>
+    (state.allSongs.playlists.favourite as ShowSongType[]).includes(song)
+  );
 
   const savedPlaylist = useAppSelector((state) => state.player.currentPlaylist);
 
@@ -43,6 +48,17 @@ const Song = ({ song, playlist }: SongProps) => {
         <p className="mb-0">{song.author}</p>
       </div>
       <div className="dots-menu fs-4 me-4">
+        {isFavourite ? (
+          <BiSolidHeart
+            className="me-2"
+            onClick={() => dispatch(addNewFavourite(song))}
+          />
+        ) : (
+          <BiHeart
+            className="me-2"
+            onClick={() => dispatch(deleteFavourite(song))}
+          />
+        )}
         <BiDotsVerticalRounded />
       </div>
     </div>

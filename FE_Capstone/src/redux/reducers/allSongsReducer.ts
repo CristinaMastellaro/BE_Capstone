@@ -1,8 +1,15 @@
 import ActionType from "../../types/ActionType";
 import ShowSongType from "../../types/ShowSongType";
-import { ADD_SINGLE_MOOD, ALL_MOODS_NAME, ALL_SONGS_MOOD } from "../actions";
+import {
+  ADD_NEW_FAVOURITE,
+  ADD_SINGLE_MOOD,
+  ALL_MOODS_NAME,
+  ALL_SONGS_MOOD,
+  DELETE_FAVOURITE,
+  SET_FAVOURITES_FROM_DB,
+} from "../actions";
 
-type myMap = {
+export type myMap = {
   [key: string]: ShowSongType[];
 };
 
@@ -22,18 +29,25 @@ const initialState: AllSongsState = {
 
 const allSongsReducer = (
   state = initialState,
-  action: ActionType<[string, ShowSongType[]] | string[] | string>
+  action: ActionType<
+    [string, ShowSongType[]] | string[] | string | ShowSongType | ShowSongType[]
+  >
 ) => {
   switch (action.type) {
-    case ALL_SONGS_MOOD:
+    case ALL_SONGS_MOOD: {
+      const [moodNameRetrieved, songs] = action.payload as [
+        string,
+        ShowSongType[]
+      ];
       return {
         ...state,
-        moodName: action.payload[0],
+        moodName: moodNameRetrieved,
         moods: {
           ...state.moods,
-          [action.payload[0]]: action.payload[1],
+          [moodNameRetrieved]: songs,
         },
       };
+    }
     case ALL_MOODS_NAME:
       return {
         ...state,
@@ -43,6 +57,34 @@ const allSongsReducer = (
       return {
         ...state,
         allMoodsName: state.allMoodsName.concat(action.payload as string),
+      };
+    case ADD_NEW_FAVOURITE:
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          favourite: state.playlists.favourite.concat(
+            action.payload as ShowSongType
+          ),
+        },
+      };
+    case DELETE_FAVOURITE:
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          favourite: state.playlists.favourite.filter(
+            (fav) => fav !== action.payload
+          ),
+        },
+      };
+    case SET_FAVOURITES_FROM_DB:
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          favourite: action.payload,
+        },
       };
     default:
       console.log("You're in the default state");

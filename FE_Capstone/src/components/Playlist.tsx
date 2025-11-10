@@ -5,16 +5,17 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import ShowSongType from "../types/ShowSongType";
+import { myMap } from "../redux/reducers/allSongsReducer";
 
 const Playlist = () => {
   const { specification } = useParams();
   const allMoods = useAppSelector((state) => state.allSongs.allMoodsName);
   const songs = useAppSelector((state: IRootState) => {
     if (specification !== undefined) {
-      if (allMoods.includes(specification)) {
+      if ((allMoods as string[]).includes(specification)) {
         return state.allSongs.moods[specification];
       } else {
-        return state.allSongs.playlists[specification];
+        return (state.allSongs.playlists as myMap)[specification];
       }
     }
   });
@@ -78,7 +79,7 @@ const Playlist = () => {
                     ? "It's time to save your favourite songs or to look for new ones!"
                     : `Your feelings are so deep, but our system isn't smart enough
                   yet to understand which songs are fitted for "${specification}
-                  ". Want to give it another try with a more generic word?}`}
+                  ". Want to give it another try with a more generic word?`}
                 </p>
               )}
               {songs &&
