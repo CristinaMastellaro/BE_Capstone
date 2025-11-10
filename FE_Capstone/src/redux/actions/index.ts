@@ -161,22 +161,70 @@ export const DELETE_FAVOURITE = "DELETE_FAVOURITE";
 export const SET_FAVOURITES_FROM_DB = "SET_FAVOURITES_FROM_DB";
 
 export const addNewFavourite = (newFav: ShowSongType) => {
-  return {
-    type: ADD_NEW_FAVOURITE,
-    payload: newFav,
+  return async (dispatch: AppDispatchFunction) => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch("http://localhost:8888/playlists/favourites", {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newFav),
+      });
+      if (!res.ok)
+        throw new Error("There was an issue while connecting to the db");
+    } catch (err) {
+      console.log("Error while saving favourite song!", err);
+    }
+
+    dispatch({ type: ADD_NEW_FAVOURITE, payload: newFav });
   };
 };
 
 export const deleteFavourite = (favToDel: ShowSongType) => {
-  return {
-    type: DELETE_FAVOURITE,
-    payload: favToDel,
+  return async (dispatch: AppDispatchFunction) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `http://localhost:8888/playlists/favourites/${favToDel.id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (!response.ok) throw new Error("Issue while deleting");
+    } catch (err) {
+      console.log("Error!", err);
+    }
+    dispatch({ type: DELETE_FAVOURITE, payload: favToDel });
   };
 };
 
-export const setFavFromDb = (favourites: ShowSongType[]) => {
-  return {
-    type: SET_FAVOURITES_FROM_DB,
-    payload: favourites,
+export const setFavFromDb = () => {
+  return async (dispatch: AppDispatchFunction) => {
+    const favourites: ShowSongType[] = [];
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        "http://localhost:8888/playlists/favourites",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (!response.ok) throw new Error("Response status: " + response.status);
+
+      const data = await response.json();
+
+      data.songs.forEach((song: ShowSongType) => favourites.push(song));
+    } catch (err) {
+      console.log("Error! ", err);
+    }
+
+    dispatch({
+      type: SET_FAVOURITES_FROM_DB,
+      payload: favourites,
+    });
   };
 };

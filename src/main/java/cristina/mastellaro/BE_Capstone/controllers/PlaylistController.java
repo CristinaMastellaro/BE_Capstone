@@ -27,6 +27,11 @@ public class PlaylistController {
         return pServ.savePlaylist(user, newPlaylist);
     }
 
+    @GetMapping("/{namePlaylist}")
+    public Playlist getPlaylistByName(@AuthenticationPrincipal User user, @PathVariable String namePlaylist) {
+        return pServ.getPlaylistByName(user, namePlaylist);
+    }
+
     @PatchMapping("/{namePlaylist}")
     public Playlist addSongToPlaylist(@AuthenticationPrincipal User user, @RequestBody @Validated SongDTO newSong, @PathVariable String namePlaylist, BindingResult validation) {
         if (validation.hasErrors())

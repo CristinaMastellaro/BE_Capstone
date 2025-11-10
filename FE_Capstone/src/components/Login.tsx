@@ -5,7 +5,7 @@ import { useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
 import Loader from "./Loader";
 import { useAppDispatch } from "../redux/store";
-import { setLoginUsername } from "../redux/actions";
+import { setFavFromDb, setLoginUsername } from "../redux/actions";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -42,10 +42,10 @@ const Login = () => {
         }
       })
       .then((data) => {
-        console.log(data);
         localStorage.setItem("token", data.token);
         localStorage.setItem("tokenLastFm", data.tokenLastFm);
         dispatch(setLoginUsername(data.username));
+        dispatch(setFavFromDb());
         setIsLoading(false);
         navigate("/homepage");
       })

@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import MoodType from "../types/MoodType";
-import {
-  addSingleMood,
-  findSongs,
-  saveAllMoodsNames,
-  setFavFromDb,
-} from "../redux/actions";
+import { addSingleMood, findSongs, saveAllMoodsNames } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 
@@ -69,7 +64,6 @@ const Homepage = () => {
 
   useEffect(() => {
     getMoods();
-    // dispatch(setFavFromDb);
   }, []);
 
   useEffect(() => {

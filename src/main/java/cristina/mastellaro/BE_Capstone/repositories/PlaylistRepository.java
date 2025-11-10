@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -20,5 +19,5 @@ public interface PlaylistRepository extends JpaRepository<Playlist, UUID> {
     List<String> findTitlesByUser(@Param("user") User user);
 
     @Query("SELECT p FROM Playlist p WHERE p.user = :user AND p.name = :name")
-    Optional<Playlist> findByNameAndUser(@Param("user") User user, @Param("name") String name);
+    Playlist findByNameAndUser(@Param("user") User user, @Param("name") String name);
 }

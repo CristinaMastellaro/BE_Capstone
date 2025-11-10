@@ -9,12 +9,14 @@ import cristina.mastellaro.BE_Capstone.exceptions.SongAlreadyInPlaylistException
 import cristina.mastellaro.BE_Capstone.payloads.PlaylistDTO;
 import cristina.mastellaro.BE_Capstone.payloads.SongDTO;
 import cristina.mastellaro.BE_Capstone.repositories.PlaylistRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -52,10 +54,25 @@ public class PlaylistService {
         return playlist;
     }
 
+    @Transactional
     public Playlist getPlaylistByName(User authenticatedUser, String playlist) {
-        return pRepo.findByNameAndUser(authenticatedUser, playlist).orElseThrow(() -> new NotFoundException("You don't have any playlist by the name of " + playlist));
+        Playlist found = pRepo.findByNameAndUser(authenticatedUser, playlist);
+        if (found == null) {
+            if (playlist.equals("favourites")) {
+                found = new Playlist("favourites", authenticatedUser);
+                pRepo.save(found);
+                return found;
+            } else {
+                throw new NotFoundException("You don't have any playlist by the name of " + playlist);
+            }
+        } else {
+            return found;
+        }
     }
 
+    ;
+
+    @Transactional
     public Playlist addSongToPlaylist(User authenticatedUser, SongDTO newSong, String playlistName) {
         Song song;
         if (sServ.existsSongById(newSong.id())) song = sServ.findSongById(newSong.id());
@@ -89,7 +106,7 @@ public class PlaylistService {
 
         List<Song> songsOfPlaylist = playlist.getSongs();
 
-        playlist.setSongs(songsOfPlaylist.stream().filter(song -> !song.getId().equals(idSong)).toList());
+        playlist.setSongs(songsOfPlaylist.stream().filter(song -> !song.getId().equals(idSong)).collect(Collectors.toList()));
 
         pRepo.save(playlist);
 

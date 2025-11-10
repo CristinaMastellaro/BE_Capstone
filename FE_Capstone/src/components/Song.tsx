@@ -51,12 +51,12 @@ const Song = ({ song, playlist }: SongProps) => {
         {isFavourite ? (
           <BiSolidHeart
             className="me-2"
-            onClick={() => dispatch(addNewFavourite(song))}
+            onClick={() => dispatch(deleteFavourite(song))}
           />
         ) : (
           <BiHeart
             className="me-2"
-            onClick={() => dispatch(deleteFavourite(song))}
+            onClick={() => dispatch(addNewFavourite(song))}
           />
         )}
         <BiDotsVerticalRounded />

@@ -19,15 +19,16 @@ public class Song {
 
     @Id
     @Setter(AccessLevel.NONE)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String id;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String title;
     private int duration;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1500)
     private String preview;
+    @Column(length = 1500)
     private String cover;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String artist;
 
     @OneToMany(mappedBy = "song")
