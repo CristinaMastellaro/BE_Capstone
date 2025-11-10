@@ -4,6 +4,7 @@ import cristina.mastellaro.BE_Capstone.entities.Playlist;
 import cristina.mastellaro.BE_Capstone.entities.Song;
 import cristina.mastellaro.BE_Capstone.entities.User;
 import cristina.mastellaro.BE_Capstone.exceptions.AlreadyUsedException;
+import cristina.mastellaro.BE_Capstone.exceptions.NotFoundException;
 import cristina.mastellaro.BE_Capstone.exceptions.SongAlreadyInPlaylistException;
 import cristina.mastellaro.BE_Capstone.payloads.PlaylistDTO;
 import cristina.mastellaro.BE_Capstone.payloads.SongDTO;
@@ -52,7 +53,7 @@ public class PlaylistService {
     }
 
     public Playlist getPlaylistByName(User authenticatedUser, String playlist) {
-        return pRepo.findByNameAndUser(authenticatedUser, playlist);
+        return pRepo.findByNameAndUser(authenticatedUser, playlist).orElseThrow(() -> new NotFoundException("You don't have any playlist by the name of " + playlist));
     }
 
     public Playlist addSongToPlaylist(User authenticatedUser, SongDTO newSong, String playlistName) {
@@ -62,7 +63,7 @@ public class PlaylistService {
 
         Playlist playlist;
         if (pRepo.findTitlesByUser(authenticatedUser).contains(playlistName))
-            playlist = pRepo.findByNameAndUser(authenticatedUser, playlistName);
+            playlist = getPlaylistByName(authenticatedUser, playlistName);
         else {
             playlist = new Playlist(playlistName, authenticatedUser);
             pRepo.save(playlist);
@@ -81,6 +82,17 @@ public class PlaylistService {
         log.info("Song " + song.getTitle() + " successfully saved in the playlist " + playlistName);
 
         return playlist;
+    }
 
+    public Playlist deleteSongFromPlaylist(User user, String idSong, String namePlaylist) {
+        Playlist playlist = getPlaylistByName(user, namePlaylist);
+
+        List<Song> songsOfPlaylist = playlist.getSongs();
+
+        playlist.setSongs(songsOfPlaylist.stream().filter(song -> !song.getId().equals(idSong)).toList());
+
+        pRepo.save(playlist);
+
+        return playlist;
     }
 }

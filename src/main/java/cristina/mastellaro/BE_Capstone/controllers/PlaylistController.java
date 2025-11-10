@@ -4,6 +4,7 @@ import cristina.mastellaro.BE_Capstone.entities.Playlist;
 import cristina.mastellaro.BE_Capstone.entities.User;
 import cristina.mastellaro.BE_Capstone.exceptions.PayloadValidationException;
 import cristina.mastellaro.BE_Capstone.payloads.PlaylistDTO;
+import cristina.mastellaro.BE_Capstone.payloads.SongDTO;
 import cristina.mastellaro.BE_Capstone.services.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,16 @@ public class PlaylistController {
         return pServ.savePlaylist(user, newPlaylist);
     }
 
+    @PatchMapping("/{namePlaylist}")
+    public Playlist addSongToPlaylist(@AuthenticationPrincipal User user, @RequestBody @Validated SongDTO newSong, @PathVariable String namePlaylist, BindingResult validation) {
+        if (validation.hasErrors())
+            throw new PayloadValidationException(validation.getFieldErrors().stream().map(fL -> fL.getDefaultMessage()).toList());
+        return pServ.addSongToPlaylist(user, newSong, namePlaylist);
+    }
+
+    @DeleteMapping("/{namePlaylist}/{idSong}")
+    public Playlist deleteSongFromPlaylist(@AuthenticationPrincipal User user, @PathVariable String namePlaylist, @PathVariable String idSong) {
+        return pServ.deleteSongFromPlaylist(user, idSong, namePlaylist);
+    }
 
 }
