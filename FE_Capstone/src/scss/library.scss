@@ -1,0 +1,15 @@
+.favourite-songs-picture {
+    height: 7em;
+    width: 7em;
+    background-color: rgb(122, 179, 245);
+    // background-color: rgb(241, 156, 193);
+    margin: auto;
+}
+
+.favourite-songs-picture:hover {
+    cursor: pointer;
+}
+
+.favourite-songs-picture svg {
+    // color: rgb(241, 156, 193) !important;
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import MoodType from "../types/MoodType";
-import { findSongs } from "../redux/actions";
+import { addSingleMood, findSongs, saveAllMoodsNames } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 
@@ -24,9 +24,9 @@ const Homepage = () => {
 
   const findMoodSongs = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("mood", mood);
-    // if (mood === "I don't know") {setMood("confused");}
-    // console.log("mood", mood);
+    if (!(options.includes(mood) || mood === "confused")) {
+      dispatch(addSingleMood(mood));
+    }
     if (savedMoodInStore !== mood) {
       if (songs === undefined) {
         dispatch(findSongs(mood));
@@ -52,6 +52,7 @@ const Homepage = () => {
         const moods: string[] = [];
         data.forEach((singleMood) => moods.push(singleMood.name));
         setOptions(moods);
+        dispatch(saveAllMoodsNames(moods));
       })
       .catch((err) => console.log(err));
   };

@@ -4,12 +4,18 @@ import { IRootState, useAppSelector } from "../redux/store";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
+import ShowSongType from "../types/ShowSongType";
 
 const Playlist = () => {
   const { specification } = useParams();
+  const allMoods = useAppSelector((state) => state.allSongs.allMoodsName);
   const songs = useAppSelector((state: IRootState) => {
     if (specification !== undefined) {
-      return state.allSongs.moods[specification];
+      if (allMoods.includes(specification)) {
+        return state.allSongs.moods[specification];
+      } else {
+        return state.allSongs.playlists[specification];
+      }
     }
   });
 
@@ -32,6 +38,7 @@ const Playlist = () => {
     }
   }, [songs]);
 
+  // TODO: non penso che questa cosa si fermi mai
   useEffect(() => {
     if (isLoading) {
       let change = 1;
@@ -65,9 +72,22 @@ const Playlist = () => {
               </div>
             </section>
             <section className="pb-5">
+              {songs && songs.length < 5 && (
+                <p className="w-75 mx-auto mt-3">
+                  {specification === "favourite"
+                    ? "It's time to save your favourite songs or to look for new ones!"
+                    : `Your feelings are so deep, but our system isn't smart enough
+                  yet to understand which songs are fitted for "${specification}
+                  ". Want to give it another try with a more generic word?}`}
+                </p>
+              )}
               {songs &&
-                songs.map((song) => (
-                  <Song key={song.id} song={song} playlist={songs} />
+                (songs as ShowSongType[]).map((song) => (
+                  <Song
+                    key={song.id}
+                    song={song}
+                    playlist={songs as ShowSongType[]}
+                  />
                 ))}
             </section>
           </div>
