@@ -1,27 +1,27 @@
 import "../scss/playlist.scss";
 import Song from "./Song";
-import { IRootState, useAppSelector } from "../redux/store";
+import { IRootState, useAppDispatch, useAppSelector } from "../redux/store";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import ShowSongType from "../types/ShowSongType";
 import CustomModal from "./CustomModal";
+import { BiPlay, BiShuffle } from "react-icons/bi";
+import {
+  isShufflingSongs,
+  resetPlaylist,
+  saveCurrentPlaylist,
+  saveCurrentSong,
+} from "../redux/actions";
 
 const Playlist = () => {
   const { specification } = useParams();
-  console.log("specification", specification);
   const allMoods = useAppSelector((state) => state.allSongs.allMoodsName);
   const songs = useAppSelector((state: IRootState) => {
     if (specification !== undefined) {
       if ((allMoods as string[]).includes(specification)) {
         return state.allSongs.moods[specification];
       } else {
-        console.log(
-          "(state.allSongs.playlists as Record<string, ShowSongTy",
-          (state.allSongs.playlists as Record<string, ShowSongType[]>)[
-            specification
-          ]
-        );
         return (state.allSongs.playlists as Record<string, ShowSongType[]>)[
           specification
         ];
@@ -29,7 +29,12 @@ const Playlist = () => {
     }
   });
 
+  // For playing songs
+  const savedPlaylist = useAppSelector((state) => state.player.currentPlaylist);
+  const isShuffle = useAppSelector((state) => state.player.isShuffled);
+
   const showModal = useAppSelector((state) => state.options.showModal);
+  const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
   const phrasesForLoading = [
@@ -83,17 +88,47 @@ const Playlist = () => {
                       specification.substring(1)
                     : "Playlist"}
                 </h1>
+                {songs && songs.length !== 0 && (
+                  <div className="player-playlist d-flex justify-content-end gap-4 align-items-center mb-4">
+                    <BiShuffle
+                      className={
+                        isShuffle
+                          ? "icons-for-playing my-pink fs-3"
+                          : "icons-for-playing fs-3"
+                      }
+                      onClick={() => {
+                        dispatch(isShufflingSongs(!isShuffle));
+                      }}
+                    />
+                    <div className="me-5 my-bg-pink rounded-circle d-inline-block d-flex justify-content-center align-items-center play-button">
+                      <BiPlay
+                        className="ms-2 icons-for-playing"
+                        onClick={() => {
+                          dispatch(saveCurrentSong(songs[0]));
+                          if (savedPlaylist !== songs) {
+                            dispatch(resetPlaylist());
+                            songs.forEach((song) =>
+                              dispatch(saveCurrentPlaylist(song))
+                            );
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </section>
-            <section className="pb-5">
+            <section className="pt-4 pb-5">
               {songs && songs.length === 0 && (
-                <p className="w-75 mx-auto mt-3">
-                  {specification === "favourite"
-                    ? "It's time to save your favourite songs or to look for new ones!"
-                    : `Your feelings are so deep, but our system isn't smart enough
+                <>
+                  <p className="w-75 mx-auto mt-3">
+                    {specification === "favourite"
+                      ? "It's time to save your favourite songs or to look for new ones!"
+                      : `Your feelings are so deep, but our system isn't smart enough
                   yet to understand which songs are fitted for "${specification}
                   ". Want to give it another try with a more generic word?`}
-                </p>
+                  </p>
+                </>
               )}
               {songs &&
                 (songs as ShowSongType[]).map((song) => (

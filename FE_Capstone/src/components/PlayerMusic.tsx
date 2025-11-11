@@ -9,10 +9,14 @@ import {
   BiSkipNext,
   BiRepeat,
   BiVolumeFull,
+  BiSolidHeart,
+  BiHeart,
 } from "react-icons/bi";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import Loader from "./Loader";
 import {
+  addNewFavourite,
+  deleteFavourite,
   isPlayingSong,
   isRepeatingSong,
   isShufflingSongs,
@@ -37,6 +41,12 @@ const PlayerMusic = () => {
   );
   const isOnRepeat = useAppSelector(
     (state) => state.player.isOnRepeat as boolean
+  );
+  const isFavourite = useAppSelector((state) =>
+    (
+      (state.allSongs.playlists as Record<string, ShowSongType[]>)
+        .favourite as ShowSongType[]
+    ).includes(currentSong)
   );
 
   const showPlayer = useAppSelector(
@@ -120,7 +130,7 @@ const PlayerMusic = () => {
       {/* Info songs */}
       {currentSong ? (
         <Row className="p-2 justify-content-between justify-content-lg-start align-items-center flex-nowrap w-100">
-          <Col className="d-flex" xs={8} lg={5}>
+          <Col className="d-flex" xs={5} lg={5}>
             <img
               src={currentSong.cover}
               alt="Cover of the song"
@@ -216,12 +226,24 @@ const PlayerMusic = () => {
           </Col>
           {/* Volume */}
           <Col
+            xs={2}
             md={4}
             lg={3}
-            className="align-items-center gap-2 justify-content-end d-none d-md-flex"
+            className="align-items-center gap-2 justify-content-end d-flex pe-0"
           >
-            <BiVolumeFull className="opacity-50" />
-            <div className="d-flex">
+            {isFavourite ? (
+              <BiSolidHeart
+                className="me-4 me-lg-2 my-pink"
+                onClick={() => dispatch(deleteFavourite(currentSong))}
+              />
+            ) : (
+              <BiHeart
+                className="me-4 me-lg-2"
+                onClick={() => dispatch(addNewFavourite(currentSong))}
+              />
+            )}
+            <BiVolumeFull className="opacity-50 d-none d-md-block" />
+            <div className="d-none d-lg-flex">
               <input
                 type="range"
                 min="0"

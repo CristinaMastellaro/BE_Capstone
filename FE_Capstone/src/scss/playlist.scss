@@ -2,22 +2,21 @@
     background-image:url("https://wallpapers.com/images/hd/clouds-worship-hour-spotify-playlist-cover-q34fwvw4daewoopr.jpg");
     background-position: center;
     position: relative;
-    min-height: 70vh;
+    min-height: 60vh;
     background-color: white;
 }
 
 .change-hero {
     width: 100%;
-    min-height: 70vh;
+    min-height: 60vh;
     // background-color: 
-background: #2B2D42;
-background: linear-gradient(0deg, rgba(43, 45, 66, 1) 5%, rgba(255, 255, 255, 0.28) 65%);   
-}
-
-.change-hero h1 {
-    position: absolute;
-    bottom: 0.5em;
-    font-size: 4em;
+    background: #2B2D42;
+    background: linear-gradient(0deg, rgba(43, 45, 66, 1) 5%, rgba(255, 255, 255, 0.28) 65%);   
+    h1 {
+        position: absolute;
+        bottom: 0.5em;
+        font-size: 4em;
+    }
 }
 
 .playlist {
@@ -29,4 +28,22 @@ background: linear-gradient(0deg, rgba(43, 45, 66, 1) 5%, rgba(255, 255, 255, 0.
 .col-nav {
     min-height: 100vh !important;
     position: fixed !important;
+}
+
+.player-playlist {
+    position: absolute;
+    bottom: -3vh;
+    right: 0;
+}
+
+.play-button {
+    width: 3.7em; 
+    height: 3.7em;
+}
+
+.icons-for-playing {
+    font-size: 2.7em;
+    & :hover {
+        cursor: pointer;
+    }
 }

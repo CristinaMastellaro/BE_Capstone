@@ -80,7 +80,7 @@ const Song = ({ song, playlist }: SongProps) => {
       <div className="dots-menu fs-4 me-4">
         {isFavourite ? (
           <BiSolidHeart
-            className="me-2"
+            className="me-2 my-pink"
             onClick={() => dispatch(deleteFavourite(song))}
           />
         ) : (
