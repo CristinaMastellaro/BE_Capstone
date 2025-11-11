@@ -28,6 +28,7 @@ public class PlaylistService {
     @Autowired
     private SongService sServ;
 
+    @Transactional
     public Playlist savePlaylist(User autheticatedUser, PlaylistDTO newPlaylist) {
 
         if (pRepo.findTitlesByUser(autheticatedUser).contains(newPlaylist.name()))
@@ -111,5 +112,10 @@ public class PlaylistService {
         pRepo.save(playlist);
 
         return playlist;
+    }
+
+    @Transactional
+    public List<Playlist> findAllPlaylists(User authenticatedUser) {
+        return pRepo.findAllPlaylistsByUser(authenticatedUser);
     }
 }

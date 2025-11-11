@@ -151,7 +151,10 @@ const Registration = () => {
           <p className="small text-secondary mb-4">
             The fields with (*) are mandatory.
           </p>
-          <button type="submit" className=" align-self-center w-50 my-btn-blue">
+          <button
+            type="submit"
+            className=" align-self-center w-50 my-btn-blue rounded-pill"
+          >
             {loading ? <Loader /> : "Register"}
           </button>
           {/* {loading && <Loader />} */}

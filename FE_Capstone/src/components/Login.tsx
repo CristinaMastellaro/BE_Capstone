@@ -5,7 +5,11 @@ import { useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
 import Loader from "./Loader";
 import { useAppDispatch } from "../redux/store";
-import { setFavFromDb, setLoginUsername } from "../redux/actions";
+import {
+  findAllPlaylists,
+  setFavFromDb,
+  setLoginUsername,
+} from "../redux/actions";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -45,6 +49,7 @@ const Login = () => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("tokenLastFm", data.tokenLastFm);
         dispatch(setLoginUsername(data.username));
+        dispatch(findAllPlaylists());
         dispatch(setFavFromDb());
         setIsLoading(false);
         navigate("/homepage");
@@ -95,7 +100,10 @@ const Login = () => {
               <BiInfoCircle className="me-2" /> {error}
             </p>
           )}
-          <button type="submit" className="my-btn-blue align-self-center">
+          <button
+            type="submit"
+            className="my-btn-blue align-self-center rounded-pill"
+          >
             {isLoading ? <Loader /> : "Login"}
           </button>
           <hr className="my-4" />

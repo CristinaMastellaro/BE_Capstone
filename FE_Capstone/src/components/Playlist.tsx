@@ -5,20 +5,31 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import ShowSongType from "../types/ShowSongType";
-import { myMap } from "../redux/reducers/allSongsReducer";
+import CustomModal from "./CustomModal";
 
 const Playlist = () => {
   const { specification } = useParams();
+  console.log("specification", specification);
   const allMoods = useAppSelector((state) => state.allSongs.allMoodsName);
   const songs = useAppSelector((state: IRootState) => {
     if (specification !== undefined) {
       if ((allMoods as string[]).includes(specification)) {
         return state.allSongs.moods[specification];
       } else {
-        return (state.allSongs.playlists as myMap)[specification];
+        console.log(
+          "(state.allSongs.playlists as Record<string, ShowSongTy",
+          (state.allSongs.playlists as Record<string, ShowSongType[]>)[
+            specification
+          ]
+        );
+        return (state.allSongs.playlists as Record<string, ShowSongType[]>)[
+          specification
+        ];
       }
     }
   });
+
+  const showModal = useAppSelector((state) => state.options.showModal);
 
   const [isLoading, setIsLoading] = useState(true);
   const phrasesForLoading = [
@@ -41,16 +52,18 @@ const Playlist = () => {
 
   // TODO: non penso che questa cosa si fermi mai
   useEffect(() => {
-    if (isLoading) {
-      let change = 1;
-      setInterval(() => {
-        setPhrase(phrasesForLoading[change]);
-        if (change === phrasesForLoading.length - 1) {
-          change = 0;
-        } else change++;
-      }, 5000);
-    }
-  }, []);
+    if (!isLoading) return;
+
+    let change = 1;
+    const interval = setInterval(() => {
+      setPhrase(phrasesForLoading[change]);
+      if (change === phrasesForLoading.length - 1) {
+        change = 0;
+      } else change++;
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   return (
     <>
@@ -73,7 +86,7 @@ const Playlist = () => {
               </div>
             </section>
             <section className="pb-5">
-              {songs && songs.length < 5 && (
+              {songs && songs.length === 0 && (
                 <p className="w-75 mx-auto mt-3">
                   {specification === "favourite"
                     ? "It's time to save your favourite songs or to look for new ones!"
@@ -92,6 +105,7 @@ const Playlist = () => {
                 ))}
             </section>
           </div>
+          {showModal && <CustomModal />}
         </>
       )}
     </>

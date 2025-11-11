@@ -20,4 +20,7 @@ public interface PlaylistRepository extends JpaRepository<Playlist, UUID> {
 
     @Query("SELECT p FROM Playlist p WHERE p.user = :user AND p.name = :name")
     Playlist findByNameAndUser(@Param("user") User user, @Param("name") String name);
+
+    @Query("SELECT p FROM Playlist p WHERE  p.user = :user")
+    List<Playlist> findAllPlaylistsByUser(@Param("user") User user);
 }

@@ -29,7 +29,7 @@ public class Song {
     @Column(length = 1500)
     private String cover;
     @Column(nullable = false, length = 500)
-    private String artist;
+    private String author;
 
     @OneToMany(mappedBy = "song")
     @JsonIgnore
@@ -48,7 +48,7 @@ public class Song {
     public Song(String id, String title, String artist, String preview, String cover) {
         this.id = id;
         this.title = title;
-        this.artist = artist;
+        this.author = artist;
         this.preview = preview;
         this.cover = cover;
     }
@@ -57,7 +57,7 @@ public class Song {
     ) {
         this.id = id;
         this.title = title;
-        this.artist = artist;
+        this.author = artist;
         this.duration = duration;
         this.preview = preview;
         this.cover = cover;

@@ -112,7 +112,7 @@ const Homepage = () => {
           </div>
           <button
             type="submit"
-            className="mt-3 mt-lg-0 w-auto align-self-center my-btn-blue"
+            className="mt-3 mt-lg-0 w-auto align-self-center my-btn-blue rounded-pill"
           >
             Music time!
           </button>

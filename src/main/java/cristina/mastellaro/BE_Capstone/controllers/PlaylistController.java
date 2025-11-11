@@ -13,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/playlists")
 public class PlaylistController {
@@ -25,6 +27,11 @@ public class PlaylistController {
         if (validation.hasErrors())
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(fL -> fL.getDefaultMessage()).toList());
         return pServ.savePlaylist(user, newPlaylist);
+    }
+
+    @GetMapping
+    public List<Playlist> getAllPlaylistsNames(@AuthenticationPrincipal User user) {
+        return pServ.findAllPlaylists(user);
     }
 
     @GetMapping("/{namePlaylist}")

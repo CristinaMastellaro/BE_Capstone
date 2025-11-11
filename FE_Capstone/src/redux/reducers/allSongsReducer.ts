@@ -3,21 +3,24 @@ import ShowSongType from "../../types/ShowSongType";
 import {
   ADD_NEW_FAVOURITE,
   ADD_SINGLE_MOOD,
+  ADD_SONG_TO_PLAYLIST,
   ALL_MOODS_NAME,
+  ALL_PLAYLISTS,
   ALL_SONGS_MOOD,
+  CREATE_NEW_PLAYLIST,
   DELETE_FAVOURITE,
   SET_FAVOURITES_FROM_DB,
 } from "../actions";
 
-export type myMap = {
-  [key: string]: ShowSongType[];
-};
+// export type myMap = {
+//   [key: string]: ShowSongType[];
+// };
 
 interface AllSongsState {
   moodName: string;
   allMoodsName: string[];
-  moods: myMap;
-  playlists: myMap;
+  moods: Record<string, ShowSongType[]>;
+  playlists: Record<string, ShowSongType[]>;
 }
 
 const initialState: AllSongsState = {
@@ -30,7 +33,13 @@ const initialState: AllSongsState = {
 const allSongsReducer = (
   state = initialState,
   action: ActionType<
-    [string, ShowSongType[]] | string[] | string | ShowSongType | ShowSongType[]
+    | [string, ShowSongType[]]
+    | string[]
+    | string
+    | ShowSongType
+    | ShowSongType[]
+    | [string, ShowSongType]
+    | Record<string, ShowSongType[]>
   >
 ) => {
   switch (action.type) {
@@ -78,6 +87,38 @@ const allSongsReducer = (
           ),
         },
       };
+    case ALL_PLAYLISTS:
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          ...(action.payload as Record<string, ShowSongType[]>),
+        },
+      };
+    case CREATE_NEW_PLAYLIST:
+      console.log("I'm trying to create a new playlist");
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          [action.payload as string]: [],
+        },
+      };
+    case ADD_SONG_TO_PLAYLIST: {
+      const key = (action.payload as [string, ShowSongType])[0];
+      console.log("state.playlists", state.playlists);
+      console.log("state.playlists[key]", state.playlists[key]);
+      console.log("key", key);
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          [key]: state.playlists[key].concat(
+            (action.payload as [string, ShowSongType])[1]
+          ),
+        },
+      };
+    }
     case SET_FAVOURITES_FROM_DB:
       return {
         ...state,
