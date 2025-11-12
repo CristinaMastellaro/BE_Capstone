@@ -294,7 +294,6 @@ export const createNewPlaylist = (namePlaylist: string) => {
         body: JSON.stringify({ name: namePlaylist, songs: [] }),
       });
       if (!res.ok) throw new Error("Who knows");
-      console.log("Done saving the playlist " + namePlaylist);
     } catch (err) {
       console.log("Error!", err);
     }
@@ -438,7 +437,6 @@ export const savePlaylistNotToSavePermanently = (country: string) => {
             } else if (e instanceof Error) {
               result = e.message;
             }
-            console.log("result", result);
             if (result?.includes("Response status: 429")) {
               break;
             }
@@ -470,7 +468,6 @@ export const changeShowModal = (
   showModal: boolean,
   songToSave: ShowSongType
 ) => {
-  console.log("song to save inside index.js", songToSave);
   return {
     type: SHOW_MODAL,
     payload: [showModal, songToSave],

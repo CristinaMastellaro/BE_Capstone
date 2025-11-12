@@ -129,7 +129,6 @@ const SearchByCountry = () => {
         return res.json();
       })
       .then((data) => {
-        console.log("data", data);
         for (let i = 0; i < data.data.length; i++) {
           if (
             data.data[i].title_short
@@ -157,14 +156,7 @@ const SearchByCountry = () => {
         if (songToSave.id !== "") dispatch(saveCurrentSong(songToSave));
         else alert("We couldn't load a preview of the song, sorry");
       })
-      .catch((e: unknown) => {
-        let result;
-        if (typeof e === "string") {
-          result = e.toUpperCase(); // works, `e` narrowed to string
-        } else if (e instanceof Error) {
-          result = e.message;
-        }
-        console.log("result", result);
+      .catch(() => {
         alert("We couldn't load a preview of the song, sorry");
       });
   };

@@ -12,7 +12,6 @@ import { BiPlus } from "react-icons/bi";
 const CustomModal = () => {
   const namePlaylists = useAppSelector((state) => state.allSongs.playlists);
   const song = useAppSelector((state) => state.options.songToSave);
-  console.log("song to save", song);
   const [showForm, setShowForm] = useState(false);
   const [newPlaylistName, setNewPlaylistName] = useState("");
 

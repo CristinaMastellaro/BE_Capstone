@@ -101,7 +101,6 @@ const allSongsReducer = (
         },
       };
     case CREATE_NEW_PLAYLIST:
-      console.log("I'm trying to create a new playlist");
       return {
         ...state,
         playlists: {
@@ -111,9 +110,6 @@ const allSongsReducer = (
       };
     case ADD_SONG_TO_PLAYLIST: {
       const key = (action.payload as [string, ShowSongType])[0];
-      console.log("state.playlists", state.playlists);
-      console.log("state.playlists[key]", state.playlists[key]);
-      console.log("key", key);
       return {
         ...state,
         playlists: {
@@ -156,7 +152,6 @@ const allSongsReducer = (
         playlistNotPermanentlySaved: [],
       };
     default:
-      console.log("You're in the default state");
       return state;
   }
 };

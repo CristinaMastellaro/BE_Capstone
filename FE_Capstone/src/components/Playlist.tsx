@@ -54,13 +54,6 @@ const Playlist = () => {
   ];
 
   const [phrase, setPhrase] = useState(phrasesForLoading[0]);
-  console.log(
-    "boolean",
-    !(
-      (allMoods as string[]).includes(specification as string) ||
-      allPlaylistsNames.includes(specification as string)
-    ) && (songs as ShowSongType[]).length !== 0
-  );
   useEffect(() => {
     if (
       !(
