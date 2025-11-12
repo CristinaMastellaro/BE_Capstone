@@ -1,0 +1,83 @@
+import { Modal } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "../redux/store";
+import "../scss/customModal.scss";
+import {
+  addSongToPlaylist,
+  changeShowModal,
+  createNewPlaylist,
+} from "../redux/actions";
+import { useState } from "react";
+import { BiPlus } from "react-icons/bi";
+
+const CustomModal = () => {
+  const namePlaylists = useAppSelector((state) => state.allSongs.playlists);
+  const song = useAppSelector((state) => state.options.songToSave);
+  console.log("song to save", song);
+  const [showForm, setShowForm] = useState(false);
+  const [newPlaylistName, setNewPlaylistName] = useState("");
+
+  const dispatch = useAppDispatch();
+
+  const create = (namePlaylist: string) => {
+    dispatch(createNewPlaylist(namePlaylist));
+    alert("Created the new playlist " + namePlaylist);
+    setShowForm(false);
+  };
+
+  return (
+    <div className="modal show custom-modal">
+      <Modal.Dialog>
+        <Modal.Header
+          closeButton
+          closeVariant="white"
+          onClick={() => dispatch(changeShowModal(false, song))}
+        >
+          <Modal.Title>Choose the playlist</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <button
+            className="my-btn-blue mb-4"
+            onClick={() => {
+              setShowForm(true);
+            }}
+          >
+            New playlist
+          </button>
+          {showForm && (
+            <form onSubmit={() => create(newPlaylistName)}>
+              <legend className="small fs-7">Name of the new playlist:</legend>
+              <div className="d-flex gap-2 justify-content-center">
+                <input
+                  type="text"
+                  className="rounded-2"
+                  value={newPlaylistName}
+                  onChange={(e) => setNewPlaylistName(e.target.value)}
+                />
+                <button type="submit" className="my-btn-blue">
+                  <BiPlus />
+                </button>
+              </div>
+            </form>
+          )}
+          {namePlaylists &&
+            Object.keys(namePlaylists).map((title) => {
+              return (
+                <p
+                  key={title}
+                  onClick={() => {
+                    dispatch(addSongToPlaylist(song, title));
+                    alert(song.title + " added to the playlist " + title);
+                  }}
+                  className="options-add-to-playlist"
+                >
+                  {title}
+                </p>
+              );
+            })}
+        </Modal.Body>
+      </Modal.Dialog>
+    </div>
+  );
+};
+
+export default CustomModal;

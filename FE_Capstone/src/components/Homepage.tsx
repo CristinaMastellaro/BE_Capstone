@@ -37,6 +37,7 @@ const Homepage = () => {
 
   const getMoods = () => {
     fetch("http://localhost:8888/moods", {
+      // fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/moods", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -111,7 +112,7 @@ const Homepage = () => {
           </div>
           <button
             type="submit"
-            className="mt-3 mt-lg-0 w-auto align-self-center my-btn-blue"
+            className="mt-3 mt-lg-0 w-auto align-self-center my-btn-blue rounded-pill"
           >
             Music time!
           </button>

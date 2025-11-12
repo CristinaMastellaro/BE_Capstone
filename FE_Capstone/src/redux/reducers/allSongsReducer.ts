@@ -1,16 +1,27 @@
 import ActionType from "../../types/ActionType";
 import ShowSongType from "../../types/ShowSongType";
-import { ADD_SINGLE_MOOD, ALL_MOODS_NAME, ALL_SONGS_MOOD } from "../actions";
+import {
+  ADD_NEW_FAVOURITE,
+  ADD_SINGLE_MOOD,
+  ADD_SONG_TO_PLAYLIST,
+  ALL_MOODS_NAME,
+  ALL_PLAYLISTS,
+  ALL_SONGS_MOOD,
+  CREATE_NEW_PLAYLIST,
+  DELETE_FAVOURITE,
+  DELETE_SONG_FROM_PLAYLIST,
+  SET_FAVOURITES_FROM_DB,
+} from "../actions";
 
-type myMap = {
-  [key: string]: ShowSongType[];
-};
+// export type myMap = {
+//   [key: string]: ShowSongType[];
+// };
 
 interface AllSongsState {
   moodName: string;
   allMoodsName: string[];
-  moods: myMap;
-  playlists: myMap;
+  moods: Record<string, ShowSongType[]>;
+  playlists: Record<string, ShowSongType[]>;
 }
 
 const initialState: AllSongsState = {
@@ -22,18 +33,31 @@ const initialState: AllSongsState = {
 
 const allSongsReducer = (
   state = initialState,
-  action: ActionType<[string, ShowSongType[]] | string[] | string>
+  action: ActionType<
+    | [string, ShowSongType[]]
+    | string[]
+    | string
+    | ShowSongType
+    | ShowSongType[]
+    | [string, ShowSongType]
+    | Record<string, ShowSongType[]>
+  >
 ) => {
   switch (action.type) {
-    case ALL_SONGS_MOOD:
+    case ALL_SONGS_MOOD: {
+      const [moodNameRetrieved, songs] = action.payload as [
+        string,
+        ShowSongType[]
+      ];
       return {
         ...state,
-        moodName: action.payload[0],
+        moodName: moodNameRetrieved,
         moods: {
           ...state.moods,
-          [action.payload[0]]: action.payload[1],
+          [moodNameRetrieved]: songs,
         },
       };
+    }
     case ALL_MOODS_NAME:
       return {
         ...state,
@@ -43,6 +67,79 @@ const allSongsReducer = (
       return {
         ...state,
         allMoodsName: state.allMoodsName.concat(action.payload as string),
+      };
+    case ADD_NEW_FAVOURITE:
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          favourite: state.playlists.favourite.concat(
+            action.payload as ShowSongType
+          ),
+        },
+      };
+    case DELETE_FAVOURITE:
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          favourite: state.playlists.favourite.filter(
+            (fav) => fav !== action.payload
+          ),
+        },
+      };
+    case ALL_PLAYLISTS:
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          ...(action.payload as Record<string, ShowSongType[]>),
+        },
+      };
+    case CREATE_NEW_PLAYLIST:
+      console.log("I'm trying to create a new playlist");
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          [action.payload as string]: [],
+        },
+      };
+    case ADD_SONG_TO_PLAYLIST: {
+      const key = (action.payload as [string, ShowSongType])[0];
+      console.log("state.playlists", state.playlists);
+      console.log("state.playlists[key]", state.playlists[key]);
+      console.log("key", key);
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          [key]: state.playlists[key].concat(
+            (action.payload as [string, ShowSongType])[1]
+          ),
+        },
+      };
+    }
+    case DELETE_SONG_FROM_PLAYLIST: {
+      const key = (action.payload as [string, ShowSongType])[0];
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          [key]: state.playlists[key].filter(
+            (song) =>
+              song.id !== (action.payload as [string, ShowSongType])[1].id
+          ),
+        },
+      };
+    }
+    case SET_FAVOURITES_FROM_DB:
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          favourite: action.payload,
+        },
       };
     default:
       console.log("You're in the default state");

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,10 +28,19 @@ public class Playlist {
     @JoinTable(name = "playlist_song",
             joinColumns = @JoinColumn(name = "playlist_id"),
             inverseJoinColumns = @JoinColumn(name = "song_id"))
-    private List<Song> songs;
+    private List<Song> songs = new ArrayList<>();
 
-    public Playlist(String name, List<Song> songs) {
+    @ManyToOne
+    private User user;
+
+    public Playlist(String name, User user) {
         this.name = name;
-        this.songs = songs;
+        this.user = user;
+    }
+
+    public Playlist(String name, User user, List<Song> songs) {
+        this.name = name;
+        this.user = user;
+        this.songs.addAll(songs);
     }
 }

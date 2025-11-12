@@ -1,0 +1,21 @@
+.custom-modal {
+    backdrop-filter: blur(4px);
+    display: block;
+    position: fixed;
+    padding: 20vh 10vw;
+    text-align: center;
+}
+
+.custom-modal .modal-dialog {
+     border-radius: 20px !important;
+}
+
+.custom-modal .modal-content {
+    background-color: #2B2D42 !important;
+    color: white;
+    border-radius: 20px !important;
+}
+
+.options-add-to-playlist:hover {
+    cursor: pointer;
+}

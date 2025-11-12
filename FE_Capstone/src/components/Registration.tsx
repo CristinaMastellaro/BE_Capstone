@@ -23,6 +23,9 @@ const Registration = () => {
     setErrors([]);
 
     fetch("http://localhost:8888/auth/register", {
+      // fetch(
+      //   "https://wispy-sara-cristina-private-75ea3df9.koyeb.app/auth/register",
+      //   {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -148,7 +151,10 @@ const Registration = () => {
           <p className="small text-secondary mb-4">
             The fields with (*) are mandatory.
           </p>
-          <button type="submit" className=" align-self-center w-50 my-btn-blue">
+          <button
+            type="submit"
+            className=" align-self-center w-50 my-btn-blue rounded-pill"
+          >
             {loading ? <Loader /> : "Register"}
           </button>
           {/* {loading && <Loader />} */}

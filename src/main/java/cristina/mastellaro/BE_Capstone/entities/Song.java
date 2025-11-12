@@ -19,36 +19,48 @@ public class Song {
 
     @Id
     @Setter(AccessLevel.NONE)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String id;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String title;
     private int duration;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1500)
     private String preview;
+    @Column(length = 1500)
     private String cover;
+    @Column(nullable = false, length = 500)
+    private String author;
 
     @OneToMany(mappedBy = "song")
     @JsonIgnore
     private List<MoodSong> moods = new ArrayList<>();
-    @ManyToMany
-    @JoinTable(name = "song_artist",
-            joinColumns = @JoinColumn(name = "song_id"),
-            inverseJoinColumns = @JoinColumn(name = "artist_id"))
-    private List<Artist> artists = new ArrayList<>();
-    @ManyToOne
-    private Album album;
+//    @ManyToMany
+//    @JoinTable(name = "song_artist",
+//            joinColumns = @JoinColumn(name = "song_id"),
+//            inverseJoinColumns = @JoinColumn(name = "artist_id"))
+//    private List<Artist> artists = new ArrayList<>();
+//    @ManyToOne
+//    private Album album;
 //    @OneToMany(mappedBy = "")
 //@JsonIgnore
 //    private List<Playlist> playlists;
 
-    public Song(String id, String title, int duration, String preview, String cover, Album album
+    public Song(String id, String title, String artist, String preview, String cover) {
+        this.id = id;
+        this.title = title;
+        this.author = artist;
+        this.preview = preview;
+        this.cover = cover;
+    }
+
+    public Song(String id, String title, String artist, int duration, String preview, String cover
     ) {
         this.id = id;
         this.title = title;
+        this.author = artist;
         this.duration = duration;
         this.preview = preview;
         this.cover = cover;
-        this.album = album;
+//        this.album = album;
     }
 }

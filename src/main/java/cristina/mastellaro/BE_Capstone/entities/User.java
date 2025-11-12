@@ -1,15 +1,13 @@
 package cristina.mastellaro.BE_Capstone.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +30,9 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private UserRoles userRole;
+
+    @ManyToMany
+    private List<Playlist> playlists = new ArrayList<>();
 
     public User(String name, String surname, String username, String email, String password) {
         this.name = name;

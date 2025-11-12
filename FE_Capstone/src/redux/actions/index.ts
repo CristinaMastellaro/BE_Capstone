@@ -1,8 +1,11 @@
 import ShowSongType from "../../types/ShowSongType";
 import { AppDispatchFunction } from "../store";
 
+export const ENDPOINT = "http://localhost:8888";
+
 // For login
 export const SET_USERNAME = "SET_USERNAME";
+export const TOKEN = localStorage.getItem("token");
 
 export const setLoginUsername = (username: string) => {
   return {
@@ -22,6 +25,8 @@ export const findSongs = (mood: string) => {
     const token = localStorage.getItem("tokenLastFm");
     const AllFoundSongs: ShowSongType[] = [];
 
+    let i = 0;
+
     try {
       const res = await fetch(
         `http://ws.audioscrobbler.com/2.0/?method=tag.getTopTracks&tag=${mood.toLowerCase()}&api_key=${token}&format=json`
@@ -31,7 +36,7 @@ export const findSongs = (mood: string) => {
         throw new Error("Response status: " + res.status);
       }
       const data = await res.json();
-      for (let i = 0; i < data.tracks.track.length; i++) {
+      for (i; i < data.tracks.track.length; i++) {
         if (AllFoundSongs.length < 30) {
           const basicInfo = [
             data.tracks.track[i].name,
@@ -45,6 +50,8 @@ export const findSongs = (mood: string) => {
             preview: "",
           };
 
+          let j = 0;
+
           try {
             const secondRes = await fetch(
               "https://striveschool-api.herokuapp.com/api/deezer/search?q=" +
@@ -56,7 +63,7 @@ export const findSongs = (mood: string) => {
             }
             const data2 = await secondRes.json();
 
-            for (let j = 0; j < data2.data.length; j++) {
+            for (j; j < data2.data.length; j++) {
               if (
                 data2.data[j].title_short
                   .toLowerCase()
@@ -76,13 +83,24 @@ export const findSongs = (mood: string) => {
               }
             }
             if (foundSong.id !== "") AllFoundSongs.push(foundSong);
-          } catch (err) {
-            console.log(err);
+          } catch (e: unknown) {
+            // console.log(err);
+            console.log("This is the error: ", e);
+            let result;
+            if (typeof e === "string") {
+              result = e.toUpperCase(); // works, `e` narrowed to string
+            } else if (e instanceof Error) {
+              result = e.message;
+            }
+            console.log("result", result);
+            if (result?.includes("Response status: 429")) {
+              break;
+            }
           }
         }
       }
-    } catch (err) {
-      console.log(err);
+    } catch (e) {
+      console.log(e);
     }
     dispatch({
       type: ALL_SONGS_MOOD,
@@ -152,5 +170,209 @@ export const isShufflingSongs = (isShuffle: boolean) => {
   return {
     type: IS_SHUFFLED,
     payload: isShuffle,
+  };
+};
+
+// For favourites
+export const ADD_NEW_FAVOURITE = "ADD_NEW_FAVOURITE";
+export const DELETE_FAVOURITE = "DELETE_FAVOURITE";
+export const SET_FAVOURITES_FROM_DB = "SET_FAVOURITES_FROM_DB";
+
+export const addNewFavourite = (newFav: ShowSongType) => {
+  return async (dispatch: AppDispatchFunction) => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch("http://localhost:8888/playlists/favourite", {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newFav),
+      });
+      if (!res.ok)
+        throw new Error("There was an issue while connecting to the db");
+    } catch (err) {
+      console.log("Error while saving favourite song!", err);
+    }
+
+    dispatch({ type: ADD_NEW_FAVOURITE, payload: newFav });
+  };
+};
+
+export const deleteFavourite = (favToDel: ShowSongType) => {
+  return async (dispatch: AppDispatchFunction) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `http://localhost:8888/playlists/favourite/${favToDel.id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (!response.ok) throw new Error("Issue while deleting");
+    } catch (err) {
+      console.log("Error!", err);
+    }
+    dispatch({ type: DELETE_FAVOURITE, payload: favToDel });
+  };
+};
+
+export const setFavFromDb = () => {
+  return async (dispatch: AppDispatchFunction) => {
+    const favourites: ShowSongType[] = [];
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        "http://localhost:8888/playlists/favourite",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (!response.ok) throw new Error("Response status: " + response.status);
+
+      const data = await response.json();
+
+      data.songs.forEach((song: ShowSongType) => favourites.push(song));
+    } catch (err) {
+      console.log("Error! ", err);
+    }
+
+    dispatch({
+      type: SET_FAVOURITES_FROM_DB,
+      payload: favourites,
+    });
+  };
+};
+
+// General playlists
+export const ALL_PLAYLISTS = "ALL_PLAYLISTS";
+export const CREATE_NEW_PLAYLIST = "CREATE_NEW_PLAYLIST";
+
+type PlaylistType = {
+  id: string;
+  name: string;
+  songs: ShowSongType[];
+};
+
+export const findAllPlaylists = () => {
+  return async (dispatch: AppDispatchFunction) => {
+    const playlists: Record<string, ShowSongType[]> = {};
+    try {
+      const res = await fetch(ENDPOINT + "/playlists", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+      if (!res.ok) throw new Error("Error!");
+
+      const data: PlaylistType[] = await res.json();
+      data.forEach((playlist) => (playlists[playlist.name] = playlist.songs));
+    } catch (err) {
+      console.log("Error while finding names of playlists", err);
+    }
+    dispatch({
+      type: ALL_PLAYLISTS,
+      payload: playlists,
+    });
+  };
+};
+
+export const createNewPlaylist = (namePlaylist: string) => {
+  return async (dispatch: AppDispatchFunction) => {
+    try {
+      const res = await fetch(ENDPOINT + "/playlists", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: namePlaylist, songs: [] }),
+      });
+      if (!res.ok) throw new Error("Who knows");
+      console.log("Done saving the playlist " + namePlaylist);
+    } catch (err) {
+      console.log("Error!", err);
+    }
+
+    dispatch({ type: CREATE_NEW_PLAYLIST, payload: namePlaylist });
+  };
+};
+
+export const ADD_SONG_TO_PLAYLIST = "ADD_SONG_TO_PLAYLIST";
+export const DELETE_SONG_FROM_PLAYLIST = "DELETE_SONG_FROM_PLAYLIST";
+
+export const addSongToPlaylist = (
+  newSong: ShowSongType,
+  playlistName: string
+) => {
+  return async (dispatch: AppDispatchFunction) => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(
+        "http://localhost:8888/playlists/" + playlistName,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newSong),
+        }
+      );
+      if (!res.ok)
+        throw new Error("There was an issue while connecting to the db");
+    } catch (err) {
+      console.log("Error while saving favourite song!", err);
+    }
+
+    dispatch({
+      type: ADD_SONG_TO_PLAYLIST,
+      payload: [playlistName, newSong],
+    });
+  };
+};
+
+export const deleteSongFromPlaylist = (
+  namePlaylist: string,
+  song: ShowSongType
+) => {
+  return async (dispatch: AppDispatchFunction) => {
+    try {
+      const res = await fetch(
+        ENDPOINT + `/playlists/${namePlaylist}/${song.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${TOKEN}`,
+          },
+        }
+      );
+      if (!res.ok) throw new Error("Error while sending fetch");
+    } catch (err) {
+      console.log("Error!", err);
+    }
+
+    dispatch({
+      type: DELETE_SONG_FROM_PLAYLIST,
+      payload: [namePlaylist, song],
+    });
+  };
+};
+
+// Modal that adds a song to a playlist
+export const SHOW_MODAL = "SHOW_MODAL";
+
+export const changeShowModal = (
+  showModal: boolean,
+  songToSave: ShowSongType
+) => {
+  console.log("song to save inside index.js", songToSave);
+  return {
+    type: SHOW_MODAL,
+    payload: [showModal, songToSave],
   };
 };
