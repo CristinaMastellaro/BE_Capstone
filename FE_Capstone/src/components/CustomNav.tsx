@@ -1,4 +1,4 @@
-import { BiBroadcast, BiGrid, BiHome } from "react-icons/bi";
+import { BiBroadcast, BiHome, BiLibrary, BiWorld } from "react-icons/bi";
 import "../scss/customNav.scss";
 import { Link } from "react-router-dom";
 
@@ -28,8 +28,15 @@ const CustomNavbar = () => {
           to="/library"
           className="mt-2 p-1 options text-white text-decoration-none"
         >
-          <BiGrid className="my-icons me-2 fs-4" />
+          <BiLibrary className="my-icons me-2 fs-4" />
           <span className="d-none d-lg-block">Library</span>
+        </Link>
+        <Link
+          to="/searchCountry"
+          className="mt-2 p-1 options text-white text-decoration-none"
+        >
+          <BiWorld className="my-icons me-2 fs-4" />
+          <span className="d-none d-lg-block">Countries</span>
         </Link>
         <div className="mt-2 p-1 options">
           <BiBroadcast className="my-icons me-2 fs-4" />

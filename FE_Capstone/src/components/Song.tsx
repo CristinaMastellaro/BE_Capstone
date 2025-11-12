@@ -78,8 +78,6 @@ const Song = ({ song, playlist, namePlaylist }: SongProps) => {
           dispatch(saveCurrentSong(song));
           // dispatch(isPlayingSong(true));
           // const rememberStartingPlaylist = { ...savedPlaylist };
-          console.log("savedPlaylist", savedPlaylist);
-          console.log("playlist", playlist);
           if (savedPlaylist !== playlist) {
             dispatch(resetPlaylist());
             playlist.forEach((singleSong) =>

@@ -14,6 +14,7 @@ import {
   setFavFromDb,
   setLoginUsername,
 } from "./redux/actions";
+import SearchByCountry from "./components/SearchByCountry";
 
 function App() {
   const dispatch = useAppDispatchFunction();
@@ -57,6 +58,7 @@ function App() {
             <Route element={<Homepage />} path="/homepage" />
             <Route element={<Playlist />} path="/playlist/:specification" />
             <Route element={<Library />} path="/library" />
+            <Route element={<SearchByCountry />} path="/searchCountry" />
           </Route>
           <Route element={<Login />} path="/" />
           <Route element={<Registration />} path="/register" />
