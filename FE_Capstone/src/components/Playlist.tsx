@@ -21,7 +21,6 @@ const Playlist = () => {
   );
   const allPlaylists = useAppSelector((state) => state.allSongs.playlists);
   const allPlaylistsNames = Object.keys(allPlaylists);
-  console.log("allPlaylistsNames", allPlaylistsNames);
   const songs = useAppSelector((state: IRootState) => {
     if (specification !== undefined) {
       if ((allMoods as string[]).includes(specification)) {
@@ -55,14 +54,32 @@ const Playlist = () => {
   ];
 
   const [phrase, setPhrase] = useState(phrasesForLoading[0]);
-
+  console.log(
+    "boolean",
+    !(
+      (allMoods as string[]).includes(specification as string) ||
+      allPlaylistsNames.includes(specification as string)
+    ) && (songs as ShowSongType[]).length !== 0
+  );
   useEffect(() => {
-    if (songs !== undefined) {
+    if (
+      !(
+        (allMoods as string[]).includes(specification as string) ||
+        allPlaylistsNames.includes(specification as string)
+      ) &&
+      (songs as ShowSongType[]).length !== 0
+    ) {
+      setIsLoading(false);
+      // } else if (songs !== undefined) {
+    } else if (
+      ((allMoods as string[]).includes(specification as string) ||
+        allPlaylistsNames.includes(specification as string)) &&
+      songs !== undefined
+    ) {
       setIsLoading(false);
     }
   }, [songs]);
 
-  // TODO: non penso che questa cosa si fermi mai
   useEffect(() => {
     if (!isLoading) return;
 

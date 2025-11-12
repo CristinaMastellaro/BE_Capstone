@@ -7,6 +7,7 @@ import "../scss/searchByCountry.scss";
 import Loader from "./Loader";
 import { useAppDispatch } from "../redux/store";
 import {
+  resetNotPermanentPlaylist,
   saveCurrentSong,
   savePlaylistNotToSavePermanently,
 } from "../redux/actions";
@@ -171,6 +172,7 @@ const SearchByCountry = () => {
   const navigate = useNavigate();
 
   const goToPlaylist = () => {
+    dispatch(resetNotPermanentPlaylist());
     dispatch(savePlaylistNotToSavePermanently(selectedRegion));
     navigate("/playlist/" + selectedRegion);
   };

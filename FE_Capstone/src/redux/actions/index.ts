@@ -396,8 +396,8 @@ export const savePlaylistNotToSavePermanently = (country: string) => {
           try {
             const secondRes = await fetch(
               "https://striveschool-api.herokuapp.com/api/deezer/search?q=" +
-                basicInfo[0] +
-                basicInfo[1]
+                basicInfo[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "") +
+                basicInfo[1].normalize("NFD").replace(/[\u0300-\u036f]/g, "")
             );
             if (!secondRes.ok) {
               throw new Error("Response status: " + secondRes.status);
@@ -409,8 +409,14 @@ export const savePlaylistNotToSavePermanently = (country: string) => {
                 data2.data[j].title_short
                   .toLowerCase()
                   .includes(basicInfo[0].toLowerCase()) &&
-                data2.data[j].artist.name.toLowerCase() ===
-                  basicInfo[1].toLowerCase() &&
+                data2.data[j].artist.name
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+                  .toLowerCase() ===
+                  basicInfo[1]
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toLowerCase() &&
                 foundSong.id === ""
               ) {
                 foundSong = {
@@ -446,6 +452,14 @@ export const savePlaylistNotToSavePermanently = (country: string) => {
       type: PLAYLIST_NOT_TO_SAVE,
       payload: AllFoundSongs,
     });
+  };
+};
+
+export const RESET_NOT_PERMANENT_PLAYLIST = "RESET_NOT_PERMANENT_PLAYLIST";
+
+export const resetNotPermanentPlaylist = () => {
+  return {
+    type: RESET_NOT_PERMANENT_PLAYLIST,
   };
 };
 

@@ -11,6 +11,7 @@ import {
   DELETE_FAVOURITE,
   DELETE_SONG_FROM_PLAYLIST,
   PLAYLIST_NOT_TO_SAVE,
+  RESET_NOT_PERMANENT_PLAYLIST,
   SET_FAVOURITES_FROM_DB,
 } from "../actions";
 
@@ -148,6 +149,11 @@ const allSongsReducer = (
       return {
         ...state,
         playlistNotPermanentlySaved: action.payload as ShowSongType[],
+      };
+    case RESET_NOT_PERMANENT_PLAYLIST:
+      return {
+        ...state,
+        playlistNotPermanentlySaved: [],
       };
     default:
       console.log("You're in the default state");
