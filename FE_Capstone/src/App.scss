@@ -43,7 +43,8 @@ $new-dark: #2B2D42;
     padding: 0.5em 2em;
     border: 0;
     -webkit-box-shadow: 0px 0px 5px 3px rgba(126,126,126,0.81); 
-  box-shadow: 0px 0px 5px 3px rgba(126, 126, 126, 0.238) !important; 
+    box-shadow: 0px 0px 5px 3px rgba(126, 126, 126, 0.238) !important; 
+    max-width: fit-content !important;
 }
 
 .my-bg-pink {

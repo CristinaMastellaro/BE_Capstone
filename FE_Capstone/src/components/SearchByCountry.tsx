@@ -4,7 +4,8 @@ import "jsvectormap/dist/jsvectormap.min.css";
 import "jsvectormap/dist/maps/world.js";
 import { useEffect, useRef, useState } from "react";
 import "../scss/searchByCountry.scss";
-import { TOKEN } from "../redux/actions";
+import Loader from "./Loader";
+import { useAppDispatch } from "../redux/store";
 
 interface selectedRegionType {
   title: string;
@@ -20,6 +21,7 @@ const SearchByCountry = () => {
     selectedRegionType[]
   >([]);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const map = new jsVectorMap({
@@ -33,8 +35,7 @@ const SearchByCountry = () => {
       },
       regionsSelectableOne: true,
       onRegionClick: function (_: MouseEvent, code: string) {
-        // const countryName = map.getRegionName(code);
-        console.log("Hai cliccato su:", code);
+        setLoading(true);
         setSelectedRegionCode(code);
       },
     });
@@ -50,36 +51,55 @@ const SearchByCountry = () => {
           throw new Error("Couldn't retrieve the name of the region!");
         else return res.json();
       })
-      .then((data) => {
+      .then(async (data) => {
         console.log("data region", data);
         setSelectedRegion(data[0].name.common);
-        console.log("selectedRegion", selectedRegion);
         const songs: selectedRegionType[] = [];
         const token = localStorage.getItem("tokenLastFm");
 
-        fetch(
-          `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${selectedRegion}&api_key=${token}&format=json&limit=8`
-        )
-          .then((res) => {
-            if (!res.ok) throw new Error("Error while searching for top music");
-            else return res.json();
-          })
-          .then((data) => {
-            console.log("data from last.fm", data);
-            if (data.error === 6) setError(true);
-            data.tracks.track.forEach((topSong) =>
-              songs.push({
-                title: topSong.name,
-                artist: topSong.artist.name,
-                cover: topSong.image[3]["#text"],
-              })
-            );
-            console.log("songs", songs);
+        try {
+          const res2 = await fetch(
+            `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].name.common}&api_key=${token}&format=json&limit=30`
+          );
+
+          if (!res2.ok) throw new Error("Error while searching for top music");
+          const data2 = await res2.json();
+
+          const artists: string[] = [];
+          if (data2.error === 6) {
+            setLoading(false);
+            setError(true);
+            setSelectedRegionSongs([]);
+            throw new Error("Error while searching for songs!");
+          } else {
+            data2.tracks.track.forEach((topSong) => {
+              if (songs.length < 4) {
+                if (
+                  artists.filter((artist) => artist === topSong.artist.name)
+                    .length < 2
+                ) {
+                  songs.push({
+                    title: topSong.name,
+                    artist: topSong.artist.name,
+                    cover: data[0].flags.png,
+                  });
+                  artists.push(topSong.artist.name);
+                }
+              }
+            });
             setError(false);
             setSelectedRegionSongs(songs);
-          });
+            setLoading(false);
+          }
+        } catch (err) {
+          console.log("Error!", err);
+        }
       });
   }, [selectedRegionCode]);
+
+  const dispatch = useAppDispatch();
+
+  const searchPreviewSong = (song: selectedRegionType) => {};
 
   return (
     <>
@@ -88,15 +108,23 @@ const SearchByCountry = () => {
         <div ref={mapRef} id="map"></div>
         <Row className="p-4">
           <h2>{selectedRegion}</h2>
+          {loading && (
+            <>
+              <p className="text-center mt-3">Searching for the top songs...</p>
+              <Loader />
+            </>
+          )}
           {selectedRegionSongs &&
+            !loading &&
             selectedRegionSongs.map((song, i) => {
               return (
                 <Col
                   xs={5}
-                  md={4}
-                  lg={4}
+                  md={3}
+                  lg={3}
                   key={i}
-                  className="justify-content-center mb-3 mt-3"
+                  className="d-flex flex-column align-items-center mb-2 mt-3"
+                  onClick={() => searchPreviewSong(song)}
                 >
                   <img
                     src={song.cover}
@@ -104,14 +132,23 @@ const SearchByCountry = () => {
                     className="img-top-song"
                   />
                   <div className="d-flex flex-column mt-1">
-                    <p className="mb-0 fw-semibold">{song.title}</p>
-                    <p className="mb-0 small">{song.artist}</p>
+                    <p className="mb-0 text-center fw-semibold">{song.title}</p>
+                    <p className="mb-0 text-center small">{song.artist}</p>
                   </div>
                 </Col>
               );
             })}
-          {error && (
-            <p>
+          {selectedRegionSongs.length > 0 && !loading && (
+            <div className="text-center mb-4 pb-5">
+              <p className="mt-3">
+                Here are the first four songs listened to in {selectedRegion}!
+                Would you like to listen some more?
+              </p>
+              <button className="my-btn-blue">Go to {selectedRegion}!</button>
+            </div>
+          )}
+          {error && !loading && (
+            <p className="mt-4">
               {selectedRegion} didn't want to share their music preferences, so
               we don't know their favourite songs.{" "}
             </p>
