@@ -72,3 +72,13 @@
 .on-click:focus {
   border: 0.5px solid rgba(0, 0, 0, 0.336);
 }
+
+.container-info {
+  max-width: 75%;
+  @media screen and (max-width: 680px) {
+    max-width: 65%;
+  }
+  @media screen and (max-width: 576px) {
+    max-width: 55%;
+  }
+}

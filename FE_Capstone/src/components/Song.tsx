@@ -21,7 +21,7 @@ interface SongProps {
 
 const Song = ({ song, playlist, namePlaylist }: SongProps) => {
   const dispatch = useAppDispatch();
-  console.log("namePlaylist", namePlaylist);
+
   // Handle favourite songs
   const isFavouriteAtTheBeginning = useAppSelector((state) => {
     const idFavouriteSongs: string[] = [];
@@ -65,7 +65,7 @@ const Song = ({ song, playlist, namePlaylist }: SongProps) => {
   const isNamePlaylistInSavedPlaylist = useAppSelector((state) =>
     Object.keys(state.allSongs.playlists).includes(namePlaylist)
   ); // To see if the playlist is saved in the library (the playlist could be used to show the songs connected to a mood: in this case, the playlist is not saved in the library)
-  console.log("isNamePlaylistInSavedPlaylist", isNamePlaylistInSavedPlaylist);
+
   // If this is true, than you can remove the song from the current playlist
 
   return (
@@ -90,11 +90,11 @@ const Song = ({ song, playlist, namePlaylist }: SongProps) => {
       >
         <img src={song.cover} alt="Cover of the song" className="me-3" />
       </button>
-      <div className="flex-grow-1 d-flex flex-column justify-content-center">
+      <div className="flex-grow-1 d-flex flex-column justify-content-center container-info">
         <p className="mb-0 fw-bold">{song.title}</p>
         <p className="mb-0">{song.author}</p>
       </div>
-      <div className="dots-menu fs-4 me-4">
+      <div className="dots-menu fs-4 me-4 ms-auto">
         {isFavourite ? (
           <BiSolidHeart
             className="me-2 my-pink"

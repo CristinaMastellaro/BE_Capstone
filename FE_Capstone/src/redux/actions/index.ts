@@ -270,7 +270,6 @@ export const findAllPlaylists = () => {
       if (!res.ok) throw new Error("Error!");
 
       const data: PlaylistType[] = await res.json();
-      console.log("data names", data);
       data.forEach((playlist) => (playlists[playlist.name] = playlist.songs));
     } catch (err) {
       console.log("Error while finding names of playlists", err);
@@ -353,8 +352,6 @@ export const deleteSongFromPlaylist = (
         }
       );
       if (!res.ok) throw new Error("Error while sending fetch");
-      const data = await res.json();
-      console.log("data", data);
     } catch (err) {
       console.log("Error!", err);
     }
