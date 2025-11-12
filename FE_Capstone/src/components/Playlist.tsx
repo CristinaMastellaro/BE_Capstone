@@ -19,14 +19,19 @@ const Playlist = () => {
   const allMoods = useAppSelector(
     (state) => state.allSongs.allMoodsName as string[]
   );
+  const allPlaylists = useAppSelector((state) => state.allSongs.playlists);
+  const allPlaylistsNames = Object.keys(allPlaylists);
+  console.log("allPlaylistsNames", allPlaylistsNames);
   const songs = useAppSelector((state: IRootState) => {
     if (specification !== undefined) {
       if ((allMoods as string[]).includes(specification)) {
         return state.allSongs.moods[specification];
-      } else {
+      } else if (allPlaylistsNames.includes(specification)) {
         return (state.allSongs.playlists as Record<string, ShowSongType[]>)[
           specification
         ];
+      } else {
+        return state.allSongs.playlistNotPermanentlySaved;
       }
     }
   });

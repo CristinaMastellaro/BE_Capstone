@@ -6,6 +6,7 @@ export const ENDPOINT = "http://localhost:8888";
 // For login
 export const SET_USERNAME = "SET_USERNAME";
 export const TOKEN = localStorage.getItem("token");
+export const TOKEN_LAST_FM = localStorage.getItem("tokenLastFm");
 
 export const setLoginUsername = (username: string) => {
   return {
@@ -359,6 +360,91 @@ export const deleteSongFromPlaylist = (
     dispatch({
       type: DELETE_SONG_FROM_PLAYLIST,
       payload: [namePlaylist, song],
+    });
+  };
+};
+
+export const PLAYLIST_NOT_TO_SAVE = "PLAYLIST_NOT_TO_SAVE";
+
+export const savePlaylistNotToSavePermanently = (country: string) => {
+  return async (dispatch: AppDispatchFunction) => {
+    const AllFoundSongs: ShowSongType[] = [];
+
+    try {
+      const res = await fetch(
+        `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${country}&api_key=${TOKEN_LAST_FM}&format=json`
+      );
+
+      if (!res.ok) {
+        throw new Error("Response status: " + res.status);
+      }
+      const data = await res.json();
+      for (let i = 0; i < data.tracks.track.length; i++) {
+        if (AllFoundSongs.length < 30) {
+          const basicInfo = [
+            data.tracks.track[i].name,
+            data.tracks.track[i].artist.name,
+          ];
+          let foundSong: ShowSongType = {
+            id: "",
+            cover: "",
+            title: "",
+            author: "",
+            preview: "",
+          };
+
+          try {
+            const secondRes = await fetch(
+              "https://striveschool-api.herokuapp.com/api/deezer/search?q=" +
+                basicInfo[0] +
+                basicInfo[1]
+            );
+            if (!secondRes.ok) {
+              throw new Error("Response status: " + secondRes.status);
+            }
+            const data2 = await secondRes.json();
+
+            for (let j = 0; j < data2.data.length; j++) {
+              if (
+                data2.data[j].title_short
+                  .toLowerCase()
+                  .includes(basicInfo[0].toLowerCase()) &&
+                data2.data[j].artist.name.toLowerCase() ===
+                  basicInfo[1].toLowerCase() &&
+                foundSong.id === ""
+              ) {
+                foundSong = {
+                  id: data2.data[j].id.toString(),
+                  cover: data2.data[j].album.cover_xl,
+                  title: data2.data[j].title,
+                  author: data2.data[j].artist.name,
+                  preview: data2.data[j].preview,
+                };
+                j = data2.data.length;
+              }
+            }
+            if (foundSong.id !== "") AllFoundSongs.push(foundSong);
+          } catch (e: unknown) {
+            console.log("This is the error: ", e);
+            let result;
+            if (typeof e === "string") {
+              result = e.toUpperCase();
+            } else if (e instanceof Error) {
+              result = e.message;
+            }
+            console.log("result", result);
+            if (result?.includes("Response status: 429")) {
+              break;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    dispatch({
+      type: PLAYLIST_NOT_TO_SAVE,
+      payload: AllFoundSongs,
     });
   };
 };

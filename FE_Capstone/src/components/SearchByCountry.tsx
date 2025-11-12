@@ -6,6 +6,12 @@ import { useEffect, useRef, useState } from "react";
 import "../scss/searchByCountry.scss";
 import Loader from "./Loader";
 import { useAppDispatch } from "../redux/store";
+import {
+  saveCurrentSong,
+  savePlaylistNotToSavePermanently,
+} from "../redux/actions";
+import ShowSongType from "../types/ShowSongType";
+import { useNavigate } from "react-router-dom";
 
 interface selectedRegionType {
   title: string;
@@ -44,6 +50,8 @@ const SearchByCountry = () => {
     });
   }, []);
 
+  const token = localStorage.getItem("tokenLastFm");
+
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/alpha/" + selectedRegionCode)
       .then((res) => {
@@ -52,10 +60,8 @@ const SearchByCountry = () => {
         else return res.json();
       })
       .then(async (data) => {
-        console.log("data region", data);
         setSelectedRegion(data[0].name.common);
         const songs: selectedRegionType[] = [];
-        const token = localStorage.getItem("tokenLastFm");
 
         try {
           const res2 = await fetch(
@@ -94,12 +100,80 @@ const SearchByCountry = () => {
         } catch (err) {
           console.log("Error!", err);
         }
+      })
+      .catch((err) => {
+        console.log("Error!", err);
       });
   }, [selectedRegionCode]);
 
   const dispatch = useAppDispatch();
 
-  const searchPreviewSong = (song: selectedRegionType) => {};
+  const searchPreviewSong = (song: selectedRegionType) => {
+    let songToSave: ShowSongType = {
+      id: "",
+      cover: "",
+      author: "",
+      preview: "",
+      title: "",
+    };
+    fetch(
+      `https://striveschool-api.herokuapp.com/api/deezer/search?q=${song.title
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")} ${song.artist
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")}`
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error("Error while searching for the song");
+        return res.json();
+      })
+      .then((data) => {
+        console.log("data", data);
+        for (let i = 0; i < data.data.length; i++) {
+          if (
+            data.data[i].title_short
+              .toLowerCase()
+              .includes(song.title.toLowerCase()) &&
+            data.data[i].artist.name
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLowerCase() ===
+              song.artist
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+          ) {
+            songToSave = {
+              id: data.data[i].id.toString(),
+              cover: data.data[i].album.cover_xl,
+              title: data.data[i].title,
+              author: data.data[i].artist.name,
+              preview: data.data[i].preview,
+            };
+            i = data.data.length;
+          }
+        }
+        if (songToSave.id !== "") dispatch(saveCurrentSong(songToSave));
+        else alert("We couldn't load a preview of the song, sorry");
+      })
+      .catch((e: unknown) => {
+        let result;
+        if (typeof e === "string") {
+          result = e.toUpperCase(); // works, `e` narrowed to string
+        } else if (e instanceof Error) {
+          result = e.message;
+        }
+        console.log("result", result);
+        alert("We couldn't load a preview of the song, sorry");
+      });
+  };
+
+  const navigate = useNavigate();
+
+  const goToPlaylist = () => {
+    dispatch(savePlaylistNotToSavePermanently(selectedRegion));
+    navigate("/playlist/" + selectedRegion);
+  };
 
   return (
     <>
@@ -144,7 +218,12 @@ const SearchByCountry = () => {
                 Here are the first four songs listened to in {selectedRegion}!
                 Would you like to listen some more?
               </p>
-              <button className="my-btn-blue">Go to {selectedRegion}!</button>
+              <button
+                className="my-btn-blue text-decoration-none"
+                onClick={() => goToPlaylist()}
+              >
+                Go to {selectedRegion}!
+              </button>
             </div>
           )}
           {error && !loading && (

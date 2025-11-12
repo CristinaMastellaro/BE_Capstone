@@ -10,6 +10,7 @@ import {
   CREATE_NEW_PLAYLIST,
   DELETE_FAVOURITE,
   DELETE_SONG_FROM_PLAYLIST,
+  PLAYLIST_NOT_TO_SAVE,
   SET_FAVOURITES_FROM_DB,
 } from "../actions";
 
@@ -21,6 +22,7 @@ interface AllSongsState {
   moodName: string;
   allMoodsName: string[];
   moods: Record<string, ShowSongType[]>;
+  playlistNotPermanentlySaved: ShowSongType[];
   playlists: Record<string, ShowSongType[]>;
 }
 
@@ -28,6 +30,7 @@ const initialState: AllSongsState = {
   moodName: "",
   allMoodsName: [],
   moods: {},
+  playlistNotPermanentlySaved: [],
   playlists: { favourite: [] },
 };
 
@@ -140,6 +143,11 @@ const allSongsReducer = (
           ...state.playlists,
           favourite: action.payload,
         },
+      };
+    case PLAYLIST_NOT_TO_SAVE:
+      return {
+        ...state,
+        playlistNotPermanentlySaved: action.payload as ShowSongType[],
       };
     default:
       console.log("You're in the default state");
