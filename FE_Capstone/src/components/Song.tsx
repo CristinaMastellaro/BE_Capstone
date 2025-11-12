@@ -19,12 +19,15 @@ interface SongProps {
 
 const Song = ({ song, playlist }: SongProps) => {
   const dispatch = useAppDispatch();
-  const isFavourite = useAppSelector((state) =>
+  const isFavouriteAtTheBeginning = useAppSelector((state) => {
+    const idFavouriteSongs: string[] = [];
     (
       (state.allSongs.playlists as Record<string, ShowSongType[]>)
         .favourite as ShowSongType[]
-    ).includes(song)
-  );
+    ).forEach((fav) => idFavouriteSongs.push(fav.id));
+    return idFavouriteSongs.includes(song.id);
+  });
+  const [isFavourite, setIsFavourite] = useState(isFavouriteAtTheBeginning);
   const showModal = useAppSelector((state) => state.options.showModal);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -81,12 +84,18 @@ const Song = ({ song, playlist }: SongProps) => {
         {isFavourite ? (
           <BiSolidHeart
             className="me-2 my-pink"
-            onClick={() => dispatch(deleteFavourite(song))}
+            onClick={() => {
+              setIsFavourite(false);
+              dispatch(deleteFavourite(song));
+            }}
           />
         ) : (
           <BiHeart
             className="me-2"
-            onClick={() => dispatch(addNewFavourite(song))}
+            onClick={() => {
+              setIsFavourite(true);
+              dispatch(addNewFavourite(song));
+            }}
           />
         )}
         <span ref={iconRef}>

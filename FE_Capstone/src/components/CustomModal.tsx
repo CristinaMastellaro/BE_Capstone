@@ -68,6 +68,7 @@ const CustomModal = () => {
                     dispatch(addSongToPlaylist(song, title));
                     alert(song.title + " added to the playlist " + title);
                   }}
+                  className="options-add-to-playlist"
                 >
                   {title}
                 </p>

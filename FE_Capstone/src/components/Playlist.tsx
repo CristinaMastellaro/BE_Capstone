@@ -16,7 +16,9 @@ import {
 
 const Playlist = () => {
   const { specification } = useParams();
-  const allMoods = useAppSelector((state) => state.allSongs.allMoodsName);
+  const allMoods = useAppSelector(
+    (state) => state.allSongs.allMoodsName as string[]
+  );
   const songs = useAppSelector((state: IRootState) => {
     if (specification !== undefined) {
       if ((allMoods as string[]).includes(specification)) {
@@ -124,9 +126,13 @@ const Playlist = () => {
                   <p className="w-75 mx-auto mt-3">
                     {specification === "favourite"
                       ? "It's time to save your favourite songs or to look for new ones!"
-                      : `Your feelings are so deep, but our system isn't smart enough
+                      : allMoods.includes(specification as string)
+                      ? `Your feelings are so deep, but our system isn't smart enough
                   yet to understand which songs are fitted for "${specification}
-                  ". Want to give it another try with a more generic word?`}
+                  ". Want to give it another try with a more generic word?`
+                      : "Isn't there some good music that feels like " +
+                        specification +
+                        "?"}
                   </p>
                 </>
               )}

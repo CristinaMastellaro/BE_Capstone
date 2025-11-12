@@ -11,9 +11,6 @@ const Library = () => {
     (state) => state.allSongs.playlists as Record<string, ShowSongType[]>
   );
 
-  console.log("playlists", playlists);
-  console.log("Object.keys(playlists)", Object.keys(playlists));
-
   return (
     <>
       <Container fluid>
