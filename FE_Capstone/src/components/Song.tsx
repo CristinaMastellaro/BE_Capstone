@@ -6,6 +6,7 @@ import {
   addNewFavourite,
   changeShowModal,
   deleteFavourite,
+  deleteSongFromPlaylist,
   resetPlaylist,
   saveCurrentPlaylist,
   saveCurrentSong,
@@ -15,10 +16,13 @@ import { useEffect, useRef, useState } from "react";
 interface SongProps {
   song: ShowSongType;
   playlist: ShowSongType[];
+  namePlaylist: string;
 }
 
-const Song = ({ song, playlist }: SongProps) => {
+const Song = ({ song, playlist, namePlaylist }: SongProps) => {
   const dispatch = useAppDispatch();
+  console.log("namePlaylist", namePlaylist);
+  // Handle favourite songs
   const isFavouriteAtTheBeginning = useAppSelector((state) => {
     const idFavouriteSongs: string[] = [];
     (
@@ -28,6 +32,9 @@ const Song = ({ song, playlist }: SongProps) => {
     return idFavouriteSongs.includes(song.id);
   });
   const [isFavourite, setIsFavourite] = useState(isFavouriteAtTheBeginning);
+
+  // To save the song in a playlist
+  // TODO: What happens if a song is already saved in the playlist?
   const showModal = useAppSelector((state) => state.options.showModal);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -36,7 +43,6 @@ const Song = ({ song, playlist }: SongProps) => {
   const iconRef = useRef<HTMLSpanElement>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
-    // Verifica che il click non sia sul dropdown o sul bottone
     if (
       dropdownRef.current &&
       !dropdownRef.current.contains(event.target as Node) &&
@@ -53,6 +59,14 @@ const Song = ({ song, playlist }: SongProps) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Remove song from playlist
+
+  const isNamePlaylistInSavedPlaylist = useAppSelector((state) =>
+    Object.keys(state.allSongs.playlists).includes(namePlaylist)
+  ); // To see if the playlist is saved in the library (the playlist could be used to show the songs connected to a mood: in this case, the playlist is not saved in the library)
+  console.log("isNamePlaylistInSavedPlaylist", isNamePlaylistInSavedPlaylist);
+  // If this is true, than you can remove the song from the current playlist
 
   return (
     <div className="my-1 song mx-3 d-flex align-items-center">
@@ -109,6 +123,15 @@ const Song = ({ song, playlist }: SongProps) => {
               <li onClick={() => dispatch(changeShowModal(!showModal, song))}>
                 Add to playlist
               </li>
+              {isNamePlaylistInSavedPlaylist && (
+                <li
+                  onClick={() => {
+                    dispatch(deleteSongFromPlaylist(namePlaylist, song));
+                  }}
+                >
+                  Remove from playlist
+                </li>
+              )}
             </ul>
           </div>
         )}

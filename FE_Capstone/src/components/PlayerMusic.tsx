@@ -226,23 +226,23 @@ const PlayerMusic = () => {
           </Col>
           {/* Volume */}
           <Col
-            xs={2}
+            sm={2}
             md={4}
             lg={3}
-            className="align-items-center gap-2 justify-content-end d-flex pe-0"
+            className="align-items-center gap-2 justify-content-center justify-content-lg-end d-none d-sm-flex pe-0"
           >
             {isFavourite ? (
               <BiSolidHeart
-                className="me-4 me-lg-2 my-pink"
+                className="d-none d-sm-block ms-auto ms-md-5 me-lg-2 my-pink"
                 onClick={() => dispatch(deleteFavourite(currentSong))}
               />
             ) : (
               <BiHeart
-                className="me-4 me-lg-2"
+                className="d-none d-sm-block ms-auto ms-md-5 me-lg-2"
                 onClick={() => dispatch(addNewFavourite(currentSong))}
               />
             )}
-            <BiVolumeFull className="opacity-50 d-none d-md-block" />
+            <BiVolumeFull className="opacity-50 d-none d-lg-block" />
             <div className="d-none d-lg-flex">
               <input
                 type="range"

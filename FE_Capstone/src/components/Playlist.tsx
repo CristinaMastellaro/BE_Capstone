@@ -91,7 +91,7 @@ const Playlist = () => {
                     : "Playlist"}
                 </h1>
                 {songs && songs.length !== 0 && (
-                  <div className="player-playlist d-flex justify-content-end gap-4 align-items-center mb-4">
+                  <div className="player-playlist d-flex justify-content-md-end gap-4 align-items-center mb-4">
                     <BiShuffle
                       className={
                         isShuffle
@@ -142,6 +142,7 @@ const Playlist = () => {
                     key={song.id}
                     song={song}
                     playlist={songs as ShowSongType[]}
+                    namePlaylist={specification as string}
                   />
                 ))}
             </section>

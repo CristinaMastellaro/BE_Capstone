@@ -304,6 +304,7 @@ export const createNewPlaylist = (namePlaylist: string) => {
 };
 
 export const ADD_SONG_TO_PLAYLIST = "ADD_SONG_TO_PLAYLIST";
+export const DELETE_SONG_FROM_PLAYLIST = "DELETE_SONG_FROM_PLAYLIST";
 
 export const addSongToPlaylist = (
   newSong: ShowSongType,
@@ -332,6 +333,35 @@ export const addSongToPlaylist = (
     dispatch({
       type: ADD_SONG_TO_PLAYLIST,
       payload: [playlistName, newSong],
+    });
+  };
+};
+
+export const deleteSongFromPlaylist = (
+  namePlaylist: string,
+  song: ShowSongType
+) => {
+  return async (dispatch: AppDispatchFunction) => {
+    try {
+      const res = await fetch(
+        ENDPOINT + `/playlists/${namePlaylist}/${song.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${TOKEN}`,
+          },
+        }
+      );
+      if (!res.ok) throw new Error("Error while sending fetch");
+      const data = await res.json();
+      console.log("data", data);
+    } catch (err) {
+      console.log("Error!", err);
+    }
+
+    dispatch({
+      type: DELETE_SONG_FROM_PLAYLIST,
+      payload: [namePlaylist, song],
     });
   };
 };

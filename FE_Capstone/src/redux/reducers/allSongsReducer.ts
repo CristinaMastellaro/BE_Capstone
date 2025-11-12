@@ -9,6 +9,7 @@ import {
   ALL_SONGS_MOOD,
   CREATE_NEW_PLAYLIST,
   DELETE_FAVOURITE,
+  DELETE_SONG_FROM_PLAYLIST,
   SET_FAVOURITES_FROM_DB,
 } from "../actions";
 
@@ -115,6 +116,19 @@ const allSongsReducer = (
           ...state.playlists,
           [key]: state.playlists[key].concat(
             (action.payload as [string, ShowSongType])[1]
+          ),
+        },
+      };
+    }
+    case DELETE_SONG_FROM_PLAYLIST: {
+      const key = (action.payload as [string, ShowSongType])[0];
+      return {
+        ...state,
+        playlists: {
+          ...state.playlists,
+          [key]: state.playlists[key].filter(
+            (song) =>
+              song.id !== (action.payload as [string, ShowSongType])[1].id
           ),
         },
       };
