@@ -24,9 +24,6 @@ const Registration = () => {
     setErrors([]);
 
     fetch(ENDPOINT + "/auth/register", {
-      // fetch(
-      //   "https://wispy-sara-cristina-private-75ea3df9.koyeb.app/auth/register",
-      //   {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -158,7 +155,6 @@ const Registration = () => {
           >
             {loading ? <Loader /> : "Register"}
           </button>
-          {/* {loading && <Loader />} */}
         </div>
       </Form>
     </Container>

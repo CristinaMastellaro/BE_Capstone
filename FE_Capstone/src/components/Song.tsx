@@ -65,7 +65,6 @@ const Song = ({ song, playlist, namePlaylist }: SongProps) => {
   const isNamePlaylistInSavedPlaylist = useAppSelector((state) =>
     Object.keys(state.allSongs.playlists).includes(namePlaylist)
   ); // To see if the playlist is saved in the library (the playlist could be used to show the songs connected to a mood: in this case, the playlist is not saved in the library)
-
   // If this is true, than you can remove the song from the current playlist
 
   return (
@@ -74,10 +73,7 @@ const Song = ({ song, playlist, namePlaylist }: SongProps) => {
         data-audio-id={song.id}
         title="Play preview"
         onClick={() => {
-          // dispatch(isPlayingSong(false));
           dispatch(saveCurrentSong(song));
-          // dispatch(isPlayingSong(true));
-          // const rememberStartingPlaylist = { ...savedPlaylist };
           if (savedPlaylist !== playlist) {
             dispatch(resetPlaylist());
             playlist.forEach((singleSong) =>

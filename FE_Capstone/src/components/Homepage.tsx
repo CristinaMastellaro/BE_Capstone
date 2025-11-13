@@ -42,7 +42,6 @@ const Homepage = () => {
 
   const getMoods = () => {
     fetch(ENDPOINT + "/moods", {
-      // fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/moods", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

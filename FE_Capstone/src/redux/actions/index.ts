@@ -24,7 +24,6 @@ export const ADD_SINGLE_MOOD = "ADD_SINGLE_MOOD";
 
 export const findSongs = (mood: string) => {
   return async (dispatch: AppDispatchFunction) => {
-    //TODO cancella questo token e mettilo da un'altra parte!
     const token = localStorage.getItem("tokenLastFm");
     const AllFoundSongs: ShowSongType[] = [];
 
@@ -87,11 +86,10 @@ export const findSongs = (mood: string) => {
             }
             if (foundSong.id !== "") AllFoundSongs.push(foundSong);
           } catch (e: unknown) {
-            // console.log(err);
             console.log("This is the error: ", e);
             let result;
             if (typeof e === "string") {
-              result = e.toUpperCase(); // works, `e` narrowed to string
+              result = e.toUpperCase();
             } else if (e instanceof Error) {
               result = e.message;
             }

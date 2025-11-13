@@ -15,10 +15,6 @@ import {
   SET_FAVOURITES_FROM_DB,
 } from "../actions";
 
-// export type myMap = {
-//   [key: string]: ShowSongType[];
-// };
-
 interface AllSongsState {
   moodName: string;
   allMoodsName: string[];

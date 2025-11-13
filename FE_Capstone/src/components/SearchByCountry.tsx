@@ -13,6 +13,7 @@ import {
 } from "../redux/actions";
 import ShowSongType from "../types/ShowSongType";
 import { useNavigate } from "react-router-dom";
+import { Track } from "../types/TopSongType";
 
 interface selectedRegionType {
   title: string;
@@ -79,7 +80,7 @@ const SearchByCountry = () => {
             setSelectedRegionSongs([]);
             throw new Error("Error while searching for songs!");
           } else {
-            data2.tracks.track.forEach((topSong) => {
+            data2.tracks.track.forEach((topSong: Track) => {
               if (songs.length < 4) {
                 if (
                   artists.filter((artist) => artist === topSong.artist.name)

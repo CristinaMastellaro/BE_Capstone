@@ -26,7 +26,6 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     fetch(ENDPOINT + "/auth/login", {
-      // fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

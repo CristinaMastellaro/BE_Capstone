@@ -6,17 +6,8 @@ const CustomNavbar = () => {
   return (
     <>
       <div className="z-1">
-        {/* <div className="position-fixed"> */}
         {/* <h1 className="mb-4">Sound Adventure</h1> */}
         <h1 className="mb-4 d-none d-lg-block">Moody</h1>
-        {/* <div className="border border-1 p-2 rounded-2 d-flex gap-1 align-items-center mb-3">
-          <BiSearch className="my-icons me-1 fs-3" />
-          <input
-            type="text"
-            placeholder="Search"
-            className="bg-dark border-0 w-100 text-white"
-          />
-        </div> */}
         <div className="mt-lg-4 d-flex justify-content-around d-lg-block ">
           <Link
             to="/homepage"

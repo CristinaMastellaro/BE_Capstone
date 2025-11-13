@@ -14,7 +14,6 @@ import {
   saveCurrentSong,
   TOKEN_PEXEL,
 } from "../redux/actions";
-import { createClient } from "pexels";
 
 const Playlist = () => {
   const { specification } = useParams();
@@ -123,12 +122,7 @@ const Playlist = () => {
           <div
             className="hero"
             style={{ backgroundImage: `url(${picturePlaylist})` }}
-            // style={{ filter: `url(${picturePlaylist})` }}
           ></div>
-          {/* <section
-              className="hero"
-              style={{ backgroundImage: `url(${picturePlaylist})` }}
-            > */}
           <div className="change-hero bg-transparent">
             <h1 className="my-4 ms-5">
               {specification
@@ -164,7 +158,6 @@ const Playlist = () => {
               </div>
             )}
           </div>
-          {/* </section> */}
           <section className="pt-4 pb-5 bg-transparent z-1 position-relative">
             {songs && songs.length === 0 && (
               <>
@@ -191,7 +184,6 @@ const Playlist = () => {
                 />
               ))}
           </section>
-          {/* </div> */}
           {showModal && <CustomModal />}
         </>
       )}
