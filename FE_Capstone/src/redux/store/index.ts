@@ -8,11 +8,13 @@ import allSongsReducer from "../reducers/allSongsReducer";
 import { useDispatch, useSelector } from "react-redux";
 import playerReducer from "../reducers/playerReducer";
 import usernameReducer from "../reducers/usernameReducer";
+import optionsReducer from "../reducers/optionsReducer";
 
 const rootReducer = combineReducers({
   allSongs: allSongsReducer,
   player: playerReducer,
   user: usernameReducer,
+  options: optionsReducer,
 });
 
 const store = configureStore({

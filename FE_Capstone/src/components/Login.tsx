@@ -5,7 +5,12 @@ import { useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
 import Loader from "./Loader";
 import { useAppDispatch } from "../redux/store";
-import { setLoginUsername } from "../redux/actions";
+import {
+  ENDPOINT,
+  findAllPlaylists,
+  setFavFromDb,
+  setLoginUsername,
+} from "../redux/actions";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -20,7 +25,7 @@ const Login = () => {
   const login = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    fetch("http://localhost:8888/auth/login", {
+    fetch(ENDPOINT + "/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,10 +46,12 @@ const Login = () => {
         }
       })
       .then((data) => {
-        console.log(data);
         localStorage.setItem("token", data.token);
         localStorage.setItem("tokenLastFm", data.tokenLastFm);
+        localStorage.setItem("tokenPexel", data.apikeyPexels);
         dispatch(setLoginUsername(data.username));
+        dispatch(findAllPlaylists());
+        dispatch(setFavFromDb());
         setIsLoading(false);
         navigate("/homepage");
       })
@@ -94,7 +101,10 @@ const Login = () => {
               <BiInfoCircle className="me-2" /> {error}
             </p>
           )}
-          <button type="submit" className="my-btn-blue align-self-center">
+          <button
+            type="submit"
+            className="my-btn-blue align-self-center rounded-pill"
+          >
             {isLoading ? <Loader /> : "Login"}
           </button>
           <hr className="my-4" />

@@ -9,10 +9,14 @@ import {
   BiSkipNext,
   BiRepeat,
   BiVolumeFull,
+  BiSolidHeart,
+  BiHeart,
 } from "react-icons/bi";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import Loader from "./Loader";
 import {
+  addNewFavourite,
+  deleteFavourite,
   isPlayingSong,
   isRepeatingSong,
   isShufflingSongs,
@@ -37,6 +41,12 @@ const PlayerMusic = () => {
   );
   const isOnRepeat = useAppSelector(
     (state) => state.player.isOnRepeat as boolean
+  );
+  const isFavourite = useAppSelector((state) =>
+    (
+      (state.allSongs.playlists as Record<string, ShowSongType[]>)
+        .favourite as ShowSongType[]
+    ).includes(currentSong)
   );
 
   const showPlayer = useAppSelector(
@@ -79,11 +89,6 @@ const PlayerMusic = () => {
   let rAF: number;
   const whilePlaying = () => {
     setValueTimeMusic(Math.floor(audioRef.current!.currentTime));
-    // setStyleRange(true)
-    // elementsPlayer.style.setProperty(
-    //   "--seek-before-width",
-    //   `${(timeMusic.value / timeMusic.max) * 100}%`
-    // );
     rAF = requestAnimationFrame(whilePlaying);
   };
 
@@ -118,14 +123,14 @@ const PlayerMusic = () => {
       fluid
       className={
         showPlayer
-          ? "music-player justify-content-between d-none"
-          : "music-player justify-content-between"
+          ? "music-player z-2 justify-content-between d-none"
+          : "music-player z-2 justify-content-between"
       }
     >
       {/* Info songs */}
       {currentSong ? (
-        <Row className=" p-2 justify-content-between justify-content-lg-start align-items-center flex-nowrap w-100">
-          <Col className="d-flex" xs={8} lg={5}>
+        <Row className="p-2 justify-content-between justify-content-lg-start align-items-center flex-nowrap w-100">
+          <Col className="d-flex" xs={5} lg={5}>
             <img
               src={currentSong.cover}
               alt="Cover of the song"
@@ -221,12 +226,24 @@ const PlayerMusic = () => {
           </Col>
           {/* Volume */}
           <Col
+            sm={2}
             md={4}
             lg={3}
-            className="align-items-center gap-2 justify-content-end d-none d-md-flex"
+            className="align-items-center gap-2 justify-content-center justify-content-lg-end d-none d-sm-flex pe-0"
           >
-            <BiVolumeFull className="opacity-50" />
-            <div className="d-flex">
+            {isFavourite ? (
+              <BiSolidHeart
+                className="d-none d-sm-block ms-auto ms-md-5 me-lg-2 my-pink"
+                onClick={() => dispatch(deleteFavourite(currentSong))}
+              />
+            ) : (
+              <BiHeart
+                className="d-none d-sm-block ms-auto ms-md-5 me-lg-2"
+                onClick={() => dispatch(addNewFavourite(currentSong))}
+              />
+            )}
+            <BiVolumeFull className="opacity-50 d-none d-lg-block" />
+            <div className="d-none d-lg-flex">
               <input
                 type="range"
                 min="0"

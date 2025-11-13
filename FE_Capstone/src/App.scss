@@ -14,13 +14,17 @@ $new-dark: #2B2D42;
 
 // $theme-colors: map-merge($theme-colors, $new-theme-colors);
 
+.my-bg-container {
+  background-color: #2B2D42;
+}
+
 .container, .container-fluid {
-    background-color: #2B2D42;
+    // background-color: #2B2D42;
     // background-color: $new-secondary;
     // background: #EEAECA;
     // background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
     color: rgb(245, 249, 233);
-    min-height: 100vh;
+    // min-height: 80vh;
     
   //   font-family: "Poppins", sans-serif;
   // font-weight: 400;
@@ -40,10 +44,19 @@ $new-dark: #2B2D42;
     border-radius: 10px;
     background-color: $new-primary;
     color: black;
-    padding: 0.5em 1.5em;
+    padding: 0.5em 2em;
     border: 0;
     -webkit-box-shadow: 0px 0px 5px 3px rgba(126,126,126,0.81); 
-  box-shadow: 0px 0px 5px 3px rgba(126, 126, 126, 0.238) !important; 
+    box-shadow: 0px 0px 5px 3px rgba(126, 126, 126, 0.238) !important; 
+    max-width: fit-content !important;
+}
+
+.my-bg-pink {
+  background-color: rgb(241, 156, 193);
+}
+
+.my-pink {
+    color: rgb(241, 156, 193)
 }
 
 // #080705

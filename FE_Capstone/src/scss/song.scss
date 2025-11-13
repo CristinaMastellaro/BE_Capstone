@@ -32,3 +32,53 @@
 .song img:focus, .song img:active {
     border: 0;
 }
+
+.drop-order {
+  position: absolute;
+  right: 0.5em;
+  top: 2.5em;
+  background-color: rgb(56, 56, 56);
+  z-index: 1;
+//   border: 0.5px solid rgba(0, 0, 0, 0.208);
+  /* padding: 0.5em 1em; */
+  width: 6em;
+  border-radius: 0.3em;
+}
+
+// .drop-order legend {
+//   font-size: 1.2em;
+//   font-weight: 600;
+// }
+
+.drop-order ul {
+  padding-left: 0;
+  margin-bottom: 0em;
+  list-style-type: none;
+}
+
+.drop-order ul li {
+  padding: 0.7em 1em;
+  cursor: pointer;
+  color: white;
+  font-size: 0.7em;
+}
+
+.drop-order ul li:hover,
+.drop-order ul li:focus {
+  background-color: rgba(187, 187, 187, 0.156);
+}
+
+.on-click:active,
+.on-click:focus {
+  border: 0.5px solid rgba(0, 0, 0, 0.336);
+}
+
+.container-info {
+  max-width: 75%;
+  @media screen and (max-width: 680px) {
+    max-width: 65%;
+  }
+  @media screen and (max-width: 576px) {
+    max-width: 55%;
+  }
+}

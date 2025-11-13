@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import MoodType from "../types/MoodType";
-import { addSingleMood, findSongs, saveAllMoodsNames } from "../redux/actions";
+import {
+  addSingleMood,
+  ENDPOINT,
+  findSongs,
+  saveAllMoodsNames,
+} from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 
@@ -36,7 +41,7 @@ const Homepage = () => {
   };
 
   const getMoods = () => {
-    fetch("http://localhost:8888/moods", {
+    fetch(ENDPOINT + "/moods", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -71,7 +76,7 @@ const Homepage = () => {
 
   return (
     <>
-      <section className="pt-5 vh-100 text-center d-flex flex-column align-items-center align-self-end">
+      <section className="pt-5 text-center d-flex flex-column align-items-center align-self-end">
         {/* Emoticon? */}
         <h3>Hi {username || "gorgeous"}!</h3>
         <h1 className="mb-4">How are you feeling today? </h1>
@@ -111,7 +116,7 @@ const Homepage = () => {
           </div>
           <button
             type="submit"
-            className="mt-3 mt-lg-0 w-auto align-self-center my-btn-blue"
+            className="mt-3 mt-lg-0 w-auto align-self-center my-btn-blue rounded-pill"
           >
             Music time!
           </button>

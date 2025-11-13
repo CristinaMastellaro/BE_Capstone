@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BiInfoCircle } from "react-icons/bi";
 import Loader from "./Loader";
+import { ENDPOINT } from "../redux/actions";
 
 const Registration = () => {
   const [name, setName] = useState("");
@@ -22,7 +23,7 @@ const Registration = () => {
     setLoading(true);
     setErrors([]);
 
-    fetch("http://localhost:8888/auth/register", {
+    fetch(ENDPOINT + "/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -148,10 +149,12 @@ const Registration = () => {
           <p className="small text-secondary mb-4">
             The fields with (*) are mandatory.
           </p>
-          <button type="submit" className=" align-self-center w-50 my-btn-blue">
+          <button
+            type="submit"
+            className=" align-self-center w-50 my-btn-blue rounded-pill"
+          >
             {loading ? <Loader /> : "Register"}
           </button>
-          {/* {loading && <Loader />} */}
         </div>
       </Form>
     </Container>

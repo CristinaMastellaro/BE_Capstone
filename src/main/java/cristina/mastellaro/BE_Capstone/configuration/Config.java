@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 public class Config {
 
     @Bean
-    public String getApiKeyFromLastFm(@Value("${lastfm.api.key}") String apiKeyLastfm) {
-        return apiKeyLastfm;
+    public List<String> getApiKeys(@Value("${lastfm.api.key}") String apiKeyLastfm, @Value("${pexels.api.key}") String apiKeyPexels) {
+        return List.of(apiKeyLastfm, apiKeyPexels);
     }
 }
