@@ -60,7 +60,7 @@ const Registration = () => {
   };
 
   return (
-    <Container fluid className="vh-100">
+    <Container fluid className="vh-100 my-bg-container">
       <Form
         className="d-flex flex-column align-items-center justify-content-center h-100"
         onSubmit={registration}

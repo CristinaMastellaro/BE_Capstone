@@ -9,6 +9,7 @@ import {
   ALL_SONGS_MOOD,
   CREATE_NEW_PLAYLIST,
   DELETE_FAVOURITE,
+  DELETE_PLAYLIST,
   DELETE_SONG_FROM_PLAYLIST,
   PLAYLIST_NOT_TO_SAVE,
   RESET_NOT_PERMANENT_PLAYLIST,
@@ -103,6 +104,11 @@ const allSongsReducer = (
           ...state.playlists,
           [action.payload as string]: [],
         },
+      };
+    case DELETE_PLAYLIST:
+      return {
+        ...state,
+        playlists: action.payload,
       };
     case ADD_SONG_TO_PLAYLIST: {
       const key = (action.payload as [string, ShowSongType])[0];

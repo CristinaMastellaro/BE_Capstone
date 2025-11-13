@@ -71,7 +71,20 @@ public class PlaylistService {
         }
     }
 
-    ;
+    public Playlist changeNamePlaylist(User authenticatedUser, String namePlaylistToChange, String newName) {
+        Playlist playlistToUpdate = pRepo.findByNameAndUser(authenticatedUser, namePlaylistToChange);
+        if (playlistToUpdate == null)
+            throw new NotFoundException("You don't have a playlist called " + namePlaylistToChange);
+
+        playlistToUpdate.setName(newName);
+
+        pRepo.save(playlistToUpdate);
+
+        log.info("Name of the playlist updated!");
+
+        return playlistToUpdate;
+
+    }
 
     @Transactional
     public Playlist addSongToPlaylist(User authenticatedUser, SongDTO newSong, String playlistName) {
@@ -117,5 +130,15 @@ public class PlaylistService {
     @Transactional
     public List<Playlist> findAllPlaylists(User authenticatedUser) {
         return pRepo.findAllPlaylistsByUser(authenticatedUser);
+    }
+
+    public void deletePlaylist(User authenticatedUser, String namePlaylist) {
+        Playlist playlistToDelete = pRepo.findByNameAndUser(authenticatedUser, namePlaylist);
+
+        if (playlistToDelete == null) throw new NotFoundException("You don't have a playlist called " + namePlaylist);
+
+        pRepo.delete(playlistToDelete);
+
+        log.info("Playlist deleted!");
     }
 }

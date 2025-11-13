@@ -1,5 +1,5 @@
 import ShowSongType from "../../types/ShowSongType";
-import { AppDispatchFunction } from "../store";
+import { AppDispatchFunction, IRootState } from "../store";
 
 export const ENDPOINT = "http://localhost:8888";
 // export const ENDPOINT = "https://becapstone-production.up.railway.app";
@@ -248,6 +248,8 @@ export const setFavFromDb = () => {
 // General playlists
 export const ALL_PLAYLISTS = "ALL_PLAYLISTS";
 export const CREATE_NEW_PLAYLIST = "CREATE_NEW_PLAYLIST";
+export const DELETE_PLAYLIST = "DELETE_PLAYLIST";
+export const RENAME_PLAYLIST = "RENAME_PLAYLIST";
 
 type PlaylistType = {
   id: string;
@@ -299,6 +301,67 @@ export const createNewPlaylist = (namePlaylist: string) => {
   };
 };
 
+export const deletePlaylist = (namePlaylist: string) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    try {
+      const res = await fetch(ENDPOINT + "/playlists/" + namePlaylist, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+      if (!res.ok) throw new Error("Who knows");
+    } catch (err) {
+      console.log("Error!", err);
+    }
+
+    const playlists: Record<string, ShowSongType[]> = getState().allSongs
+      .playlists as Record<string, ShowSongType[]>;
+    const namePlaylists = Object.keys(getState().allSongs.playlists).filter(
+      (key) => key !== namePlaylist
+    );
+    let playlistWithoutTheDeletedPlaylist: Record<string, ShowSongType[]> = {};
+
+    namePlaylists.forEach((name) => {
+      playlistWithoutTheDeletedPlaylist = {
+        ...playlistWithoutTheDeletedPlaylist,
+        [name]: playlists[name],
+      };
+    });
+
+    dispatch({
+      type: DELETE_PLAYLIST,
+      payload: playlistWithoutTheDeletedPlaylist,
+    });
+  };
+};
+
+export const renamePlaylist = (
+  oldNamePlaylist: string,
+  newNamePlaylist: string
+) => {
+  return () => {
+    fetch(
+      ENDPOINT +
+        "/playlists/" +
+        oldNamePlaylist +
+        "?newName=" +
+        newNamePlaylist,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      }
+    )
+      .then((res) => {
+        if (!res.ok)
+          throw new Error("Couldn't change the name of the playlist");
+      })
+      .catch((err) => console.log("Error!", err));
+  };
+};
+
 export const ADD_SONG_TO_PLAYLIST = "ADD_SONG_TO_PLAYLIST";
 export const DELETE_SONG_FROM_PLAYLIST = "DELETE_SONG_FROM_PLAYLIST";
 
@@ -309,14 +372,17 @@ export const addSongToPlaylist = (
   return async (dispatch: AppDispatchFunction) => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(ENDPOINT + "/playlists/" + playlistName, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newSong),
-      });
+      const res = await fetch(
+        ENDPOINT + "/playlists/" + playlistName + "/add",
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newSong),
+        }
+      );
       if (!res.ok)
         throw new Error("There was an issue while connecting to the db");
     } catch (err) {
