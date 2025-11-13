@@ -44,13 +44,13 @@ const Playlist = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const phrasesForLoading = [
-    "Last.fm API was used for this reasearch",
     "Following the sound of your mood",
     "Is that the perfect song?",
     "Maybe not. The adventure goes on",
     "There's an Italian saying that goes: 'The one who walks slowlys walks safely and goes far'. \nOur connection is taking this saying to the next level",
     "No, we haven't forgotten about you. How can we?",
     "So... You've been here for a while. Care to talk about your favourite song?",
+    "That's what you like, uh? Let us look for it, then",
   ];
 
   const [phrase, setPhrase] = useState(phrasesForLoading[0]);
@@ -90,13 +90,13 @@ const Playlist = () => {
   return (
     <>
       {isLoading ? (
-        <div className="d-flex flex-column justify-content-center align-items-center vh-100 w-75 mx-auto text-center">
+        <div className="d-flex flex-column justify-content-center align-items-center w-75 mx-auto text-center h-100 my-auto">
           <p className="mb-5">{phrase}</p>
           <Loader />
         </div>
       ) : (
         <>
-          <div style={{ minHeight: "100vh" }}>
+          <div>
             <section className="hero">
               <div className="change-hero">
                 <h1 className="my-4 ms-5">

@@ -2,6 +2,7 @@ import ShowSongType from "../../types/ShowSongType";
 import { AppDispatchFunction } from "../store";
 
 export const ENDPOINT = "http://localhost:8888";
+// export const ENDPOINT = "https://becapstone-production.up.railway.app";
 
 // For login
 export const SET_USERNAME = "SET_USERNAME";
@@ -183,7 +184,7 @@ export const addNewFavourite = (newFav: ShowSongType) => {
   return async (dispatch: AppDispatchFunction) => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:8888/playlists/favourite", {
+      const res = await fetch(ENDPOINT + "/playlists/favourite", {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -206,7 +207,7 @@ export const deleteFavourite = (favToDel: ShowSongType) => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://localhost:8888/playlists/favourite/${favToDel.id}`,
+        `${ENDPOINT}/playlists/favourite/${favToDel.id}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -225,12 +226,9 @@ export const setFavFromDb = () => {
     const favourites: ShowSongType[] = [];
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(
-        "http://localhost:8888/playlists/favourite",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await fetch(ENDPOINT + "/playlists/favourite", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (!response.ok) throw new Error("Response status: " + response.status);
 
@@ -312,17 +310,14 @@ export const addSongToPlaylist = (
   return async (dispatch: AppDispatchFunction) => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(
-        "http://localhost:8888/playlists/" + playlistName,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newSong),
-        }
-      );
+      const res = await fetch(ENDPOINT + "/playlists/" + playlistName, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newSong),
+      });
       if (!res.ok)
         throw new Error("There was an issue while connecting to the db");
     } catch (err) {

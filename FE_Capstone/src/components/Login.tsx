@@ -6,6 +6,7 @@ import { BiInfoCircle } from "react-icons/bi";
 import Loader from "./Loader";
 import { useAppDispatch } from "../redux/store";
 import {
+  ENDPOINT,
   findAllPlaylists,
   setFavFromDb,
   setLoginUsername,
@@ -24,7 +25,7 @@ const Login = () => {
   const login = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    fetch("http://localhost:8888/auth/login", {
+    fetch(ENDPOINT + "/auth/login", {
       // fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/auth/login", {
       method: "POST",
       headers: {

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BiInfoCircle } from "react-icons/bi";
 import Loader from "./Loader";
+import { ENDPOINT } from "../redux/actions";
 
 const Registration = () => {
   const [name, setName] = useState("");
@@ -22,7 +23,7 @@ const Registration = () => {
     setLoading(true);
     setErrors([]);
 
-    fetch("http://localhost:8888/auth/register", {
+    fetch(ENDPOINT + "/auth/register", {
       // fetch(
       //   "https://wispy-sara-cristina-private-75ea3df9.koyeb.app/auth/register",
       //   {

@@ -10,6 +10,7 @@ import Library from "./components/Library";
 import { useEffect } from "react";
 import { useAppDispatchFunction } from "./redux/store";
 import {
+  ENDPOINT,
   findAllPlaylists,
   setFavFromDb,
   setLoginUsername,
@@ -20,7 +21,7 @@ function App() {
   const dispatch = useAppDispatchFunction();
 
   useEffect(() => {
-    fetch("http://localhost:8888/auth/login", {
+    fetch(ENDPOINT + "/auth/login", {
       // fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/auth/login", {
       method: "POST",
       headers: {
