@@ -8,6 +8,7 @@ export const ENDPOINT = "http://localhost:8888";
 export const SET_USERNAME = "SET_USERNAME";
 export const TOKEN = localStorage.getItem("token");
 export const TOKEN_LAST_FM = localStorage.getItem("tokenLastFm");
+export const TOKEN_PEXEL = localStorage.getItem("tokenPexel");
 
 export const setLoginUsername = (username: string) => {
   return {

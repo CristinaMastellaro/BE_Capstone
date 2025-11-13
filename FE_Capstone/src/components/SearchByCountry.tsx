@@ -172,10 +172,12 @@ const SearchByCountry = () => {
   return (
     <>
       <Container fluid>
-        <h1 className="my-5 ms-4 fw-bold">Countries</h1>
+        <h1 className="pt-5 mb-5 ms-4 fw-bold">Countries</h1>
         <div ref={mapRef} id="map"></div>
-        <Row className="p-4">
-          <h2>{selectedRegion}</h2>
+        <Row className="p-4 pb-1 justify-content-center">
+          {selectedRegionSongs.length > 0 && !loading && (
+            <h2 className="text-center">{selectedRegion}</h2>
+          )}
           {loading && (
             <>
               <p className="text-center mt-3">Searching for the top songs...</p>
@@ -207,7 +209,7 @@ const SearchByCountry = () => {
               );
             })}
           {selectedRegionSongs.length > 0 && !loading && (
-            <div className="text-center mb-4 pb-5">
+            <div className="text-center pb-3">
               <p className="mt-3">
                 Here are the first four songs listened to in {selectedRegion}!
                 Would you like to listen some more?
@@ -221,7 +223,7 @@ const SearchByCountry = () => {
             </div>
           )}
           {error && !loading && (
-            <p className="mt-4">
+            <p className="mt-4 text-center">
               {selectedRegion} didn't want to share their music preferences, so
               we don't know their favourite songs.{" "}
             </p>

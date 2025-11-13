@@ -8,13 +8,13 @@ import CustomFooter from "./CustomFooter";
 const MainLayout = () => {
   return (
     <>
-      <Container fluid>
+      <Container fluid className="my-bg-container">
         <Row>
           <Col
             xs={12}
             lg={3}
             xl={2}
-            className="py-2 p-lg-0 bg-black px-lg-3 pt-lg-4 position-fixed bottom-0 custom-nav"
+            className="py-2 p-lg-0 bg-black px-lg-3 pt-lg-4 position-fixed bottom-0 custom-nav z-1"
           >
             <CustomNavbar />
           </Col>
@@ -28,13 +28,15 @@ const MainLayout = () => {
             <div className="flex-grow-1">
               <Outlet />
             </div>
-            <div>
+            <div className="z-0">
               <CustomFooter />
             </div>
           </Col>
         </Row>
       </Container>
-      <PlayerMusic />
+      <div className="z-2">
+        <PlayerMusic />
+      </div>
     </>
   );
 };

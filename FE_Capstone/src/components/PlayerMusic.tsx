@@ -123,8 +123,8 @@ const PlayerMusic = () => {
       fluid
       className={
         showPlayer
-          ? "music-player justify-content-between d-none"
-          : "music-player justify-content-between"
+          ? "music-player z-2 justify-content-between d-none"
+          : "music-player z-2 justify-content-between"
       }
     >
       {/* Info songs */}

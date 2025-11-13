@@ -42,6 +42,7 @@ function App() {
       .then((data) => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("tokenLastFm", data.tokenLastFm);
+        localStorage.setItem("tokenPexel", data.apikeyPexels);
         dispatch(setLoginUsername(data.username));
         dispatch(findAllPlaylists());
         dispatch(setFavFromDb());
