@@ -16,6 +16,7 @@ import {
   setLoginUsername,
 } from "./redux/actions";
 import SearchByCountry from "./components/SearchByCountry";
+import Page404 from "./components/Page404";
 
 function App() {
   const dispatch = useAppDispatchFunction();
@@ -61,6 +62,7 @@ function App() {
             <Route element={<Playlist />} path="/playlist/:specification" />
             <Route element={<Library />} path="/library" />
             <Route element={<SearchByCountry />} path="/searchCountry" />
+            <Route element={<Page404 />} path="*" />
           </Route>
           <Route element={<Login />} path="/" />
           <Route element={<Registration />} path="/register" />
