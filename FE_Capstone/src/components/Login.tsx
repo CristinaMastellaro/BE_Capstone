@@ -62,7 +62,7 @@ const Login = () => {
   };
 
   return (
-    <Container fluid className="vh-100 my-bg-container">
+    <Container fluid className="vh-100 colored-bg-container">
       <Form
         className="d-flex flex-column align-items-center justify-content-center h-100"
         onSubmit={login}

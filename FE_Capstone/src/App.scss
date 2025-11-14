@@ -18,6 +18,24 @@ $new-dark: #2B2D42;
   background-color: #2B2D42;
 }
 
+.colored-bg-container {
+  background: #1482ff;
+  background: linear-gradient(20deg,rgb(1, 72, 153) 10%, rgba(156, 241, 240, 1) 49%, rgba(241, 156, 193, 1) 50%, rgb(255, 0, 0) 85%);
+  // Sembra una bandiera, scherzone
+  // background: linear-gradient(20deg,rgb(0, 55, 117) 49%, rgb(255, 238, 0) 51%);
+}
+
+.bg-happy {
+  background: #1482ff;
+  // background: linear-gradient(17deg,rgba(20, 130, 255, 1) 0%, rgba(156, 241, 240, 1) 23%, rgba(241, 156, 193, 1) 42%, rgba(255, 0, 0, 1) 62%);
+  background: linear-gradient(17deg, rgba(0, 55, 117) 0%, rgb(255, 238, 0) 45%);
+}
+
+.bg-sad {
+  background: #1482ff;
+  background: linear-gradient(17deg, rgb(0, 55, 117) 55%, rgba(255, 238, 0) 100%);
+}
+
 .container, .container-fluid {
     // background-color: #2B2D42;
     // background-color: $new-secondary;
