@@ -12,6 +12,9 @@
 }
 
 .img-top-song {
-        width: 6.8em;
-        height: 4.5em;
+    width: 6.8em;
+    height: 4.5em;
+    & :hover {
+        cursor: pointer;
     }
+}

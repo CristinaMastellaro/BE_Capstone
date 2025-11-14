@@ -8,6 +8,8 @@ import Loader from "./Loader";
 import { useAppDispatch } from "../redux/store";
 import {
   resetNotPermanentPlaylist,
+  resetPlaylist,
+  saveCurrentPlaylist,
   saveCurrentSong,
   savePlaylistNotToSavePermanently,
 } from "../redux/actions";
@@ -154,8 +156,11 @@ const SearchByCountry = () => {
             i = data.data.length;
           }
         }
-        if (songToSave.id !== "") dispatch(saveCurrentSong(songToSave));
-        else alert("We couldn't load a preview of the song, sorry");
+        if (songToSave.id !== "") {
+          dispatch(resetPlaylist());
+          dispatch(saveCurrentPlaylist(songToSave));
+          dispatch(saveCurrentSong(songToSave));
+        } else alert("We couldn't load a preview of the song, sorry");
       })
       .catch(() => {
         alert("We couldn't load a preview of the song, sorry");
