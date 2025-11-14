@@ -311,16 +311,17 @@ const Playlist = () => {
                   </p>
                 </>
               )}
-
-              {songs &&
-                (songs as ShowSongType[]).map((song) => (
-                  <Song
-                    key={song.id}
-                    song={song}
-                    playlist={songs as ShowSongType[]}
-                    namePlaylist={specification as string}
-                  />
-                ))}
+              <div className="mx-3">
+                {songs &&
+                  (songs as ShowSongType[]).map((song) => (
+                    <Song
+                      key={song.id}
+                      song={song}
+                      playlist={songs as ShowSongType[]}
+                      namePlaylist={specification as string}
+                    />
+                  ))}
+              </div>
             </section>
             {showModal && <CustomModal />}
           </div>

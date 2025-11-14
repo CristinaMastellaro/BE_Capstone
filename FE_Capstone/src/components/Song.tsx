@@ -69,7 +69,7 @@ const Song = ({ song, playlist, namePlaylist, dontShow }: SongProps) => {
   // If this is true, than you can remove the song from the current playlist
 
   return (
-    <div className="my-1 song mx-3 d-flex align-items-center">
+    <div className="my-1 song d-flex align-items-center">
       <button
         data-audio-id={song.id}
         title="Play preview"
