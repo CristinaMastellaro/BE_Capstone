@@ -68,7 +68,8 @@ const Playlist = () => {
   const [newName, setNewName] = useState("");
 
   const navigate = useNavigate();
-  const changeName = () => {
+  const changeName = (e: React.FormEvent) => {
+    e.preventDefault();
     dispatch(renamePlaylist(specification as string, newName));
     navigate("/library");
   };
@@ -225,14 +226,16 @@ const Playlist = () => {
                       }}
                     />
                   </div>
-                  {allPlaylistsNames.includes(specification as string) && (
-                    <span ref={iconRef}>
-                      <BiDotsVerticalRounded
-                        className="icons-for-playing fs-3"
-                        onClick={() => setShowDropdown(!showDropdown)}
-                      />
-                    </span>
-                  )}
+                  {allPlaylistsNames.includes(specification as string) &&
+                    (specification as string).toLocaleLowerCase() !==
+                      "favourite" && (
+                      <span ref={iconRef}>
+                        <BiDotsVerticalRounded
+                          className="icons-for-playing fs-3"
+                          onClick={() => setShowDropdown(!showDropdown)}
+                        />
+                      </span>
+                    )}
                   {showDropdown && (
                     <div
                       ref={dropdownRef}
@@ -259,7 +262,9 @@ const Playlist = () => {
             <section className="pt-4 pb-5 bg-transparent z-1 position-relative">
               {songs &&
                 songs.length === 0 &&
-                allPlaylistsNames.includes(specification as string) && (
+                allPlaylistsNames.includes(specification as string) &&
+                (specification as string).toLocaleLowerCase() !==
+                  "favourite" && (
                   <>
                     <div className="d-flex justify-content-end">
                       <span ref={iconRef}>

@@ -43,7 +43,12 @@ const CustomModal = () => {
             New playlist
           </button>
           {showForm && (
-            <form onSubmit={() => create(newPlaylistName)}>
+            <form
+              onSubmit={(e: React.FormEvent) => {
+                e.preventDefault();
+                create(newPlaylistName);
+              }}
+            >
               <legend className="small fs-7">Name of the new playlist:</legend>
               <div className="d-flex gap-2 justify-content-center">
                 <input

@@ -17,6 +17,7 @@ import {
 } from "./redux/actions";
 import SearchByCountry from "./components/SearchByCountry";
 import Page404 from "./components/Page404";
+import Search from "./components/Search";
 
 function App() {
   const dispatch = useAppDispatchFunction();
@@ -62,6 +63,7 @@ function App() {
             <Route element={<Playlist />} path="/playlist/:specification" />
             <Route element={<Library />} path="/library" />
             <Route element={<SearchByCountry />} path="/searchCountry" />
+            <Route element={<Search />} path="/search" />
             <Route element={<Page404 />} path="*" />
           </Route>
           <Route element={<Login />} path="/" />

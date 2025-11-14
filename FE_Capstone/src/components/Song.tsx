@@ -17,9 +17,10 @@ interface SongProps {
   song: ShowSongType;
   playlist: ShowSongType[];
   namePlaylist: string;
+  dontShow?: boolean;
 }
 
-const Song = ({ song, playlist, namePlaylist }: SongProps) => {
+const Song = ({ song, playlist, namePlaylist, dontShow }: SongProps) => {
   const dispatch = useAppDispatch();
 
   // Handle favourite songs
@@ -88,48 +89,50 @@ const Song = ({ song, playlist, namePlaylist }: SongProps) => {
         <p className="mb-0 fw-bold">{song.title}</p>
         <p className="mb-0">{song.author}</p>
       </div>
-      <div className="dots-menu fs-4 me-4 ms-auto">
-        {isFavourite ? (
-          <BiSolidHeart
-            className="me-2 my-pink"
-            onClick={() => {
-              setIsFavourite(false);
-              dispatch(deleteFavourite(song));
-            }}
-          />
-        ) : (
-          <BiHeart
-            className="me-2"
-            onClick={() => {
-              setIsFavourite(true);
-              dispatch(addNewFavourite(song));
-            }}
-          />
-        )}
-        <span ref={iconRef}>
-          <BiDotsVerticalRounded
-            onClick={() => setShowDropdown(!showDropdown)}
-          />
-        </span>
-        {showDropdown && (
-          <div ref={dropdownRef} className="drop-order text-dark small">
-            <ul>
-              <li onClick={() => dispatch(changeShowModal(!showModal, song))}>
-                Add to playlist
-              </li>
-              {isNamePlaylistInSavedPlaylist && (
-                <li
-                  onClick={() => {
-                    dispatch(deleteSongFromPlaylist(namePlaylist, song));
-                  }}
-                >
-                  Remove from playlist
+      {!dontShow && (
+        <div className="dots-menu fs-4 me-4 ms-auto">
+          {isFavourite ? (
+            <BiSolidHeart
+              className="me-2 my-pink"
+              onClick={() => {
+                setIsFavourite(false);
+                dispatch(deleteFavourite(song));
+              }}
+            />
+          ) : (
+            <BiHeart
+              className="me-2"
+              onClick={() => {
+                setIsFavourite(true);
+                dispatch(addNewFavourite(song));
+              }}
+            />
+          )}
+          <span ref={iconRef}>
+            <BiDotsVerticalRounded
+              onClick={() => setShowDropdown(!showDropdown)}
+            />
+          </span>
+          {showDropdown && (
+            <div ref={dropdownRef} className="drop-order text-dark small">
+              <ul>
+                <li onClick={() => dispatch(changeShowModal(!showModal, song))}>
+                  Add to playlist
                 </li>
-              )}
-            </ul>
-          </div>
-        )}
-      </div>
+                {isNamePlaylistInSavedPlaylist && (
+                  <li
+                    onClick={() => {
+                      dispatch(deleteSongFromPlaylist(namePlaylist, song));
+                    }}
+                  >
+                    Remove from playlist
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
