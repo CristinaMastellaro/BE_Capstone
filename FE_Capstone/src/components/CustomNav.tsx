@@ -1,12 +1,7 @@
-import {
-  BiBroadcast,
-  BiHome,
-  BiLibrary,
-  BiSearch,
-  BiWorld,
-} from "react-icons/bi";
+import { BiHome, BiLibrary, BiSearch, BiWorld } from "react-icons/bi";
 import "../scss/customNav.scss";
 import { Link } from "react-router-dom";
+import { GrSettingsOption } from "react-icons/gr";
 
 const CustomNavbar = () => {
   return (
@@ -44,8 +39,8 @@ const CustomNavbar = () => {
             <span className="d-none d-lg-block">Library</span>
           </Link>
           <div className="mt-2 p-1 options">
-            <BiBroadcast className="my-icons me-2 fs-4" />
-            <span className="d-none d-lg-block">Notifications</span>
+            <GrSettingsOption className="my-icons me-2 fs-4" />
+            <span className="d-none d-lg-block">Settings</span>
           </div>
         </div>
       </div>
