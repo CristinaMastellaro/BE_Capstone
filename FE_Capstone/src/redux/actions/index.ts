@@ -1,8 +1,8 @@
 import ShowSongType from "../../types/ShowSongType";
 import { AppDispatchFunction } from "../store";
 
-export const ENDPOINT = "http://localhost:8888";
-// export const ENDPOINT = "https://becapstone-production.up.railway.app";
+// export const ENDPOINT = "http://localhost:8888";
+export const ENDPOINT = "https://becapstone-production.up.railway.app";
 
 // For login
 export const SET_USERNAME = "SET_USERNAME";
