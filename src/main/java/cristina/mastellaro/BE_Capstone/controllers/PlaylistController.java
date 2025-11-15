@@ -39,16 +39,26 @@ public class PlaylistController {
         return pServ.getPlaylistByName(user, namePlaylist);
     }
 
-    @PatchMapping("/{namePlaylist}")
+    @PatchMapping("/{namePlaylist}/add")
     public Playlist addSongToPlaylist(@AuthenticationPrincipal User user, @RequestBody @Validated SongDTO newSong, @PathVariable String namePlaylist, BindingResult validation) {
         if (validation.hasErrors())
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(fL -> fL.getDefaultMessage()).toList());
         return pServ.addSongToPlaylist(user, newSong, namePlaylist);
     }
 
+    @PatchMapping("/{namePlaylist}")
+    public Playlist changeNamePlaylist(@AuthenticationPrincipal User user, @PathVariable String namePlaylist, @RequestParam String newName) {
+        return pServ.changeNamePlaylist(user, namePlaylist, newName);
+    }
+
     @DeleteMapping("/{namePlaylist}/{idSong}")
     public Playlist deleteSongFromPlaylist(@AuthenticationPrincipal User user, @PathVariable String namePlaylist, @PathVariable String idSong) {
         return pServ.deleteSongFromPlaylist(user, idSong, namePlaylist);
+    }
+
+    @DeleteMapping("/{namePlaylist}")
+    public void deletePlaylist(@AuthenticationPrincipal User user, @PathVariable String namePlaylist) {
+        pServ.deletePlaylist(user, namePlaylist);
     }
 
 }

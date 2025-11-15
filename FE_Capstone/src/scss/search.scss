@@ -1,0 +1,36 @@
+.drop-order-search {
+    top: 5.5vh;
+    right: 0;
+}
+
+.row-found-songs{
+    width: 85%;
+    position: relative;
+    margin-left: auto; 
+    margin-right: auto; 
+}
+
+.container-found-songs {
+    height: 35vh;
+    overflow-y: scroll;
+    margin-bottom: 1.5em;
+    width: 100%;
+    @media screen and (min-width: 996px) {
+        height: 50vh;
+    }
+}
+
+.container-found-songs .song {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.container-found-songs::-webkit-scrollbar {
+    display: none;
+}
+
+.alert-search {
+    width: 70%;
+    text-align: center;
+    margin-bottom: 1.5em !important;
+}

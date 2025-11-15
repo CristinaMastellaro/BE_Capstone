@@ -1,0 +1,53 @@
+.message-not-found{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 15em;
+    p {
+        font-size: 1.2em;
+        backdrop-filter: blur(10px);
+        text-align: center;
+        width: 100%;
+        padding: 0.5em 1.5em;
+        margin-bottom: 0.2em;
+    }
+}
+
+.img-not-found {
+    background-position: center;
+    width: 50%;
+    height: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.4;
+    bottom: 10%;
+    top: 40%;
+    left: 25%;
+    right: 25%;
+    position: absolute;
+    justify-content: start;
+    align-items: center;
+    p {
+        position: absolute;
+        bottom: -2vh;
+        right: 38%;
+        opacity: 0.5;
+        font-size: 0.8em;
+        a {
+            color: white;
+        } & :focus{
+            color: white;
+        }
+    }
+    span {
+        opacity: 1;
+    }
+    
+    @media screen and (min-width: 667px) {
+        height: 80%;
+        top: 15%;
+    }
+}

@@ -14,7 +14,7 @@ const MainLayout = () => {
             xs={12}
             lg={3}
             xl={2}
-            className="py-2 p-lg-0 bg-black px-lg-3 pt-lg-4 position-fixed bottom-0 custom-nav z-1"
+            className="py-2 p-lg-0 bg-black px-lg-3 pt-lg-4 position-fixed bottom-0 custom-nav z-2"
           >
             <CustomNavbar />
           </Col>

@@ -8,8 +8,11 @@ import Loader from "./Loader";
 import { useAppDispatch } from "../redux/store";
 import {
   resetNotPermanentPlaylist,
+  resetPlaylist,
+  saveCurrentPlaylist,
   saveCurrentSong,
   savePlaylistNotToSavePermanently,
+  TOKEN_LAST_FM,
 } from "../redux/actions";
 import ShowSongType from "../types/ShowSongType";
 import { useNavigate } from "react-router-dom";
@@ -52,8 +55,6 @@ const SearchByCountry = () => {
     });
   }, []);
 
-  const token = localStorage.getItem("tokenLastFm");
-
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/alpha/" + selectedRegionCode)
       .then((res) => {
@@ -67,7 +68,7 @@ const SearchByCountry = () => {
 
         try {
           const res2 = await fetch(
-            `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].name.common}&api_key=${token}&format=json&limit=30`
+            `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].name.common}&api_key=${TOKEN_LAST_FM}&format=json&limit=30`
           );
 
           if (!res2.ok) throw new Error("Error while searching for top music");
@@ -154,8 +155,11 @@ const SearchByCountry = () => {
             i = data.data.length;
           }
         }
-        if (songToSave.id !== "") dispatch(saveCurrentSong(songToSave));
-        else alert("We couldn't load a preview of the song, sorry");
+        if (songToSave.id !== "") {
+          dispatch(resetPlaylist());
+          dispatch(saveCurrentPlaylist(songToSave));
+          dispatch(saveCurrentSong(songToSave));
+        } else alert("We couldn't load a preview of the song, sorry");
       })
       .catch(() => {
         alert("We couldn't load a preview of the song, sorry");
