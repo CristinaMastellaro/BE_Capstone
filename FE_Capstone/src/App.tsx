@@ -7,50 +7,42 @@ import Playlist from "./components/Playlist";
 import Homepage from "./components/Homepage";
 import MainLayout from "./components/MainLayout";
 import Library from "./components/Library";
-import { useEffect } from "react";
-import { useAppDispatchFunction } from "./redux/store";
-import {
-  ENDPOINT,
-  findAllPlaylists,
-  setFavFromDb,
-  setLoginUsername,
-} from "./redux/actions";
 import SearchByCountry from "./components/SearchByCountry";
 
 function App() {
-  const dispatch = useAppDispatchFunction();
+  // const dispatch = useAppDispatchFunction();
 
-  useEffect(() => {
-    fetch(ENDPOINT + "/auth/login", {
-      // fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: "Augustus8",
-        password: "Password1!",
-      }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error("Error!");
-        }
-      })
-      .then((data) => {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("tokenLastFm", data.tokenLastFm);
-        localStorage.setItem("tokenPexel", data.apikeyPexels);
-        dispatch(setLoginUsername(data.username));
-        dispatch(findAllPlaylists());
-        dispatch(setFavFromDb());
-      })
-      .catch(() => {
-        console.log("Error");
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(ENDPOINT + "/auth/login", {
+  //     // fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/auth/login", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       username: "Augustus8",
+  //       password: "Password1!",
+  //     }),
+  //   })
+  //     .then((res) => {
+  //       if (res.ok) {
+  //         return res.json();
+  //       } else {
+  //         throw new Error("Error!");
+  //       }
+  //     })
+  //     .then((data) => {
+  //       localStorage.setItem("token", data.token);
+  //       localStorage.setItem("tokenLastFm", data.tokenLastFm);
+  //       localStorage.setItem("tokenPexel", data.apikeyPexels);
+  //       dispatch(setLoginUsername(data.username));
+  //       dispatch(findAllPlaylists());
+  //       dispatch(setFavFromDb());
+  //     })
+  //     .catch(() => {
+  //       console.log("Error");
+  //     });
+  // }, []);
 
   return (
     <>
