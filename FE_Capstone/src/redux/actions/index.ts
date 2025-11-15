@@ -2,7 +2,7 @@ import ShowSongType from "../../types/ShowSongType";
 import { AppDispatchFunction, IRootState } from "../store";
 
 // export const ENDPOINT = "http://localhost:8888";
-export const ENDPOINT = "https://becapstone-production.up.railway.app";
+export const ENDPOINT = "https://soundadventure-be.up.railway.app";
 
 // For login
 export const SET_USERNAME = "SET_USERNAME";
