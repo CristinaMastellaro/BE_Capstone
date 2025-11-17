@@ -9,6 +9,9 @@ import {
   ENDPOINT,
   findAllPlaylists,
   setFavFromDb,
+  setLoginEmail,
+  setLoginName,
+  setLoginSurname,
   setLoginUsername,
 } from "../redux/actions";
 
@@ -50,6 +53,9 @@ const Login = () => {
         localStorage.setItem("tokenLastFm", data.tokenLastFm);
         localStorage.setItem("tokenPexel", data.apikeyPexels);
         dispatch(setLoginUsername(data.username));
+        dispatch(setLoginName(data.name));
+        dispatch(setLoginSurname(data.surname));
+        dispatch(setLoginEmail(data.email));
         dispatch(findAllPlaylists());
         dispatch(setFavFromDb());
         setIsLoading(false);

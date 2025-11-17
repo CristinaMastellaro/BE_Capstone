@@ -6,6 +6,9 @@ export const ENDPOINT = "http://localhost:8888";
 
 // For login
 export const SET_USERNAME = "SET_USERNAME";
+export const SET_NAME = "SET_NAME";
+export const SET_SURNAME = "SET_SURNAME";
+export const SET_EMAIL = "SET_EMAIL";
 export const TOKEN = localStorage.getItem("token");
 export const TOKEN_LAST_FM = localStorage.getItem("tokenLastFm");
 export const TOKEN_PEXEL = localStorage.getItem("tokenPexel");
@@ -14,6 +17,27 @@ export const setLoginUsername = (username: string) => {
   return {
     type: SET_USERNAME,
     payload: username,
+  };
+};
+
+export const setLoginName = (name: string) => {
+  return {
+    type: SET_NAME,
+    payload: name,
+  };
+};
+
+export const setLoginSurname = (surname: string) => {
+  return {
+    type: SET_SURNAME,
+    payload: surname,
+  };
+};
+
+export const setLoginEmail = (email: string) => {
+  return {
+    type: SET_EMAIL,
+    payload: email,
   };
 };
 
@@ -183,7 +207,7 @@ export const addNewFavourite = (newFav: ShowSongType) => {
   return async (dispatch: AppDispatchFunction) => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(ENDPOINT + "/playlists/favourite", {
+      const res = await fetch(ENDPOINT + "/playlists/favourite/add", {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,

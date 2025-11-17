@@ -38,10 +38,13 @@ const CustomNavbar = () => {
             <BiLibrary className="my-icons me-2 fs-4" />
             <span className="d-none d-lg-block">Library</span>
           </Link>
-          <div className="mt-2 p-1 options">
+          <Link
+            to="/settings"
+            className="mt-2 p-1 options text-white text-decoration-none"
+          >
             <GrSettingsOption className="my-icons me-2 fs-4" />
             <span className="d-none d-lg-block">Settings</span>
-          </div>
+          </Link>
         </div>
       </div>
     </>

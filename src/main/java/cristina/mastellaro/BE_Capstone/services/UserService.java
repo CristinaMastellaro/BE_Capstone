@@ -4,6 +4,8 @@ import cristina.mastellaro.BE_Capstone.email.EmailSender;
 import cristina.mastellaro.BE_Capstone.entities.User;
 import cristina.mastellaro.BE_Capstone.exceptions.AlreadyUsedException;
 import cristina.mastellaro.BE_Capstone.exceptions.NotFoundException;
+import cristina.mastellaro.BE_Capstone.payloads.LoginDTO;
+import cristina.mastellaro.BE_Capstone.payloads.LoginResponseDTO;
 import cristina.mastellaro.BE_Capstone.payloads.UserDTO;
 import cristina.mastellaro.BE_Capstone.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -22,6 +25,8 @@ public class UserService {
     private PasswordEncoder pEncoder;
     @Autowired
     private EmailSender eSender;
+    @Autowired
+    private List<String> apiKey;
 
     public User findUserById(UUID id) {
         return uRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
@@ -54,5 +59,11 @@ public class UserService {
         if (user == null) throw new NotFoundException(username);
 
         return user;
+    }
+
+    public LoginResponseDTO getInfoUser(LoginDTO dto, String token) {
+        User user = uRepo.findByUsername(dto.username());
+
+        return new LoginResponseDTO(dto.username(), user.getName(), user.getSurname(), user.getEmail(), token, apiKey.getFirst(), apiKey.getLast());
     }
 }

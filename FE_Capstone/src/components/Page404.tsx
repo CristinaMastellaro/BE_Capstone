@@ -8,7 +8,7 @@ const Page404 = () => {
     <>
       <Container
         fluid
-        className="my-bg-container w-100 h-100 position-relative"
+        className="my-bg-container w-100 vh-100 position-relative"
       >
         <div
           style={{ backgroundImage: `url(${image})` }}

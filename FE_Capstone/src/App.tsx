@@ -13,11 +13,15 @@ import {
   ENDPOINT,
   findAllPlaylists,
   setFavFromDb,
+  setLoginEmail,
+  setLoginName,
+  setLoginSurname,
   setLoginUsername,
 } from "./redux/actions";
 import SearchByCountry from "./components/SearchByCountry";
 import Page404 from "./components/Page404";
 import Search from "./components/Search";
+import Settings from "./components/Settings";
 
 function App() {
   const dispatch = useAppDispatchFunction();
@@ -46,6 +50,9 @@ function App() {
         localStorage.setItem("tokenLastFm", data.tokenLastFm);
         localStorage.setItem("tokenPexel", data.apikeyPexels);
         dispatch(setLoginUsername(data.username));
+        dispatch(setLoginName(data.name));
+        dispatch(setLoginSurname(data.surname));
+        dispatch(setLoginEmail(data.email));
         dispatch(findAllPlaylists());
         dispatch(setFavFromDb());
       })
@@ -64,8 +71,9 @@ function App() {
             <Route element={<Library />} path="/library" />
             <Route element={<SearchByCountry />} path="/searchCountry" />
             <Route element={<Search />} path="/search" />
-            <Route element={<Page404 />} path="*" />
+            <Route element={<Settings />} path="/settings" />
           </Route>
+          <Route element={<Page404 />} path="*" />
           <Route element={<Login />} path="/" />
           <Route element={<Registration />} path="/register" />
         </Routes>
