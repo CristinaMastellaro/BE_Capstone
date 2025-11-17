@@ -18,7 +18,7 @@ const Search = () => {
     setTimeout(() => setAlert(false), 5000);
   }, [alert]);
 
-  const [typeOfSearch, setTypeOfSearch] = useState("Discovery");
+  const [typeOfSearch, setTypeOfSearch] = useState("Normal");
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const iconRef = useRef<HTMLSpanElement>(null);
@@ -214,15 +214,18 @@ const Search = () => {
         <div className="container-found-songs">
           {songs &&
             songs.length > 0 &&
-            songs.map((song) => (
-              <Song
-                key={song.id}
-                song={song}
-                playlist={[song]}
-                namePlaylist=""
-                dontShow={true}
-              />
-            ))}
+            songs.map((song) => {
+              const thisPlaylist = [song];
+              return (
+                <Song
+                  key={song.id}
+                  song={song}
+                  playlist={thisPlaylist}
+                  namePlaylist=""
+                  dontShow={true}
+                />
+              );
+            })}
         </div>
       </Row>
     </Container>

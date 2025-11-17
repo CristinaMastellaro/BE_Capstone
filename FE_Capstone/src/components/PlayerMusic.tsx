@@ -42,12 +42,14 @@ const PlayerMusic = () => {
   const isOnRepeat = useAppSelector(
     (state) => state.player.isOnRepeat as boolean
   );
-  const isFavourite = useAppSelector((state) =>
+  const isFavourite = useAppSelector((state) => {
+    const idFavouriteSongs: string[] = [];
     (
       (state.allSongs.playlists as Record<string, ShowSongType[]>)
         .favourite as ShowSongType[]
-    ).includes(currentSong)
-  );
+    ).forEach((fav) => idFavouriteSongs.push(fav.id));
+    return idFavouriteSongs.includes(currentSong.id.toString());
+  });
 
   const showPlayer = useAppSelector(
     (state) => (state.player.currentSong as ShowSongType).id === ""
