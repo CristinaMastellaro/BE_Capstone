@@ -18,7 +18,7 @@ const Settings = () => {
   const email = useAppSelector((state) => state.user.email);
   const username = useAppSelector((state) => state.user.username);
 
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const Settings = () => {
   };
 
   return (
-    <Container fluid>
+    <Container fluid className="position-relative">
       <h1 className="mt-5 ms-4 fw-bold">Settings</h1>
       <Row className="ms-3 mt-5">
         <h2 className="mb-5">Personal information</h2>
