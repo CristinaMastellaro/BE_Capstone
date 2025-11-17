@@ -1,7 +1,7 @@
 import { Form, Container } from "react-bootstrap";
 import "../scss/login.scss";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
 import Loader from "./Loader";
 import { useAppDispatch } from "../redux/store";
@@ -14,10 +14,23 @@ import {
   setLoginSurname,
   setLoginUsername,
 } from "../redux/actions";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [typePassword, setTypePassword] = useState("password");
+
+  useEffect(() => {
+    if (typePassword === "text") {
+      setTimeout(() => {
+        setTypePassword("password");
+        setShowPassword(false);
+      }, 8000);
+    }
+  }, [typePassword]);
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -94,13 +107,32 @@ const Login = () => {
             controlId="formBasicPassword"
           >
             <Form.Label>Password</Form.Label>
-            <Form.Control
-              className="w-75"
-              type="password"
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
+            <div className="d-flex align-items-center justify-content-between gap-3 w-75">
+              <Form.Control
+                className="w-100"
+                type={typePassword}
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+              {showPassword ? (
+                <BsEye
+                  className="icon"
+                  onClick={() => {
+                    setShowPassword(!showPassword);
+                    setTypePassword("password");
+                  }}
+                />
+              ) : (
+                <BsEyeSlash
+                  className="icon"
+                  onClick={() => {
+                    setShowPassword(!showPassword);
+                    setTypePassword("text");
+                  }}
+                />
+              )}
+            </div>
           </Form.Group>
           {error != "" && (
             <p className="ms-4 text-danger small mb-3 d-flex align-items-center">

@@ -64,7 +64,7 @@ public class PlaylistService {
                 pRepo.save(found);
                 return found;
             } else {
-                throw new NotFoundException("You don't have any playlist by the name of " + playlist);
+                throw new NotFoundException(playlist, 0);
             }
         } else {
             return found;

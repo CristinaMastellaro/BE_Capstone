@@ -1,5 +1,6 @@
 package cristina.mastellaro.BE_Capstone.controllers;
 
+import cristina.mastellaro.BE_Capstone.email.EmailSender;
 import cristina.mastellaro.BE_Capstone.entities.User;
 import cristina.mastellaro.BE_Capstone.exceptions.PayloadValidationException;
 import cristina.mastellaro.BE_Capstone.payloads.LoginDTO;
@@ -20,6 +21,8 @@ public class AuthController {
     private UserService uServ;
     @Autowired
     private LoginService lServ;
+    @Autowired
+    private EmailSender eSender;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -36,6 +39,19 @@ public class AuthController {
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(fE -> fE.getDefaultMessage()).toList());
         }
         return uServ.getInfoUser(dto, lServ.verifyUserAndGetToken(dto));
+    }
+
+    @GetMapping("/changePassword")
+    public int requestChangePassword(@RequestParam String email) {
+        return eSender.sendChangePasswordEmail(email);
+    }
+
+    @PatchMapping("/changePassword")
+    public void changePassword(@RequestBody @Validated LoginDTO dto, BindingResult validation) {
+        if (validation.hasErrors()) {
+            throw new PayloadValidationException(validation.getFieldErrors().stream().map(fE -> fE.getDefaultMessage()).toList());
+        }
+        uServ.changePassword(dto);
     }
 
 }

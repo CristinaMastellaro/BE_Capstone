@@ -66,4 +66,14 @@ public class UserService {
 
         return new LoginResponseDTO(dto.username(), user.getName(), user.getSurname(), user.getEmail(), token, apiKey.getFirst(), apiKey.getLast());
     }
+
+    public void changePassword(LoginDTO dto) {
+        User user = uRepo.findByUsername(dto.username());
+
+        user.setPassword(pEncoder.encode(dto.password()));
+
+        uRepo.save(user);
+
+        log.info("New password saved!");
+    }
 }

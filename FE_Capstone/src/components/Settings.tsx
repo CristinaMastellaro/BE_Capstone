@@ -1,7 +1,16 @@
-import { Button, Col, Container, Image, Modal, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  Image,
+  Modal,
+  Row,
+} from "react-bootstrap";
 import "../scss/settings.scss";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import {
+  ENDPOINT,
   isPlayingSong,
   saveCurrentSong,
   setLoginEmail,
@@ -10,7 +19,8 @@ import {
   setLoginUsername,
 } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { BiInfoCircle } from "react-icons/bi";
 
 const Settings = () => {
   const name = useAppSelector((state) => state.user.name);
@@ -18,7 +28,72 @@ const Settings = () => {
   const email = useAppSelector((state) => state.user.email);
   const username = useAppSelector((state) => state.user.username);
 
-  const [showModal, setShowModal] = useState(true);
+  const [isRequestChangePassword, setIsRequestChangePassword] = useState(false);
+  const [changePasswordCode, setChangePasswordCode] = useState(0);
+  const [sentPasswordCode, setSentPasswordCode] = useState("");
+  const [isWrong, setIsWrong] = useState(false);
+  const [howManyErrors, setHowManyErrors] = useState(0);
+  const [canChangePassword, setCanChangePassword] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [hasChanged, setHasChanged] = useState(false);
+
+  const requestToChangePassword = () => {
+    setIsRequestChangePassword(true);
+    fetch(ENDPOINT + "/auth/changePassword?email=" + email)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(
+            "Error while doing the request to change the password!"
+          );
+        } else {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        setChangePasswordCode(data);
+      })
+      .catch((err) => console.log("Error!", err));
+  };
+
+  const verifyCode = (e: FormEvent) => {
+    e.preventDefault();
+    if (Number(sentPasswordCode) === changePasswordCode) {
+      setCanChangePassword(true);
+    } else {
+      setIsWrong(true);
+      const totalErrors = howManyErrors + 1;
+      setHowManyErrors(totalErrors);
+      if (totalErrors > 2) {
+        setTimeout(() => navigate("/"), 3000);
+      }
+    }
+  };
+
+  const changePassword = (e: FormEvent) => {
+    e.preventDefault();
+    fetch(ENDPOINT + "/auth/changePassword", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: newPassword,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Error while changing password!");
+        } else {
+          console.log("Cambio password riuscito!");
+          setHasChanged(true);
+          setTimeout(() => disconnect(), 5000);
+        }
+      })
+      .catch((err) => console.log("Error!", err));
+  };
+
+  const [showModal, setShowModal] = useState(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -56,7 +131,7 @@ const Settings = () => {
           />
         </Col>
         <Col xs={9} md={10}>
-          <Row className="mb-3">
+          <Row className="mb-1">
             <Col xs={4} className="fw-semibold">
               Full name
             </Col>
@@ -77,13 +152,73 @@ const Settings = () => {
             <Col xs={8}>{email}</Col>
           </Row>
           <Row className="mb-3">
-            <span className="text-decoration-underline change-psw">
+            <span
+              className="text-decoration-underline change-psw"
+              onClick={requestToChangePassword}
+            >
               Change password
             </span>
+            {isRequestChangePassword && !canChangePassword && (
+              <div className="my-2">
+                <Form onSubmit={verifyCode}>
+                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>
+                      Write here the code that was sent to you via email:
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      className="input-settings w-50"
+                      value={sentPasswordCode}
+                      onChange={(e) => {
+                        setSentPasswordCode(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                  <Button variant="primary" type="submit">
+                    Check
+                  </Button>
+                  {isWrong && (
+                    <p className="text-danger small d-flex align-items-center mb-0 mt-2">
+                      <BiInfoCircle className="me-2" /> Wrong code!
+                    </p>
+                  )}
+                  {isWrong && howManyErrors > 2 && (
+                    <p className="text-danger small mt-2">
+                      You made too many mistakes. You'll be redirected to the
+                      login page
+                    </p>
+                  )}
+                </Form>
+              </div>
+            )}
+            {canChangePassword && !hasChanged && (
+              <Form onSubmit={changePassword}>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Write the new password here:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    className="input-settings w-50"
+                    value={newPassword}
+                    onChange={(e) => {
+                      setNewPassword(e.target.value);
+                    }}
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                  Change
+                </Button>
+              </Form>
+            )}
+            {hasChanged && (
+              <p className="mt-2">
+                The password has been changed! You'll be redirected to the login
+                page shortly.
+              </p>
+            )}
           </Row>
         </Col>
       </Row>
-      <Row className="ms-3 mt-5 d-flex justify-content-center">
+      <Row className="ms-3 mt-3 mb-2 d-flex justify-content-center">
         <Col xs={4} md={2}>
           <Button
             variant="danger"
