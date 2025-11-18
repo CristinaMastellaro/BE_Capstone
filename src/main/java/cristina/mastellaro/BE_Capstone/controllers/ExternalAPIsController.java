@@ -2,7 +2,9 @@ package cristina.mastellaro.BE_Capstone.controllers;
 
 import cristina.mastellaro.BE_Capstone.payloads.PexelsResponseDTO;
 import cristina.mastellaro.BE_Capstone.payloads.country.CountryInfoDTO;
+import cristina.mastellaro.BE_Capstone.payloads.lastFm.LastFmResponseDTO;
 import cristina.mastellaro.BE_Capstone.services.CountryService;
+import cristina.mastellaro.BE_Capstone.services.LastFmService;
 import cristina.mastellaro.BE_Capstone.services.PexelsAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ public class ExternalAPIsController {
     private PexelsAPIService pApiServ;
     @Autowired
     private CountryService cServ;
+    @Autowired
+    private LastFmService lFmServ;
 
     // Pictures
     @GetMapping("/picture")
@@ -31,24 +35,25 @@ public class ExternalAPIsController {
     // Countries
     @GetMapping("/country")
     public Flux<ResponseEntity<CountryInfoDTO>> getCountryNameFromCode(@RequestParam String code) {
-//        API for country
-//    "https://restcountries.com/v3.1/alpha/" + selectedRegionCode
         return cServ.getNameCountry(code).map(ResponseEntity::ok);
     }
 
     // Last.fm: categorize songs
 //    @GetMapping("/nameSongsByCountry")
 //    public void getNameSongsByCountry(@RequestParam String country) {
-////        `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].name.common}&api_key=${TOKEN_LAST_FM}&format=json&limit=30
-//    }
 
-//    @GetMapping("/nameSongsByMood")
-//    public void getNameSongsByMood(@RequestParam String mood) {
-
-    /// /        `http://ws.audioscrobbler.com/2.0/?method=tag.getTopTracks&tag=${mood.toLowerCase()}&api_key=${token}&format=json`
+    /// /        `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].name.common}&api_key=${TOKEN_LAST_FM}&format=json&limit=30
 //    }
-    @GetMapping("/songs")
-    public void searchForSongs(@RequestParam String query) {
+    @GetMapping("/nameSongsByMood")
+    public Mono<ResponseEntity<LastFmResponseDTO>> getNameSongsByMood(@RequestParam String mood) {
+        return lFmServ.findSongsByMood(mood)
+                .map(ResponseEntity::ok);
+        /// /        `http://ws.audioscrobbler.com/2.0/?method=tag.getTopTracks&tag=${mood.toLowerCase()}&api_key=${token}&format=json`
+    }
+
+    // strive-school
+    @GetMapping("/songs/mood")
+    public void searchForSongs(@RequestParam String mood) {
 //        "https://striveschool-api.herokuapp.com/api/deezer/search?q="
     }
 /*

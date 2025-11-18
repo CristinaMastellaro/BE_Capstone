@@ -1,6 +1,6 @@
 package cristina.mastellaro.BE_Capstone;
 
-import cristina.mastellaro.BE_Capstone.services.CountryService;
+import cristina.mastellaro.BE_Capstone.services.LastFmService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,9 +14,9 @@ public class BeCapstoneApplication {
     }
 
     @Bean
-    CommandLineRunner ginoGinetto(CountryService client) {
+    CommandLineRunner ginoGinetto(LastFmService client) {
         return args -> {
-//            Flux<CountryInfoDTO> images = client.getNameCountry("IT");
+//            Mono<LastFmResponseDTO> images = client.findSongsByMood("sad");
 //            images.subscribe(System.out::println);
         };
     }

@@ -25,6 +25,11 @@ public class Config {
         return WebClient.builder().baseUrl("https://restcountries.com/v3.1/alpha").build();
     }
 
+    @Bean
+    public WebClient lastFmWebClient() {
+        return WebClient.builder().baseUrl("http://ws.audioscrobbler.com/2.0").build();
+    }
+
     // For external APIs
 //    @Bean
 //    public WebClient webClientPexels() {
