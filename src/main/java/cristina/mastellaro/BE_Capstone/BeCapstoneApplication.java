@@ -1,6 +1,6 @@
 package cristina.mastellaro.BE_Capstone;
 
-import cristina.mastellaro.BE_Capstone.services.LastFmService;
+import cristina.mastellaro.BE_Capstone.services.MusicService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,10 +14,10 @@ public class BeCapstoneApplication {
     }
 
     @Bean
-    CommandLineRunner ginoGinetto(LastFmService client) {
+    CommandLineRunner ginoGinetto(MusicService client) {
         return args -> {
-//            Mono<LastFmResponseDTO> images = client.findSongsByMood("sad");
-//            images.subscribe(System.out::println);
+//            List<Mono<StriveSchoolResponseDTO>> images = client.findSongByMood("sad");
+//            images.forEach(song -> song.subscribe(System.out::println));
         };
     }
 

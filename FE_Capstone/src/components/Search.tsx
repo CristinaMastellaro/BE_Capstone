@@ -6,6 +6,7 @@ import Song from "./Song";
 import { RiOrderPlayFill } from "react-icons/ri";
 import "../scss/search.scss";
 import Loader from "./Loader";
+import { ENDPOINT, TOKEN } from "../redux/actions";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -43,10 +44,13 @@ const Search = () => {
 
   const search = (type: string, addToPreviousSongs: boolean) => {
     setIsLoading(true);
-    fetch(
-      "https://striveschool-api.herokuapp.com/api/deezer/search?q=" +
-        searchQuery
-    )
+    // fetch(
+    //   "https://striveschool-api.herokuapp.com/api/deezer/search?q=" +
+    //     searchQuery
+    // )
+    fetch(ENDPOINT + "/api/search?query=" + searchQuery, {
+      headers: { Authorization: `Bearer ${TOKEN}` },
+    })
       .then((res) => {
         if (!res.ok) {
           {

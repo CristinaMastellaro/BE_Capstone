@@ -3,9 +3,11 @@ package cristina.mastellaro.BE_Capstone.controllers;
 import cristina.mastellaro.BE_Capstone.payloads.PexelsResponseDTO;
 import cristina.mastellaro.BE_Capstone.payloads.country.CountryInfoDTO;
 import cristina.mastellaro.BE_Capstone.payloads.lastFm.LastFmResponseDTO;
+import cristina.mastellaro.BE_Capstone.payloads.striveSchool.StriveSchoolResponseDTO;
 import cristina.mastellaro.BE_Capstone.services.CountryService;
 import cristina.mastellaro.BE_Capstone.services.LastFmService;
 import cristina.mastellaro.BE_Capstone.services.PexelsAPIService;
+import cristina.mastellaro.BE_Capstone.services.StriveSchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,8 @@ public class ExternalAPIsController {
     private CountryService cServ;
     @Autowired
     private LastFmService lFmServ;
+    @Autowired
+    private StriveSchoolService ssServ;
 
     // Pictures
     @GetMapping("/picture")
@@ -55,6 +59,11 @@ public class ExternalAPIsController {
     @GetMapping("/songs/mood")
     public void searchForSongs(@RequestParam String mood) {
 //        "https://striveschool-api.herokuapp.com/api/deezer/search?q="
+    }
+
+    @GetMapping("/search")
+    public Mono<ResponseEntity<StriveSchoolResponseDTO>> generalSearch(@RequestParam String query) {
+        return ssServ.searchSong(query).map(ResponseEntity::ok);
     }
 /*
     API for pictures

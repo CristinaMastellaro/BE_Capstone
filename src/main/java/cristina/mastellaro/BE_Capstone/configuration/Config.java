@@ -30,6 +30,11 @@ public class Config {
         return WebClient.builder().baseUrl("http://ws.audioscrobbler.com/2.0").build();
     }
 
+    @Bean
+    public WebClient striveSchoolWebClient() {
+        return WebClient.builder().baseUrl("https://striveschool-api.herokuapp.com/api/deezer").build();
+    }
+
     // For external APIs
 //    @Bean
 //    public WebClient webClientPexels() {

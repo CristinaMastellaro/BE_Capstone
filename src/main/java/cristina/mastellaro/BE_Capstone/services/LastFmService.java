@@ -19,6 +19,8 @@ public class LastFmService {
     private final WebClient webClient;
     @Autowired
     private List<String> apiKeys;
+    @Autowired
+    private StriveSchoolService ssServ;
 
     @Autowired
     public LastFmService(@Qualifier("lastFmWebClient") WebClient webClientLastFm) {
