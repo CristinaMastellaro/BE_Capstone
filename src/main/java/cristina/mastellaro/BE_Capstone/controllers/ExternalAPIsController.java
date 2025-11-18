@@ -3,11 +3,9 @@ package cristina.mastellaro.BE_Capstone.controllers;
 import cristina.mastellaro.BE_Capstone.payloads.PexelsResponseDTO;
 import cristina.mastellaro.BE_Capstone.payloads.country.CountryInfoDTO;
 import cristina.mastellaro.BE_Capstone.payloads.lastFm.LastFmResponseDTO;
+import cristina.mastellaro.BE_Capstone.payloads.striveSchool.FoundSongDTO;
 import cristina.mastellaro.BE_Capstone.payloads.striveSchool.StriveSchoolResponseDTO;
-import cristina.mastellaro.BE_Capstone.services.CountryService;
-import cristina.mastellaro.BE_Capstone.services.LastFmService;
-import cristina.mastellaro.BE_Capstone.services.PexelsAPIService;
-import cristina.mastellaro.BE_Capstone.services.StriveSchoolService;
+import cristina.mastellaro.BE_Capstone.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +26,8 @@ public class ExternalAPIsController {
     private LastFmService lFmServ;
     @Autowired
     private StriveSchoolService ssServ;
+    @Autowired
+    private MusicService mServ;
 
     // Pictures
     @GetMapping("/picture")
@@ -52,13 +52,12 @@ public class ExternalAPIsController {
     public Mono<ResponseEntity<LastFmResponseDTO>> getNameSongsByMood(@RequestParam String mood) {
         return lFmServ.findSongsByMood(mood)
                 .map(ResponseEntity::ok);
-        /// /        `http://ws.audioscrobbler.com/2.0/?method=tag.getTopTracks&tag=${mood.toLowerCase()}&api_key=${token}&format=json`
     }
 
     // strive-school
     @GetMapping("/songs/mood")
-    public void searchForSongs(@RequestParam String mood) {
-//        "https://striveschool-api.herokuapp.com/api/deezer/search?q="
+    public Flux<FoundSongDTO> searchForSongs(@RequestParam String mood) {
+        return mServ.findSongByMood(mood);
     }
 
     @GetMapping("/search")

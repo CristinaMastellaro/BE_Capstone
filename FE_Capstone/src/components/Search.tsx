@@ -44,10 +44,6 @@ const Search = () => {
 
   const search = (type: string, addToPreviousSongs: boolean) => {
     setIsLoading(true);
-    // fetch(
-    //   "https://striveschool-api.herokuapp.com/api/deezer/search?q=" +
-    //     searchQuery
-    // )
     fetch(ENDPOINT + "/api/search?query=" + searchQuery, {
       headers: { Authorization: `Bearer ${TOKEN}` },
     })

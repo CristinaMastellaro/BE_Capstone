@@ -1,3 +1,4 @@
+import { SongAPI } from "../../types/ResponseFetchDeezerSearch";
 import ShowSongType from "../../types/ShowSongType";
 import { AppDispatchFunction, IRootState } from "../store";
 
@@ -48,89 +49,119 @@ export const ADD_SINGLE_MOOD = "ADD_SINGLE_MOOD";
 
 export const findSongs = (mood: string) => {
   return async (dispatch: AppDispatchFunction) => {
-    const token = localStorage.getItem("tokenLastFm");
+    // const token = localStorage.getItem("tokenLastFm");
     const AllFoundSongs: ShowSongType[] = [];
 
-    let i = 0;
+    // let i = 0;
 
-    try {
-      const res = await fetch(
-        `http://ws.audioscrobbler.com/2.0/?method=tag.getTopTracks&tag=${mood.toLowerCase()}&api_key=${token}&format=json`
-      );
+    // try {
+    // const res = await fetch(
+    //   `http://ws.audioscrobbler.com/2.0/?method=tag.getTopTracks&tag=${mood.toLowerCase()}&api_key=${token}&format=json`
+    // );
 
-      if (!res.ok) {
-        throw new Error("Response status: " + res.status);
-      }
-      const data = await res.json();
-      for (i; i < data.tracks.track.length; i++) {
-        if (AllFoundSongs.length < 30) {
-          const basicInfo = [
-            data.tracks.track[i].name,
-            data.tracks.track[i].artist.name,
-          ];
-          let foundSong: ShowSongType = {
-            id: "",
-            cover: "",
-            title: "",
-            author: "",
-            preview: "",
-          };
+    // if (!res.ok) {
+    //   throw new Error("Response status: " + res.status);
+    // }
+    // const data = await res.json();
+    // for (i; i < data.tracks.track.length; i++) {
+    //   if (AllFoundSongs.length < 30) {
+    //     const basicInfo = [
+    //       data.tracks.track[i].name,
+    //       data.tracks.track[i].artist.name,
+    //     ];
 
-          let j = 0;
+    let foundSong: ShowSongType = {
+      id: "",
+      cover: "",
+      title: "",
+      author: "",
+      preview: "",
+    };
 
-          try {
-            const secondRes = await fetch(
-              "https://striveschool-api.herokuapp.com/api/deezer/search?q=" +
-                basicInfo[0] +
-                basicInfo[1]
-            );
-            if (!secondRes.ok) {
-              throw new Error("Response status: " + secondRes.status);
-            }
-            const data2 = await secondRes.json();
-
-            for (j; j < data2.data.length; j++) {
-              if (
-                data2.data[j].title_short
-                  .toLowerCase()
-                  .includes(basicInfo[0].toLowerCase()) &&
-                data2.data[j].artist.name.toLowerCase() ===
-                  basicInfo[1].toLowerCase() &&
-                foundSong.id === ""
-              ) {
-                foundSong = {
-                  id: data2.data[j].id.toString(),
-                  cover: data2.data[j].album.cover_xl,
-                  title: data2.data[j].title,
-                  author: data2.data[j].artist.name,
-                  preview: data2.data[j].preview,
-                };
-                j = data2.data.length;
-              }
-            }
-            if (foundSong.id !== "") AllFoundSongs.push(foundSong);
-          } catch (e: unknown) {
-            console.log("This is the error: ", e);
-            let result;
-            if (typeof e === "string") {
-              result = e.toUpperCase();
-            } else if (e instanceof Error) {
-              result = e.message;
-            }
-            console.log("result", result);
-            if (result?.includes("Response status: 429")) {
-              break;
-            }
-          }
+    fetch(ENDPOINT + "/api/songs/mood?mood=" + mood, {
+      headers: { Authorization: `Bearer ${TOKEN}` },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Error while retrieveing songs");
+        } else {
+          return res.json();
         }
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    dispatch({
-      type: ALL_SONGS_MOOD,
-      payload: [mood, AllFoundSongs],
-    });
+      })
+      .then((data) => {
+        console.log("data", data);
+        data.forEach((song: SongAPI) => {
+          foundSong = {
+            id: song.id,
+            cover: song.album.cover_small,
+            title: song.title,
+            author: song.artist.name,
+            preview: song.preview,
+          };
+          AllFoundSongs.push(foundSong);
+        });
+        dispatch({
+          type: ALL_SONGS_MOOD,
+          payload: [mood, AllFoundSongs],
+        });
+      })
+      .catch((err) => console.log("Error!", err));
+
+    // let j = 0;
+
+    //       try {
+    //         const secondRes = await fetch(
+    //           "https://striveschool-api.herokuapp.com/api/deezer/search?q=" +
+    //             basicInfo[0] +
+    //             basicInfo[1]
+    //         );
+    //         if (!secondRes.ok) {
+    //           throw new Error("Response status: " + secondRes.status);
+    //         }
+    //         const data2 = await secondRes.json();
+
+    //         for (j; j < data2.data.length; j++) {
+    //           if (
+    //             data2.data[j].title_short
+    //               .toLowerCase()
+    //               .includes(basicInfo[0].toLowerCase()) &&
+    //             data2.data[j].artist.name.toLowerCase() ===
+    //               basicInfo[1].toLowerCase() &&
+    //             foundSong.id === ""
+    //           ) {
+    //             foundSong = {
+    //               id: data2.data[j].id.toString(),
+    //               cover: data2.data[j].album.cover_xl,
+    //               title: data2.data[j].title,
+    //               author: data2.data[j].artist.name,
+    //               preview: data2.data[j].preview,
+    //             };
+    //             j = data2.data.length;
+    //           }
+    //         }
+    //         if (foundSong.id !== "") AllFoundSongs.push(foundSong);
+    //       } catch (e: unknown) {
+    //         console.log("This is the error: ", e);
+    //         let result;
+    //         if (typeof e === "string") {
+    //           result = e.toUpperCase();
+    //         } else if (e instanceof Error) {
+    //           result = e.message;
+    //         }
+    //         console.log("result", result);
+    //         if (result?.includes("Response status: 429")) {
+    //           break;
+    //         }
+    //       }
+    //     }
+    //   }
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    // dispatch({
+    //   type: ALL_SONGS_MOOD,
+    //   payload: [mood, AllFoundSongs],
+    // });
   };
 };
 
