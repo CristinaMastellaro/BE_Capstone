@@ -14,11 +14,10 @@ import {
   saveCurrentSong,
   savePlaylistNotToSavePermanently,
   TOKEN,
-  TOKEN_LAST_FM,
 } from "../redux/actions";
 import ShowSongType from "../types/ShowSongType";
 import { useNavigate } from "react-router-dom";
-import { Track } from "../types/TopSongType";
+import { CountriesSong } from "../types/ResponseFetchDeezerSearch";
 
 interface selectedRegionType {
   title: string;
@@ -67,12 +66,17 @@ const SearchByCountry = () => {
         else return res.json();
       })
       .then(async (data) => {
-        setSelectedRegion(data[0].body.name.common);
+        setSelectedRegion(data[0].body.name.common.replaceAll(" ", ""));
         const songs: selectedRegionType[] = [];
 
         try {
           const res2 = await fetch(
-            `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].body.name.common}&api_key=${TOKEN_LAST_FM}&format=json&limit=30`
+            ENDPOINT +
+              "/api/songs/country?country=" +
+              data[0].body.name.common.replaceAll(" ", ""),
+            {
+              headers: { Authorization: `Bearer ${TOKEN}` },
+            }
           );
 
           if (!res2.ok) throw new Error("Error while searching for top music");
@@ -85,7 +89,7 @@ const SearchByCountry = () => {
             setSelectedRegionSongs([]);
             throw new Error("Error while searching for songs!");
           } else {
-            data2.tracks.track.forEach((topSong: Track) => {
+            data2.forEach((topSong: CountriesSong) => {
               if (songs.length < 4) {
                 if (
                   artists.filter((artist) => artist === topSong.artist.name)
@@ -124,11 +128,14 @@ const SearchByCountry = () => {
       title: "",
     };
     fetch(
-      `https://striveschool-api.herokuapp.com/api/deezer/search?q=${song.title
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")} ${song.artist
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")}`
+      ENDPOINT +
+        `/api/search?query=${song.title
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replaceAll(" ", "")}`,
+      {
+        headers: { Authorization: `Bearer ${TOKEN}` },
+      }
     )
       .then((res) => {
         if (!res.ok) throw new Error("Error while searching for the song");

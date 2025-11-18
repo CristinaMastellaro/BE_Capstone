@@ -16,8 +16,8 @@ public class BeCapstoneApplication {
     @Bean
     CommandLineRunner ginoGinetto(MusicService client) {
         return args -> {
-//            List<Mono<StriveSchoolResponseDTO>> images = client.findSongByMood("sad");
-//            images.forEach(song -> song.subscribe(System.out::println));
+//            Flux<FoundSongDTO> images = client.findSongsByCountry("Italy");
+//            images.subscribe(System.out::println);
         };
     }
 

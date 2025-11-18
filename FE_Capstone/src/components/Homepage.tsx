@@ -6,6 +6,7 @@ import {
   ENDPOINT,
   findSongs,
   saveAllMoodsNames,
+  TOKEN,
 } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/store";
@@ -13,7 +14,6 @@ import { useAppDispatch, useAppSelector } from "../redux/store";
 const Homepage = () => {
   const [mood, setMood] = useState("Relaxed");
   const [options, setOptions] = useState<string[]>([]);
-  const token = localStorage.getItem("token");
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const Homepage = () => {
   const getMoods = () => {
     fetch(ENDPOINT + "/moods", {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${TOKEN}`,
       },
     })
       .then((res) => {

@@ -60,3 +60,8 @@ export interface AlbumAPI {
   cover_small: string;
   cover_xl: string;
 }
+
+export interface CountriesSong {
+  artist: ArtistAPI;
+  name: string;
+}

@@ -47,8 +47,6 @@ function App() {
       })
       .then((data) => {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("tokenLastFm", data.tokenLastFm);
-        localStorage.setItem("tokenPexel", data.apikeyPexels);
         dispatch(setLoginUsername(data.username));
         dispatch(setLoginName(data.name));
         dispatch(setLoginSurname(data.surname));

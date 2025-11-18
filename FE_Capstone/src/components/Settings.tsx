@@ -108,8 +108,6 @@ const Settings = () => {
       saveCurrentSong({ id: "", cover: "", preview: "", author: "", title: "" })
     );
     localStorage.setItem("token", "");
-    localStorage.setItem("tokenLastFm", "");
-    localStorage.setItem("tokenPexel", "");
     setTimeout(() => navigate("/"), 2000);
   };
 

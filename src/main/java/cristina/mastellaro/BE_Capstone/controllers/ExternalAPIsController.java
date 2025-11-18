@@ -2,6 +2,7 @@ package cristina.mastellaro.BE_Capstone.controllers;
 
 import cristina.mastellaro.BE_Capstone.payloads.PexelsResponseDTO;
 import cristina.mastellaro.BE_Capstone.payloads.country.CountryInfoDTO;
+import cristina.mastellaro.BE_Capstone.payloads.lastFm.AllTracksDTO;
 import cristina.mastellaro.BE_Capstone.payloads.lastFm.LastFmResponseDTO;
 import cristina.mastellaro.BE_Capstone.payloads.striveSchool.FoundSongDTO;
 import cristina.mastellaro.BE_Capstone.payloads.striveSchool.StriveSchoolResponseDTO;
@@ -58,6 +59,16 @@ public class ExternalAPIsController {
     @GetMapping("/songs/mood")
     public Flux<FoundSongDTO> searchForSongs(@RequestParam String mood) {
         return mServ.findSongByMood(mood);
+    }
+
+    @GetMapping("/songs/country")
+    public Flux<AllTracksDTO> searchInfoForSongsByCountry(@RequestParam String country) {
+        return lFmServ.getInfoCountrySongsToSearch(country);
+    }
+
+    @GetMapping("/songs/country/all")
+    public Flux<FoundSongDTO> searchForAllSongsByCountry(@RequestParam String country) {
+        return mServ.findSongsByCountry(country);
     }
 
     @GetMapping("/search")
