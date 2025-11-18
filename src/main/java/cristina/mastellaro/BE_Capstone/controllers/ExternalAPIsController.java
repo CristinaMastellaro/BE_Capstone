@@ -1,0 +1,71 @@
+package cristina.mastellaro.BE_Capstone.controllers;
+
+import cristina.mastellaro.BE_Capstone.payloads.PexelsResponseDTO;
+import cristina.mastellaro.BE_Capstone.services.ExternalAPIsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+
+@RestController
+@RequestMapping("/api")
+public class ExternalAPIsController {
+    @Autowired
+    private ExternalAPIsService exAPIServ;
+
+    // Pictures
+    @GetMapping("/picture")
+    public Mono<ResponseEntity<PexelsResponseDTO>> getPicturesFromPexels(@RequestParam String search) {
+        return exAPIServ.findImage(search)
+                .map(ResponseEntity::ok);
+    }
+
+    // Countries
+    @GetMapping("/country")
+    public void getCountryNameFromCode(@RequestParam String code) {
+//        API for country
+//    "https://restcountries.com/v3.1/alpha/" + selectedRegionCode
+    }
+
+    // Last.fm: categorize songs
+//    @GetMapping("/nameSongsByCountry")
+//    public void getNameSongsByCountry(@RequestParam String country) {
+////        `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].name.common}&api_key=${TOKEN_LAST_FM}&format=json&limit=30
+//    }
+
+//    @GetMapping("/nameSongsByMood")
+//    public void getNameSongsByMood(@RequestParam String mood) {
+
+    /// /        `http://ws.audioscrobbler.com/2.0/?method=tag.getTopTracks&tag=${mood.toLowerCase()}&api_key=${token}&format=json`
+//    }
+    @GetMapping("/songs")
+    public void searchForSongs(@RequestParam String query) {
+//        "https://striveschool-api.herokuapp.com/api/deezer/search?q="
+    }
+/*
+    API for pictures
+    "https://api.pexels.com/v1/search?query="
+
+    API for country
+    "https://restcountries.com/v3.1/alpha/" + selectedRegionCode
+
+    Search for songs in Last.fm
+    `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].name.common}&api_key=${TOKEN_LAST_FM}&format=json&limit=30
+
+    Search for songs with strive-school
+    - Search songs by country
+`https://striveschool-api.herokuapp.com/api/deezer/search?q=${song.title
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")} ${song.artist
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")}`
+
+     - General search
+     "https://striveschool-api.herokuapp.com/api/deezer/search?q="
+
+     -
+*/
+}

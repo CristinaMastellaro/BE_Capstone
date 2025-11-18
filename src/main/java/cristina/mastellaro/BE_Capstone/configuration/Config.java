@@ -13,4 +13,12 @@ public class Config {
     public List<String> getApiKeys(@Value("${lastfm.api.key}") String apiKeyLastfm, @Value("${pexels.api.key}") String apiKeyPexels) {
         return List.of(apiKeyLastfm, apiKeyPexels);
     }
+
+    // For external APIs
+//    @Bean
+//    public WebClient webClientPexels() {
+//        return WebClient.builder()
+//                .baseUrl("https://api.pexels.com/v1")
+//                .build();
+//    }
 }

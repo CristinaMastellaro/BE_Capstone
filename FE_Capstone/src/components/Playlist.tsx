@@ -10,12 +10,13 @@ import Form from "react-bootstrap/Form";
 import { BiDotsVerticalRounded, BiPlay, BiShuffle, BiX } from "react-icons/bi";
 import {
   deletePlaylist,
+  ENDPOINT,
   isShufflingSongs,
   renamePlaylist,
   resetPlaylist,
   saveCurrentPlaylist,
   saveCurrentSong,
-  TOKEN_PEXEL,
+  TOKEN,
 } from "../redux/actions";
 import { Modal } from "react-bootstrap";
 
@@ -122,20 +123,37 @@ const Playlist = () => {
   const [picturePlaylist, setPicturePlaylist] = useState("");
 
   const getPicturePlaylist = () => {
-    fetch("https://api.pexels.com/v1/search?query=" + specification, {
-      headers: { Authorization: TOKEN_PEXEL as string },
+    fetch(ENDPOINT + "/api/picture?search=" + specification, {
+      headers: { Authorization: `Bearer ${TOKEN}` },
     })
       .then((res) => {
         if (!res.ok) {
           setIsPictureLoading(false);
           throw new Error("Couldn't fetch the image");
-        } else return res.json();
+        } else {
+          console.log("res pictures", res);
+          return res.json();
+        }
       })
       .then((data) => {
         setPicturePlaylist(data.photos[0].src.landscape);
         setIsPictureLoading(false);
       })
       .catch((err) => console.log("Error!", err));
+    // fetch("https://api.pexels.com/v1/search?query=" + specification, {
+    //   headers: { Authorization: TOKEN_PEXEL as string },
+    // })
+    //   .then((res) => {
+    //     if (!res.ok) {
+    //       setIsPictureLoading(false);
+    //       throw new Error("Couldn't fetch the image");
+    //     } else return res.json();
+    //   })
+    //   .then((data) => {
+    //     setPicturePlaylist(data.photos[0].src.landscape);
+    //     setIsPictureLoading(false);
+    //   })
+    //   .catch((err) => console.log("Error!", err));
   };
 
   useEffect(() => {
