@@ -4,6 +4,7 @@ import cristina.mastellaro.BE_Capstone.exceptions.ClientPexelsException;
 import cristina.mastellaro.BE_Capstone.payloads.PexelsResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,13 +14,14 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class ExternalAPIsService {
+public class PexelsAPIService {
     private final WebClient webClient;
     @Autowired
     private List<String> apiKeys;
 
-    public ExternalAPIsService(WebClient.Builder builder) {
-        this.webClient = builder.baseUrl("https://api.pexels.com/v1").build();
+    @Autowired
+    public PexelsAPIService(@Qualifier("pexelsWebClient") WebClient webClientPexels) {
+        this.webClient = webClientPexels;
     }
 
     public Mono<PexelsResponseDTO> findImage(String image) {

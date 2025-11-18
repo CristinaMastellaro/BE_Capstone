@@ -1,7 +1,7 @@
 package cristina.mastellaro.BE_Capstone.controllers;
 
 import cristina.mastellaro.BE_Capstone.payloads.PexelsResponseDTO;
-import cristina.mastellaro.BE_Capstone.services.ExternalAPIsService;
+import cristina.mastellaro.BE_Capstone.services.PexelsAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +14,12 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api")
 public class ExternalAPIsController {
     @Autowired
-    private ExternalAPIsService exAPIServ;
+    private PexelsAPIService pApiServ;
 
     // Pictures
     @GetMapping("/picture")
     public Mono<ResponseEntity<PexelsResponseDTO>> getPicturesFromPexels(@RequestParam String search) {
-        return exAPIServ.findImage(search)
+        return pApiServ.findImage(search)
                 .map(ResponseEntity::ok);
     }
 

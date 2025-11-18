@@ -1,12 +1,10 @@
 package cristina.mastellaro.BE_Capstone;
 
-import cristina.mastellaro.BE_Capstone.payloads.PexelsResponseDTO;
-import cristina.mastellaro.BE_Capstone.services.ExternalAPIsService;
+import cristina.mastellaro.BE_Capstone.services.PexelsAPIService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 public class BeCapstoneApplication {
@@ -16,10 +14,10 @@ public class BeCapstoneApplication {
     }
 
     @Bean
-    CommandLineRunner ginoGinetto(ExternalAPIsService client) {
+    CommandLineRunner ginoGinetto(PexelsAPIService client) {
         return args -> {
-            Mono<PexelsResponseDTO> images = client.findImage("cats");
-            images.subscribe(System.out::println);
+//            Mono<PexelsResponseDTO> images = client.findImage("cats");
+//            images.subscribe(System.out::println);
         };
     }
 
