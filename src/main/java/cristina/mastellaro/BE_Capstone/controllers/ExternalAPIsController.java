@@ -1,6 +1,8 @@
 package cristina.mastellaro.BE_Capstone.controllers;
 
 import cristina.mastellaro.BE_Capstone.payloads.PexelsResponseDTO;
+import cristina.mastellaro.BE_Capstone.payloads.country.CountryInfoDTO;
+import cristina.mastellaro.BE_Capstone.services.CountryService;
 import cristina.mastellaro.BE_Capstone.services.PexelsAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -15,6 +18,8 @@ import reactor.core.publisher.Mono;
 public class ExternalAPIsController {
     @Autowired
     private PexelsAPIService pApiServ;
+    @Autowired
+    private CountryService cServ;
 
     // Pictures
     @GetMapping("/picture")
@@ -25,9 +30,10 @@ public class ExternalAPIsController {
 
     // Countries
     @GetMapping("/country")
-    public void getCountryNameFromCode(@RequestParam String code) {
+    public Flux<ResponseEntity<CountryInfoDTO>> getCountryNameFromCode(@RequestParam String code) {
 //        API for country
 //    "https://restcountries.com/v3.1/alpha/" + selectedRegionCode
+        return cServ.getNameCountry(code).map(ResponseEntity::ok);
     }
 
     // Last.fm: categorize songs

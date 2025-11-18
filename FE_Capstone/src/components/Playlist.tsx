@@ -131,7 +131,6 @@ const Playlist = () => {
           setIsPictureLoading(false);
           throw new Error("Couldn't fetch the image");
         } else {
-          console.log("res pictures", res);
           return res.json();
         }
       })
@@ -140,20 +139,6 @@ const Playlist = () => {
         setIsPictureLoading(false);
       })
       .catch((err) => console.log("Error!", err));
-    // fetch("https://api.pexels.com/v1/search?query=" + specification, {
-    //   headers: { Authorization: TOKEN_PEXEL as string },
-    // })
-    //   .then((res) => {
-    //     if (!res.ok) {
-    //       setIsPictureLoading(false);
-    //       throw new Error("Couldn't fetch the image");
-    //     } else return res.json();
-    //   })
-    //   .then((data) => {
-    //     setPicturePlaylist(data.photos[0].src.landscape);
-    //     setIsPictureLoading(false);
-    //   })
-    //   .catch((err) => console.log("Error!", err));
   };
 
   useEffect(() => {

@@ -7,11 +7,13 @@ import "../scss/searchByCountry.scss";
 import Loader from "./Loader";
 import { useAppDispatch } from "../redux/store";
 import {
+  ENDPOINT,
   resetNotPermanentPlaylist,
   resetPlaylist,
   saveCurrentPlaylist,
   saveCurrentSong,
   savePlaylistNotToSavePermanently,
+  TOKEN,
   TOKEN_LAST_FM,
 } from "../redux/actions";
 import ShowSongType from "../types/ShowSongType";
@@ -56,19 +58,21 @@ const SearchByCountry = () => {
   }, []);
 
   useEffect(() => {
-    fetch("https://restcountries.com/v3.1/alpha/" + selectedRegionCode)
+    fetch(ENDPOINT + "/api/country?code=" + selectedRegionCode, {
+      headers: { Authorization: `Bearer ${TOKEN}` },
+    })
       .then((res) => {
         if (!res.ok)
           throw new Error("Couldn't retrieve the name of the region!");
         else return res.json();
       })
       .then(async (data) => {
-        setSelectedRegion(data[0].name.common);
+        setSelectedRegion(data[0].body.name.common);
         const songs: selectedRegionType[] = [];
 
         try {
           const res2 = await fetch(
-            `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].name.common}&api_key=${TOKEN_LAST_FM}&format=json&limit=30`
+            `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].body.name.common}&api_key=${TOKEN_LAST_FM}&format=json&limit=30`
           );
 
           if (!res2.ok) throw new Error("Error while searching for top music");
@@ -90,7 +94,7 @@ const SearchByCountry = () => {
                   songs.push({
                     title: topSong.name,
                     artist: topSong.artist.name,
-                    cover: data[0].flags.png,
+                    cover: data[0].body.flags.png,
                   });
                   artists.push(topSong.artist.name);
                 }

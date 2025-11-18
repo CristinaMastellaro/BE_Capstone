@@ -20,6 +20,11 @@ public class Config {
         return WebClient.builder().baseUrl("https://api.pexels.com/v1").build();
     }
 
+    @Bean
+    public WebClient countryWebClient() {
+        return WebClient.builder().baseUrl("https://restcountries.com/v3.1/alpha").build();
+    }
+
     // For external APIs
 //    @Bean
 //    public WebClient webClientPexels() {
