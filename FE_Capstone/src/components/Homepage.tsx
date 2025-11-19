@@ -6,12 +6,12 @@ import {
   ENDPOINT,
   findSongs,
   saveAllMoodsNames,
-  TOKEN,
 } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 
 const Homepage = () => {
+  const TOKEN = useAppSelector((state) => state.user.token);
   const [mood, setMood] = useState("Relaxed");
   const [options, setOptions] = useState<string[]>([]);
 
@@ -25,7 +25,7 @@ const Homepage = () => {
     }
   });
 
-  const username = useAppSelector((state) => state.user.name);
+  const username = useAppSelector((state) => state.user.username);
 
   const findMoodSongs = (e: React.FormEvent) => {
     e.preventDefault();

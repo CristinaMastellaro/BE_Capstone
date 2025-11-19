@@ -5,8 +5,6 @@ public record LoginResponseDTO(
         String name,
         String surname,
         String email,
-        String token,
-        String tokenLastFm,
-        String apikeyPexels
+        String token
 ) {
 }

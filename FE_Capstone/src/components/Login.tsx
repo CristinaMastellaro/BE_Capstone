@@ -13,6 +13,7 @@ import {
   setLoginName,
   setLoginSurname,
   setLoginUsername,
+  setToken,
 } from "../redux/actions";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
@@ -63,6 +64,7 @@ const Login = () => {
       })
       .then((data) => {
         localStorage.setItem("token", data.token);
+        dispatch(setToken(data.token));
         dispatch(setLoginUsername(data.username));
         dispatch(setLoginName(data.name));
         dispatch(setLoginSurname(data.surname));

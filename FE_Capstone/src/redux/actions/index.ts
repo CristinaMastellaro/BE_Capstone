@@ -10,7 +10,14 @@ export const SET_USERNAME = "SET_USERNAME";
 export const SET_NAME = "SET_NAME";
 export const SET_SURNAME = "SET_SURNAME";
 export const SET_EMAIL = "SET_EMAIL";
-export const TOKEN = localStorage.getItem("token");
+export const SET_TOKEN = "SET_TOKEN";
+
+export const setToken = (token: string) => {
+  return {
+    type: SET_TOKEN,
+    payload: token,
+  };
+};
 
 export const setLoginUsername = (username: string) => {
   return {
@@ -46,8 +53,10 @@ export const ALL_MOODS_NAME = "ALL_MOODS_NAME";
 export const ADD_SINGLE_MOOD = "ADD_SINGLE_MOOD";
 
 export const findSongs = (mood: string) => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
     const AllFoundSongs: ShowSongType[] = [];
+
+    const TOKEN = getState().user.token;
 
     let foundSong: ShowSongType = {
       id: "",
@@ -166,7 +175,8 @@ export const DELETE_FAVOURITE = "DELETE_FAVOURITE";
 export const SET_FAVOURITES_FROM_DB = "SET_FAVOURITES_FROM_DB";
 
 export const addNewFavourite = (newFav: ShowSongType) => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     try {
       const res = await fetch(ENDPOINT + "/playlists/favourite/add", {
         method: "PATCH",
@@ -187,7 +197,8 @@ export const addNewFavourite = (newFav: ShowSongType) => {
 };
 
 export const deleteFavourite = (favToDel: ShowSongType) => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     try {
       const response = await fetch(
         `${ENDPOINT}/playlists/favourite/${favToDel.id}`,
@@ -205,7 +216,8 @@ export const deleteFavourite = (favToDel: ShowSongType) => {
 };
 
 export const setFavFromDb = () => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     const favourites: ShowSongType[] = [];
     try {
       const response = await fetch(ENDPOINT + "/playlists/favourite", {
@@ -230,6 +242,7 @@ export const setFavFromDb = () => {
 
 // General playlists
 export const ALL_PLAYLISTS = "ALL_PLAYLISTS";
+export const RESET_LIST_PLAYLISTS = "RESET_LIST_PLAYLISTS";
 export const CREATE_NEW_PLAYLIST = "CREATE_NEW_PLAYLIST";
 export const DELETE_PLAYLIST = "DELETE_PLAYLIST";
 export const RENAME_PLAYLIST = "RENAME_PLAYLIST";
@@ -241,7 +254,8 @@ type PlaylistType = {
 };
 
 export const findAllPlaylists = () => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     const playlists: Record<string, ShowSongType[]> = {};
     try {
       const res = await fetch(ENDPOINT + "/playlists", {
@@ -264,8 +278,15 @@ export const findAllPlaylists = () => {
   };
 };
 
+export const resetPlaylists = () => {
+  return {
+    type: RESET_LIST_PLAYLISTS,
+  };
+};
+
 export const createNewPlaylist = (namePlaylist: string) => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     try {
       const res = await fetch(ENDPOINT + "/playlists", {
         method: "POST",
@@ -286,6 +307,7 @@ export const createNewPlaylist = (namePlaylist: string) => {
 
 export const deletePlaylist = (namePlaylist: string) => {
   return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     try {
       const res = await fetch(ENDPOINT + "/playlists/" + namePlaylist, {
         method: "DELETE",
@@ -323,7 +345,8 @@ export const renamePlaylist = (
   oldNamePlaylist: string,
   newNamePlaylist: string
 ) => {
-  return () => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     fetch(
       ENDPOINT +
         "/playlists/" +
@@ -352,7 +375,8 @@ export const addSongToPlaylist = (
   newSong: ShowSongType,
   playlistName: string
 ) => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     try {
       const res = await fetch(
         ENDPOINT + "/playlists/" + playlistName + "/add",
@@ -382,7 +406,8 @@ export const deleteSongFromPlaylist = (
   namePlaylist: string,
   song: ShowSongType
 ) => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     try {
       const res = await fetch(
         ENDPOINT + `/playlists/${namePlaylist}/${song.id}`,
@@ -408,7 +433,8 @@ export const deleteSongFromPlaylist = (
 export const PLAYLIST_NOT_TO_SAVE = "PLAYLIST_NOT_TO_SAVE";
 
 export const savePlaylistNotToSavePermanently = (country: string) => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     const AllFoundSongs: ShowSongType[] = [];
 
     try {

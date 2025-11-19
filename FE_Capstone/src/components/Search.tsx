@@ -6,9 +6,11 @@ import Song from "./Song";
 import { RiOrderPlayFill } from "react-icons/ri";
 import "../scss/search.scss";
 import Loader from "./Loader";
-import { ENDPOINT, TOKEN } from "../redux/actions";
+import { ENDPOINT } from "../redux/actions";
+import { useAppSelector } from "../redux/store";
 
 const Search = () => {
+  const TOKEN = useAppSelector((state) => state.user.token);
   const [searchQuery, setSearchQuery] = useState("");
   const [songs, setSongs] = useState<ShowSongType[]>([]);
 

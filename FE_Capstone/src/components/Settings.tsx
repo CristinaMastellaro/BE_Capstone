@@ -12,11 +12,13 @@ import { useAppDispatch, useAppSelector } from "../redux/store";
 import {
   ENDPOINT,
   isPlayingSong,
+  resetPlaylists,
   saveCurrentSong,
   setLoginEmail,
   setLoginName,
   setLoginSurname,
   setLoginUsername,
+  setToken,
 } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { FormEvent, useState } from "react";
@@ -100,13 +102,15 @@ const Settings = () => {
 
   const disconnect = () => {
     dispatch(setLoginUsername(""));
+    dispatch(setToken(""));
     dispatch(setLoginName(""));
     dispatch(setLoginSurname(""));
     dispatch(setLoginEmail(""));
-    dispatch(isPlayingSong(false));
+    dispatch(resetPlaylists());
     dispatch(
       saveCurrentSong({ id: "", cover: "", preview: "", author: "", title: "" })
     );
+    dispatch(isPlayingSong(false));
     localStorage.setItem("token", "");
     setTimeout(() => navigate("/"), 2000);
   };

@@ -30,7 +30,7 @@ public class PlaylistController {
     }
 
     @GetMapping
-    public List<Playlist> getAllPlaylistsNames(@AuthenticationPrincipal User user) {
+    public List<PlaylistDTO> getAllPlaylistsNames(@AuthenticationPrincipal User user) {
         return pServ.findAllPlaylists(user);
     }
 

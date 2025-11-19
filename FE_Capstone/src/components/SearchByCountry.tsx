@@ -5,7 +5,7 @@ import "jsvectormap/dist/maps/world.js";
 import { useEffect, useRef, useState } from "react";
 import "../scss/searchByCountry.scss";
 import Loader from "./Loader";
-import { useAppDispatch } from "../redux/store";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 import {
   ENDPOINT,
   resetNotPermanentPlaylist,
@@ -13,7 +13,6 @@ import {
   saveCurrentPlaylist,
   saveCurrentSong,
   savePlaylistNotToSavePermanently,
-  TOKEN,
 } from "../redux/actions";
 import ShowSongType from "../types/ShowSongType";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +25,7 @@ interface selectedRegionType {
 }
 
 const SearchByCountry = () => {
+  const TOKEN = useAppSelector((state) => state.user.token);
   const mapRef = useRef<HTMLDivElement>(null);
   const [selectedRegionCode, setSelectedRegionCode] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
@@ -189,6 +189,9 @@ const SearchByCountry = () => {
     <>
       <Container fluid>
         <h1 className="pt-5 mb-5 ms-4 fw-bold">Countries</h1>
+        <p className="text-center mb-5">
+          Choose a country to explore its top list of the week!
+        </p>
         <div ref={mapRef} id="map"></div>
         <Row className="p-4 pb-1 justify-content-center">
           {selectedRegionSongs.length > 0 && !loading && (
@@ -216,6 +219,7 @@ const SearchByCountry = () => {
                     src={song.cover}
                     alt="Cover song"
                     className="img-top-song"
+                    style={{ cursor: "pointer" }}
                   />
                   <div className="d-flex flex-column mt-1">
                     <p className="mb-0 text-center fw-semibold">{song.title}</p>

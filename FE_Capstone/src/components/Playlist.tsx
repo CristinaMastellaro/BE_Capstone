@@ -11,16 +11,18 @@ import { BiDotsVerticalRounded, BiPlay, BiShuffle, BiX } from "react-icons/bi";
 import {
   deletePlaylist,
   ENDPOINT,
+  findAllPlaylists,
   isShufflingSongs,
   renamePlaylist,
   resetPlaylist,
+  resetPlaylists,
   saveCurrentPlaylist,
   saveCurrentSong,
-  TOKEN,
 } from "../redux/actions";
 import { Modal } from "react-bootstrap";
 
 const Playlist = () => {
+  const TOKEN = useAppSelector((state) => state.user.token);
   const { specification } = useParams();
   const allMoods = useAppSelector(
     (state) => state.allSongs.allMoodsName as string[]
@@ -72,7 +74,11 @@ const Playlist = () => {
   const changeName = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(renamePlaylist(specification as string, newName));
-    navigate("/library");
+    dispatch(resetPlaylists());
+    setTimeout(() => {
+      dispatch(findAllPlaylists());
+      navigate("/library");
+    }, 2000);
   };
 
   const [isLoading, setIsLoading] = useState(true);
@@ -123,9 +129,12 @@ const Playlist = () => {
   const [picturePlaylist, setPicturePlaylist] = useState("");
 
   const getPicturePlaylist = () => {
-    fetch(ENDPOINT + "/api/picture?search=" + specification, {
-      headers: { Authorization: `Bearer ${TOKEN}` },
-    })
+    fetch(
+      ENDPOINT + "/api/picture?search=" + specification?.replaceAll(" ", ""),
+      {
+        headers: { Authorization: `Bearer ${TOKEN}` },
+      }
+    )
       .then((res) => {
         if (!res.ok) {
           setIsPictureLoading(false);
@@ -135,7 +144,9 @@ const Playlist = () => {
         }
       })
       .then((data) => {
-        setPicturePlaylist(data.photos[0].src.landscape);
+        if (data && data.photos[0] && data.photos[0]) {
+          setPicturePlaylist(data.photos[0].src.landscape);
+        }
         setIsPictureLoading(false);
       })
       .catch((err) => console.log("Error!", err));

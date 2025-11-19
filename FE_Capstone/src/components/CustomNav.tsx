@@ -14,35 +14,35 @@ const CustomNavbar = () => {
             to="/homepage"
             className="mt-2 p-1 options text-white text-decoration-none"
           >
-            <BiHome className="my-icons me-2 fs-4" />
+            <BiHome className="my-icons me-lg-2 fs-4" />
             <span className="d-none d-lg-block">Home</span>
           </Link>
           <Link
             to="/searchCountry"
             className="mt-2 p-1 options text-white text-decoration-none"
           >
-            <BiWorld className="my-icons me-2 fs-4" />
+            <BiWorld className="my-icons me-lg-2 fs-4" />
             <span className="d-none d-lg-block">Countries</span>
           </Link>
           <Link
             to="/search"
             className="mt-2 p-1 options text-white text-decoration-none"
           >
-            <BiSearch className="my-icons me-2 fs-4" />
+            <BiSearch className="my-icons me-lg-2 fs-4" />
             <span className="d-none d-lg-block">Search</span>
           </Link>
           <Link
             to="/library"
             className="mt-2 p-1 options text-white text-decoration-none"
           >
-            <BiLibrary className="my-icons me-2 fs-4" />
+            <BiLibrary className="my-icons me-lg-2 fs-4" />
             <span className="d-none d-lg-block">Library</span>
           </Link>
           <Link
             to="/settings"
             className="mt-2 p-1 options text-white text-decoration-none"
           >
-            <GrSettingsOption className="my-icons me-2 fs-4" />
+            <GrSettingsOption className="my-icons me-lg-2 fs-4" />
             <span className="d-none d-lg-block">Settings</span>
           </Link>
         </div>

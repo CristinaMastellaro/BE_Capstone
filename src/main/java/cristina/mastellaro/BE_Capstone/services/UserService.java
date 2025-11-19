@@ -64,7 +64,7 @@ public class UserService {
     public LoginResponseDTO getInfoUser(LoginDTO dto, String token) {
         User user = uRepo.findByUsername(dto.username());
 
-        return new LoginResponseDTO(dto.username(), user.getName(), user.getSurname(), user.getEmail(), token, apiKey.getFirst(), apiKey.getLast());
+        return new LoginResponseDTO(dto.username(), user.getName(), user.getSurname(), user.getEmail(), token);
     }
 
     public void changePassword(LoginDTO dto) {
