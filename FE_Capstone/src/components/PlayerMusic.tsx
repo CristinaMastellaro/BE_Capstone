@@ -167,19 +167,6 @@ const PlayerMusic = () => {
                 alt="Cover of the song"
                 className="me-3 img-player-music"
               />
-              {/* <audio
-                className="d-none"
-                ref={audioRef}
-                src={currentSong.preview}
-                controls
-                onEnded={() => {
-                  setValueTimeMusic(0);
-                  if (audioRef.current) {
-                    audioRef.current.currentTime = 0;
-                  }
-                  if (!isOnRepeat) goNext();
-                }}
-              /> */}
               <div className="flex-grow-1 d-flex flex-column justify-content-center w-100">
                 <p className="mb-0 fw-bold song-info-player">
                   {currentSong.title}
@@ -248,7 +235,11 @@ const PlayerMusic = () => {
                   max="29"
                   value={valueTimeMusic}
                   style={{ width: "65%" }}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setValueTimeMusic(Number(e.currentTarget.value));
+                    audioRef.current!.currentTime = Number(
+                      e.currentTarget.value
+                    );
                     if (!audioRef.current!.paused) {
                       requestAnimationFrame(whilePlaying);
                     }
@@ -283,7 +274,9 @@ const PlayerMusic = () => {
                   max="100"
                   value={volumeValue}
                   onChange={(e) => {
-                    setVolumeValue(Number(e.currentTarget.value) / 100);
+                    setVolumeValue(Number(e.currentTarget.value));
+                    audioRef.current!.volume =
+                      Number(e.currentTarget.value) / 100;
                   }}
                   style={{
                     background: `linear-gradient(to right, white ${volumeValue}%, grey ${volumeValue}%)`,
@@ -301,7 +294,6 @@ const PlayerMusic = () => {
                 className="text-white ms-4 icons-up-player"
                 onClick={() => {
                   dispatch(showDetails(false));
-                  // setTimeout(() => navigate(-1), 2000);
                 }}
               />
               <BiDotsVertical className="text-white me-4 fs-4 icons-up-player" />
@@ -309,19 +301,12 @@ const PlayerMusic = () => {
             <Row className="px-3 flex-column row-details">
               <Col xs={12} className="text-center">
                 <Row className="position-relative">
-                  {/* <Col xs={11}> */}
                   <Image
-                    // src="https://content-management-files.canva.com/cdn-cgi/image/f=auto,q=70/0b1b415d-db2c-4d8f-8d05-d60f9f5ee821/sunrise-over-snowcapped-vibrant2x.png"
                     src={currentSong.cover}
                     className="image-player-details"
                     roundedCircle
                   />
-                  {/* </Col> */}
-                  <div
-                    // xs={12}
-                    className="d-flex align-items-center container-volume"
-                  >
-                    {/* <div className=""> */}
+                  <div className="d-flex align-items-center container-volume">
                     <BiVolumeFull className="opacity-50 me-3 icon-volume-details" />
                     <input
                       type="range"
@@ -330,14 +315,14 @@ const PlayerMusic = () => {
                       className="volume-details"
                       value={volumeValue}
                       onChange={(e) => {
-                        setVolumeValue(Number(e.currentTarget.value) / 100);
+                        setVolumeValue(Number(e.currentTarget.value));
+                        audioRef.current!.volume =
+                          Number(e.currentTarget.value) / 100;
                       }}
                       style={{
                         background: `linear-gradient(to right, white ${volumeValue}%, grey ${volumeValue}%)`,
                       }}
                     />
-
-                    {/* </div> */}
                   </div>
                 </Row>
               </Col>
@@ -363,27 +348,12 @@ const PlayerMusic = () => {
                   />
                 )}
               </Col>
-              {/* <audio
-                className="d-none"
-                ref={audioRef}
-                src={currentSong.preview}
-                controls
-                onEnded={() => {
-                  setValueTimeMusic(0);
-                  if (audioRef.current) {
-                    audioRef.current.currentTime = 0;
-                  }
-                  if (!isOnRepeat) goNext();
-                }}
-              /> */}
             </Row>
             <Row className="px-3 text-center row-details">
               <Col
                 xs={12}
                 className="justify-content-between align-items-center mx-auto mb-4"
               >
-                {/* <div className="d-none d-lg-flex justify-content-between align-items-center"> */}
-
                 <input
                   type="range"
                   id="timeMusic"
@@ -391,7 +361,11 @@ const PlayerMusic = () => {
                   className="mx-4"
                   value={valueTimeMusic}
                   style={{ width: "60%" }}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setValueTimeMusic(Number(e.currentTarget.value));
+                    audioRef.current!.currentTime = Number(
+                      e.currentTarget.value
+                    );
                     if (!audioRef.current!.paused) {
                       requestAnimationFrame(whilePlaying);
                     }
@@ -409,14 +383,12 @@ const PlayerMusic = () => {
                     <span>0:29</span>{" "}
                   </div>
                 </Col>
-                {/* </div> */}
               </Col>
             </Row>
             <Row className="px-3 pb-4 row-details">
               <div className="d-flex gap-2 align-items-center justify-content-around opacity-50 w-75 mx-auto">
                 <BiShuffle
                   className={"icon " + classShuffle}
-                  //   className={" d-none d-md-block icon " + classShuffle}
                   onClick={() => {
                     dispatch(isShufflingSongs(!isShuffle));
                   }}
@@ -460,7 +432,6 @@ const PlayerMusic = () => {
                 <BiSkipNext className="fs-3 icon" onClick={goNext} />
                 <BiRepeat
                   className={"icon " + classRepeat}
-                  //   className={" d-none d-md-block icon " + classRepeat}
                   onClick={() => {
                     dispatch(isRepeatingSong(!isOnRepeat));
                   }}
