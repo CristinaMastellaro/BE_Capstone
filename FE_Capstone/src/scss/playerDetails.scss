@@ -8,7 +8,6 @@
     width: 100vw;
     backdrop-filter: blur(10px);
     @media screen and (min-width: 713px) {
-        // height: 80vh;
         bottom: 10vh;
         right: 10vw;
         left: 10vw;
@@ -17,11 +16,7 @@
     }
 
     @media screen and (min-width: 1200px) {
-        // height: 70vh;
-        // bottom: 10vh;
-        // right: 10vw;
         left: 25vw;
-        // top: 10vh;
         width: 35vw;
     }
 }

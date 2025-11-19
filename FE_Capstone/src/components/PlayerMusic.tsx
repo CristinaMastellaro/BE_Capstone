@@ -1,5 +1,6 @@
 import { Col, Container, Image, Row } from "react-bootstrap";
 import "../scss/musicPlayer.scss";
+import "../scss/playerDetails.scss";
 import { useEffect, useRef, useState } from "react";
 import {
   BiShuffle,
@@ -11,11 +12,12 @@ import {
   BiVolumeFull,
   BiSolidHeart,
   BiHeart,
-  BiDotsVertical,
+  BiDotsVerticalRounded,
 } from "react-icons/bi";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import {
   addNewFavourite,
+  changeShowModal,
   deleteFavourite,
   isPlayingSong,
   isRepeatingSong,
@@ -25,6 +27,7 @@ import {
 } from "../redux/actions";
 import ShowSongType from "../types/ShowSongType";
 import { GrDown } from "react-icons/gr";
+import CustomModal from "./CustomModal";
 
 const PlayerMusic = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -124,6 +127,30 @@ const PlayerMusic = () => {
 
   // For details song
   const doShowDetails = useAppSelector((state) => state.player.showDetails);
+
+  // Add to playlist
+  const showModal = useAppSelector((state) => state.options.showModal);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const iconRef = useRef<HTMLSpanElement>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node) &&
+      iconRef.current &&
+      !iconRef.current.contains(event.target as Node)
+    ) {
+      setShowDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -296,7 +323,25 @@ const PlayerMusic = () => {
                   dispatch(showDetails(false));
                 }}
               />
-              <BiDotsVertical className="text-white me-4 fs-4 icons-up-player" />
+              <span ref={iconRef} className="icons-up-player">
+                <BiDotsVerticalRounded
+                  className="text-white me-4 fs-4"
+                  onClick={() => setShowDropdown(!showDropdown)}
+                />
+              </span>
+              {showDropdown && (
+                <div ref={dropdownRef} className="drop-order text-dark small">
+                  <ul>
+                    <li
+                      onClick={() =>
+                        dispatch(changeShowModal(!showModal, currentSong))
+                      }
+                    >
+                      Add to playlist
+                    </li>
+                  </ul>
+                </div>
+              )}
             </Row>
             <Row className="px-3 flex-column row-details">
               <Col xs={12} className="text-center">
@@ -439,6 +484,7 @@ const PlayerMusic = () => {
               </div>
             </Row>
           </Container>
+          {showModal && <CustomModal />}
         </div>
       )}
     </>
