@@ -47,7 +47,7 @@ public class MusicService {
                                 }).onErrorResume(e -> {
                                     System.err.println("Error on track " + track.name() + " by artist " + track.artist().name() + ": " + e.getMessage());
                                     return Mono.empty();
-                                }), 50);
+                                }), 45);
     }
 
     public Flux<FoundSongDTO> findSongsByCountry(String country) {
@@ -66,6 +66,6 @@ public class MusicService {
                                 }).onErrorResume(e -> {
                                     System.err.println("Error on track " + track.name() + " by artist " + track.artist().name() + ": " + e.getMessage());
                                     return Mono.empty();
-                                }), 50);
+                                }), 45);
     }
 }

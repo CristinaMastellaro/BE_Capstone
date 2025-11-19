@@ -71,7 +71,7 @@ export const findSongs = (mood: string) => {
         data.forEach((song: SongAPI) => {
           foundSong = {
             id: song.id,
-            cover: song.album.cover_small,
+            cover: song.album.cover_xl,
             title: song.title,
             author: song.artist.name,
             preview: song.preview,
@@ -148,6 +148,15 @@ export const isShufflingSongs = (isShuffle: boolean) => {
   return {
     type: IS_SHUFFLED,
     payload: isShuffle,
+  };
+};
+
+export const SHOW_DETAILS = "SHOW_DETAILS";
+
+export const showDetails = (doShow: boolean) => {
+  return {
+    type: SHOW_DETAILS,
+    payload: doShow,
   };
 };
 

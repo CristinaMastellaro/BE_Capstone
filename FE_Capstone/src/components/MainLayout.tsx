@@ -4,8 +4,11 @@ import PlayerMusic from "./PlayerMusic";
 import { Outlet } from "react-router-dom";
 import "../scss/customNav.scss";
 import CustomFooter from "./CustomFooter";
+import { useAppSelector } from "../redux/store";
 
 const MainLayout = () => {
+  const doBlur = useAppSelector((state) => state.player.showDetails);
+
   return (
     <>
       <Container fluid className="my-bg-container">
@@ -22,7 +25,11 @@ const MainLayout = () => {
             xs={12}
             lg={9}
             xl={10}
-            className="px-0 ms-auto d-flex flex-column"
+            className={
+              doBlur
+                ? "px-0 ms-auto d-flex flex-column blurred-bg"
+                : "px-0 ms-auto d-flex flex-column"
+            }
             style={{ minHeight: "100vh" }}
           >
             <div className="flex-grow-1">

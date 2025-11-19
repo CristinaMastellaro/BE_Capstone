@@ -7,6 +7,7 @@ import {
   IS_PLAYING,
   IS_SHUFFLED,
   RESET_PLAYLIST,
+  SHOW_DETAILS,
 } from "../actions";
 
 type stateType = {
@@ -15,6 +16,7 @@ type stateType = {
   isPlaying: boolean;
   isOnRepeat: boolean;
   isShuffled: boolean;
+  showDetails: boolean;
 };
 
 const initialState: stateType = {
@@ -23,6 +25,7 @@ const initialState: stateType = {
   isPlaying: false,
   isOnRepeat: false,
   isShuffled: false,
+  showDetails: false,
 };
 
 const playerReducer = (
@@ -62,6 +65,11 @@ const playerReducer = (
       return {
         ...state,
         isShuffled: action.payload,
+      };
+    case SHOW_DETAILS:
+      return {
+        ...state,
+        showDetails: action.payload,
       };
     default:
       return state;

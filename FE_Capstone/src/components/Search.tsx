@@ -85,7 +85,7 @@ const Search = () => {
             if (!idsPresent.includes(singleSong.id)) {
               songsToAdd.push({
                 id: singleSong.id,
-                cover: singleSong.album.cover_small,
+                cover: singleSong.album.cover_xl,
                 title: singleSong.title,
                 author: singleSong.artist.name,
                 preview: singleSong.preview,
@@ -97,7 +97,7 @@ const Search = () => {
             singleSong = data.data[i];
             songsToAdd.push({
               id: singleSong.id,
-              cover: singleSong.album.cover_small,
+              cover: singleSong.album.cover_xl,
               title: singleSong.title,
               author: singleSong.artist.name,
               preview: singleSong.preview,
