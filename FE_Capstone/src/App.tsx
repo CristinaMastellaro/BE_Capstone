@@ -11,8 +11,56 @@ import SearchByCountry from "./components/SearchByCountry";
 import Page404 from "./components/Page404";
 import Search from "./components/Search";
 import Settings from "./components/Settings";
+import {
+  ENDPOINT,
+  findAllPlaylists,
+  setFavFromDb,
+  setLoginEmail,
+  setLoginName,
+  setLoginSurname,
+  setLoginUsername,
+  setToken,
+} from "./redux/actions";
+import { useEffect } from "react";
+import { useAppDispatchFunction } from "./redux/store";
 
 function App() {
+  const dispatch = useAppDispatchFunction();
+
+  useEffect(() => {
+    fetch(ENDPOINT + "/auth/login", {
+      // fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: "Augustus8",
+        password: "Password1!",
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("Error!");
+        }
+      })
+      .then((data) => {
+        localStorage.setItem("token", data.token);
+        dispatch(setToken(data.token));
+        dispatch(setLoginUsername(data.username));
+        dispatch(setLoginName(data.name));
+        dispatch(setLoginSurname(data.surname));
+        dispatch(setLoginEmail(data.email));
+        dispatch(findAllPlaylists());
+        dispatch(setFavFromDb());
+      })
+      .catch(() => {
+        console.log("Error");
+      });
+  }, []);
+
   return (
     <>
       <BrowserRouter>
