@@ -153,4 +153,14 @@ public class PlaylistService {
 
         log.info("Playlist deleted!");
     }
+
+    public void deletePlaylist(User authenticatedUser, String namePlaylist) {
+        Playlist playlistToDelete = pRepo.findByNameAndUser(authenticatedUser, namePlaylist);
+
+        if (playlistToDelete == null) throw new NotFoundException("You don't have a playlist called " + namePlaylist);
+
+        pRepo.delete(playlistToDelete);
+
+        log.info("Playlist deleted!");
+    }
 }
