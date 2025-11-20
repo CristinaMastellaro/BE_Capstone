@@ -9,10 +9,7 @@ import cristina.mastellaro.BE_Capstone.payloads.striveSchool.StriveSchoolRespons
 import cristina.mastellaro.BE_Capstone.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -44,11 +41,6 @@ public class ExternalAPIsController {
     }
 
     // Last.fm: categorize songs
-//    @GetMapping("/nameSongsByCountry")
-//    public void getNameSongsByCountry(@RequestParam String country) {
-
-    /// /        `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].name.common}&api_key=${TOKEN_LAST_FM}&format=json&limit=30
-//    }
     @GetMapping("/nameSongsByMood")
     public Mono<ResponseEntity<LastFmResponseDTO>> getNameSongsByMood(@RequestParam String mood) {
         return lFmServ.findSongsByMood(mood)
@@ -74,6 +66,11 @@ public class ExternalAPIsController {
     @GetMapping("/search")
     public Mono<ResponseEntity<StriveSchoolResponseDTO>> generalSearch(@RequestParam String query) {
         return ssServ.searchSong(query).map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/track/{idSong}")
+    public Mono<FoundSongDTO> searchSingleSong(@PathVariable String idSong) {
+        return ssServ.findSpecificSong(idSong);
     }
 /*
     API for pictures

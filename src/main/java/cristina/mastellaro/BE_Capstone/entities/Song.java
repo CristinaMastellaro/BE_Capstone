@@ -24,8 +24,6 @@ public class Song {
     @Column(nullable = false, length = 500)
     private String title;
     private int duration;
-    @Column(nullable = false, length = 1500)
-    private String preview;
     @Column(length = 1500)
     private String cover;
     @Column(nullable = false, length = 500)
@@ -45,21 +43,19 @@ public class Song {
 //@JsonIgnore
 //    private List<Playlist> playlists;
 
-    public Song(String id, String title, String artist, String preview, String cover) {
+    public Song(String id, String title, String artist, String cover) {
         this.id = id;
         this.title = title;
         this.author = artist;
-        this.preview = preview;
         this.cover = cover;
     }
 
-    public Song(String id, String title, String artist, int duration, String preview, String cover
+    public Song(String id, String title, String artist, int duration, String cover
     ) {
         this.id = id;
         this.title = title;
         this.author = artist;
         this.duration = duration;
-        this.preview = preview;
         this.cover = cover;
 //        this.album = album;
     }

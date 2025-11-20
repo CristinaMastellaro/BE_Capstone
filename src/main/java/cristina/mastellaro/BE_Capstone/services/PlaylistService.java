@@ -136,7 +136,7 @@ public class PlaylistService {
         playlists.forEach(playlist -> {
             List<SongDTO> songs = new ArrayList<>();
             playlist.getSongs().forEach(song -> {
-                SongDTO songToAdd = new SongDTO(song.getId(), song.getCover(), song.getTitle(), song.getAuthor(), song.getPreview());
+                SongDTO songToAdd = new SongDTO(song.getId(), song.getCover(), song.getTitle(), song.getAuthor());
                 songs.add(songToAdd);
             });
             response.add(new PlaylistDTO(playlist.getName(), songs));

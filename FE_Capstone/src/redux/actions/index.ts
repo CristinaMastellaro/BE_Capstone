@@ -267,14 +267,40 @@ export const findAllPlaylists = () => {
       if (!res.ok) throw new Error("Error!");
 
       const data: PlaylistType[] = await res.json();
-      data.forEach((playlist) => (playlists[playlist.name] = playlist.songs));
+      await Promise.all(
+        data.map(async (playlist) => {
+          if (playlist.songs && playlist.songs.length > 0) {
+            const updatedSongs = await Promise.all(
+              playlist.songs.map(async (song) => {
+                try {
+                  const res = await fetch(ENDPOINT + "/api/track/" + song.id, {
+                    headers: { Authorization: `Bearer ${TOKEN}` },
+                  });
+                  if (!res.ok) throw new Error("We couldn't retrieve the song");
+                  const data = await res.json();
+
+                  return { ...song, preview: data.preview };
+                } catch (err) {
+                  console.log("Error!", err);
+                  return song;
+                }
+              })
+            );
+            playlists[playlist.name] = updatedSongs;
+            return updatedSongs;
+          } else {
+            playlists[playlist.name] = playlist.songs;
+            return playlist.songs;
+          }
+        })
+      );
+      dispatch({
+        type: ALL_PLAYLISTS,
+        payload: playlists,
+      });
     } catch (err) {
       console.log("Error while finding names of playlists", err);
     }
-    dispatch({
-      type: ALL_PLAYLISTS,
-      payload: playlists,
-    });
   };
 };
 

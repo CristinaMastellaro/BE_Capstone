@@ -10,8 +10,6 @@ public record SongDTO(
         @NotBlank
         String title,
         @NotBlank
-        String author,
-        @NotBlank
-        String preview
+        String author
 ) {
 }

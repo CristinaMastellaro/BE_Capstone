@@ -21,7 +21,7 @@ public class SongService {
         if (sRepo.existsById(newSong.id()))
             throw new AlreadyUsedException("The song with id " + newSong.id() + " is already saved in the DB");
 
-        Song song = new Song(newSong.id(), newSong.title(), newSong.author(), newSong.preview(), newSong.cover());
+        Song song = new Song(newSong.id(), newSong.title(), newSong.author(), newSong.cover());
 
         sRepo.save(song);
 

@@ -23,12 +23,15 @@ import { Modal } from "react-bootstrap";
 
 const Playlist = () => {
   const TOKEN = useAppSelector((state) => state.user.token);
+
   const { specification } = useParams();
   const allMoods = useAppSelector(
     (state) => state.allSongs.allMoodsName as string[]
   );
+
   const allPlaylists = useAppSelector((state) => state.allSongs.playlists);
   const allPlaylistsNames = Object.keys(allPlaylists);
+
   const songs = useAppSelector((state: IRootState) => {
     if (specification !== undefined) {
       if ((allMoods as string[]).includes(specification)) {
@@ -42,6 +45,26 @@ const Playlist = () => {
       }
     }
   });
+
+  // The songs saved in the db don't have the preview: we have to ask a request to the API for each song
+  // useEffect(() => {
+  //   if (specification && allPlaylistsNames.includes(specification)) {
+  //     songs?.forEach((song: ShowSongType) => {
+  //       fetch(ENDPOINT + "/api/track/" + song.id, {
+  //         headers: { Authorization: `Bearer ${TOKEN}` },
+  //       })
+  //         .then((res) => {
+  //           if (!res.ok) throw new Error("We couldn't retrieve the song");
+  //           else return res.json();
+  //         })
+  //         .then((data) => {
+  //           console.log("data da db", data);
+  //           song.preview = data.preview;
+  //         })
+  //         .catch((err) => console.log("Error!", err));
+  //     });
+  //   }
+  // }, []);
 
   // For playing songs
   const savedPlaylist = useAppSelector((state) => state.player.currentPlaylist);
@@ -127,7 +150,6 @@ const Playlist = () => {
   }, [isPictureLoading, isLoading]);
 
   const [picturePlaylist, setPicturePlaylist] = useState("");
-  const [avgColor, setAvgColor] = useState("");
 
   const getPicturePlaylist = () => {
     fetch(
@@ -147,7 +169,6 @@ const Playlist = () => {
       .then((data) => {
         if (data && data.photos[0] && data.photos[0]) {
           setPicturePlaylist(data.photos[0].src.landscape);
-          setAvgColor(data.photos[0].avg_color);
         }
         setIsPictureLoading(false);
       })
@@ -210,10 +231,7 @@ const Playlist = () => {
               className="hero"
               style={{ backgroundImage: `url(${picturePlaylist})` }}
             ></div>
-            <div
-              className="change-hero text-center"
-              style={{ color: avgColor }}
-            >
+            <div className="change-hero text-center">
               <h1 className="mb-4 pt-4">
                 {specification
                   ? specification[0].toUpperCase() + specification.substring(1)
@@ -317,11 +335,11 @@ const Playlist = () => {
                 )}
               {songs && songs.length === 0 && (
                 <>
-                  <p className="w-75 mx-auto mt-3">
+                  <p className="w-75 mx-auto mt-3 text-center">
                     {specification === "favourite"
                       ? "It's time to save your favourite songs or to look for new ones!"
                       : allMoods.includes(specification as string)
-                      ? `Your feelings are so deep, but our system isn't smart enough
+                      ? `Your feelings are amazing, but our system isn't smart enough
                   yet to understand which songs are fitted for "${specification}
                   ". Want to give it another try with a more generic word?`
                       : "Isn't there some good music that feels like " +

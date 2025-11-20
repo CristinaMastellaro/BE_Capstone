@@ -3,5 +3,5 @@ export default interface ShowSongType {
   cover: string;
   title: string;
   author: string;
-  preview: string;
+  preview?: string;
 }
