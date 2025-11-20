@@ -48,6 +48,7 @@ const SearchByCountry = () => {
       regionsSelectableOne: true,
       onRegionClick: function (_: MouseEvent, code: string) {
         setLoading(true);
+        setSelectedRegionSongs([]);
         setSelectedRegionCode(code);
       },
     });
@@ -66,7 +67,7 @@ const SearchByCountry = () => {
         else return res.json();
       })
       .then(async (data) => {
-        setSelectedRegion(data[0].body.name.common.replaceAll(" ", ""));
+        setSelectedRegion(data[0].body.name.common);
         const songs: selectedRegionType[] = [];
 
         try {
@@ -79,7 +80,14 @@ const SearchByCountry = () => {
             }
           );
 
-          if (!res2.ok) throw new Error("Error while searching for top music");
+          if (!res2.ok) {
+            const resJson = await res2.json();
+            console.log("resJson", resJson);
+            if (resJson.message.includes("because the return value of")) {
+              setError(true);
+            }
+            throw new Error("Error while searching for top music");
+          }
           const data2 = await res2.json();
 
           const artists: string[] = [];
@@ -109,10 +117,12 @@ const SearchByCountry = () => {
             setLoading(false);
           }
         } catch (err) {
+          setLoading(false);
           console.log("Error!", err);
         }
       })
       .catch((err) => {
+        setLoading(false);
         console.log("Error!", err);
       });
   }, [selectedRegionCode]);
