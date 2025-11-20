@@ -10,42 +10,9 @@ import Library from "./components/Library";
 import SearchByCountry from "./components/SearchByCountry";
 import Page404 from "./components/Page404";
 import Search from "./components/Search";
+import Settings from "./components/Settings";
 
 function App() {
-  // const dispatch = useAppDispatchFunction();
-
-  // useEffect(() => {
-  //   fetch(ENDPOINT + "/auth/login", {
-  //     // fetch("https://wispy-sara-cristina-private-75ea3df9.koyeb.app/auth/login", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       username: "Augustus8",
-  //       password: "Password1!",
-  //     }),
-  //   })
-  //     .then((res) => {
-  //       if (res.ok) {
-  //         return res.json();
-  //       } else {
-  //         throw new Error("Error!");
-  //       }
-  //     })
-  //     .then((data) => {
-  //       localStorage.setItem("token", data.token);
-  //       localStorage.setItem("tokenLastFm", data.tokenLastFm);
-  //       localStorage.setItem("tokenPexel", data.apikeyPexels);
-  //       dispatch(setLoginUsername(data.username));
-  //       dispatch(findAllPlaylists());
-  //       dispatch(setFavFromDb());
-  //     })
-  //     .catch(() => {
-  //       console.log("Error");
-  //     });
-  // }, []);
-
   return (
     <>
       <BrowserRouter>
@@ -56,8 +23,9 @@ function App() {
             <Route element={<Library />} path="/library" />
             <Route element={<SearchByCountry />} path="/searchCountry" />
             <Route element={<Search />} path="/search" />
-            <Route element={<Page404 />} path="*" />
+            <Route element={<Settings />} path="/settings" />
           </Route>
+          <Route element={<Page404 />} path="*" />
           <Route element={<Login />} path="/" />
           <Route element={<Registration />} path="/register" />
         </Routes>

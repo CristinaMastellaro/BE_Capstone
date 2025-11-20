@@ -24,7 +24,7 @@ public class ExceptionsHandler {
         return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());
     }
 
-    @ExceptionHandler({AlreadyUsedException.class, SongAlreadyInPlaylistException.class})
+    @ExceptionHandler({AlreadyUsedException.class, SongAlreadyInPlaylistException.class, ClientPexelsException.class, ResCountriesException.class, LastFmException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorsDTO handleBadRequestExceptions(Exception ex) {
         return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());

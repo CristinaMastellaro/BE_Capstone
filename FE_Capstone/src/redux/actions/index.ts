@@ -1,3 +1,4 @@
+import { SongAPI } from "../../types/ResponseFetchDeezerSearch";
 import ShowSongType from "../../types/ShowSongType";
 import { AppDispatchFunction, IRootState } from "../store";
 
@@ -6,14 +7,43 @@ export const ENDPOINT = "https://soundadventure-be.up.railway.app";
 
 // For login
 export const SET_USERNAME = "SET_USERNAME";
-export const TOKEN = localStorage.getItem("token");
-export const TOKEN_LAST_FM = localStorage.getItem("tokenLastFm");
-export const TOKEN_PEXEL = localStorage.getItem("tokenPexel");
+export const SET_NAME = "SET_NAME";
+export const SET_SURNAME = "SET_SURNAME";
+export const SET_EMAIL = "SET_EMAIL";
+export const SET_TOKEN = "SET_TOKEN";
+
+export const setToken = (token: string) => {
+  return {
+    type: SET_TOKEN,
+    payload: token,
+  };
+};
 
 export const setLoginUsername = (username: string) => {
   return {
     type: SET_USERNAME,
     payload: username,
+  };
+};
+
+export const setLoginName = (name: string) => {
+  return {
+    type: SET_NAME,
+    payload: name,
+  };
+};
+
+export const setLoginSurname = (surname: string) => {
+  return {
+    type: SET_SURNAME,
+    payload: surname,
+  };
+};
+
+export const setLoginEmail = (email: string) => {
+  return {
+    type: SET_EMAIL,
+    payload: email,
   };
 };
 
@@ -23,90 +53,46 @@ export const ALL_MOODS_NAME = "ALL_MOODS_NAME";
 export const ADD_SINGLE_MOOD = "ADD_SINGLE_MOOD";
 
 export const findSongs = (mood: string) => {
-  return async (dispatch: AppDispatchFunction) => {
-    const token = localStorage.getItem("tokenLastFm");
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
     const AllFoundSongs: ShowSongType[] = [];
 
-    let i = 0;
+    const TOKEN = getState().user.token;
 
-    try {
-      const res = await fetch(
-        `http://ws.audioscrobbler.com/2.0/?method=tag.getTopTracks&tag=${mood.toLowerCase()}&api_key=${token}&format=json`
-      );
+    let foundSong: ShowSongType = {
+      id: "",
+      cover: "",
+      title: "",
+      author: "",
+      preview: "",
+    };
 
-      if (!res.ok) {
-        throw new Error("Response status: " + res.status);
-      }
-      const data = await res.json();
-      for (i; i < data.tracks.track.length; i++) {
-        if (AllFoundSongs.length < 30) {
-          const basicInfo = [
-            data.tracks.track[i].name,
-            data.tracks.track[i].artist.name,
-          ];
-          let foundSong: ShowSongType = {
-            id: "",
-            cover: "",
-            title: "",
-            author: "",
-            preview: "",
-          };
-
-          let j = 0;
-
-          try {
-            const secondRes = await fetch(
-              "https://striveschool-api.herokuapp.com/api/deezer/search?q=" +
-                basicInfo[0] +
-                basicInfo[1]
-            );
-            if (!secondRes.ok) {
-              throw new Error("Response status: " + secondRes.status);
-            }
-            const data2 = await secondRes.json();
-
-            for (j; j < data2.data.length; j++) {
-              if (
-                data2.data[j].title_short
-                  .toLowerCase()
-                  .includes(basicInfo[0].toLowerCase()) &&
-                data2.data[j].artist.name.toLowerCase() ===
-                  basicInfo[1].toLowerCase() &&
-                foundSong.id === ""
-              ) {
-                foundSong = {
-                  id: data2.data[j].id.toString(),
-                  cover: data2.data[j].album.cover_xl,
-                  title: data2.data[j].title,
-                  author: data2.data[j].artist.name,
-                  preview: data2.data[j].preview,
-                };
-                j = data2.data.length;
-              }
-            }
-            if (foundSong.id !== "") AllFoundSongs.push(foundSong);
-          } catch (e: unknown) {
-            console.log("This is the error: ", e);
-            let result;
-            if (typeof e === "string") {
-              result = e.toUpperCase();
-            } else if (e instanceof Error) {
-              result = e.message;
-            }
-            console.log("result", result);
-            if (result?.includes("Response status: 429")) {
-              break;
-            }
-          }
+    fetch(ENDPOINT + "/api/songs/mood?mood=" + mood, {
+      headers: { Authorization: `Bearer ${TOKEN}` },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Error while retrieveing songs");
+        } else {
+          return res.json();
         }
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    dispatch({
-      type: ALL_SONGS_MOOD,
-      payload: [mood, AllFoundSongs],
-    });
+      })
+      .then((data) => {
+        data.forEach((song: SongAPI) => {
+          foundSong = {
+            id: song.id,
+            cover: song.album.cover_xl,
+            title: song.title,
+            author: song.artist.name,
+            preview: song.preview,
+          };
+          AllFoundSongs.push(foundSong);
+        });
+        dispatch({
+          type: ALL_SONGS_MOOD,
+          payload: [mood, AllFoundSongs],
+        });
+      })
+      .catch((err) => console.log("Error!", err));
   };
 };
 
@@ -174,19 +160,28 @@ export const isShufflingSongs = (isShuffle: boolean) => {
   };
 };
 
+export const SHOW_DETAILS = "SHOW_DETAILS";
+
+export const showDetails = (doShow: boolean) => {
+  return {
+    type: SHOW_DETAILS,
+    payload: doShow,
+  };
+};
+
 // For favourites
 export const ADD_NEW_FAVOURITE = "ADD_NEW_FAVOURITE";
 export const DELETE_FAVOURITE = "DELETE_FAVOURITE";
 export const SET_FAVOURITES_FROM_DB = "SET_FAVOURITES_FROM_DB";
 
 export const addNewFavourite = (newFav: ShowSongType) => {
-  return async (dispatch: AppDispatchFunction) => {
-    const token = localStorage.getItem("token");
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     try {
-      const res = await fetch(ENDPOINT + "/playlists/favourite", {
+      const res = await fetch(ENDPOINT + "/playlists/favourite/add", {
         method: "PATCH",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${TOKEN}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newFav),
@@ -202,14 +197,14 @@ export const addNewFavourite = (newFav: ShowSongType) => {
 };
 
 export const deleteFavourite = (favToDel: ShowSongType) => {
-  return async (dispatch: AppDispatchFunction) => {
-    const token = localStorage.getItem("token");
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     try {
       const response = await fetch(
         `${ENDPOINT}/playlists/favourite/${favToDel.id}`,
         {
           method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${TOKEN}` },
         }
       );
       if (!response.ok) throw new Error("Issue while deleting");
@@ -221,12 +216,12 @@ export const deleteFavourite = (favToDel: ShowSongType) => {
 };
 
 export const setFavFromDb = () => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     const favourites: ShowSongType[] = [];
-    const token = localStorage.getItem("token");
     try {
       const response = await fetch(ENDPOINT + "/playlists/favourite", {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${TOKEN}` },
       });
 
       if (!response.ok) throw new Error("Response status: " + response.status);
@@ -247,6 +242,7 @@ export const setFavFromDb = () => {
 
 // General playlists
 export const ALL_PLAYLISTS = "ALL_PLAYLISTS";
+export const RESET_LIST_PLAYLISTS = "RESET_LIST_PLAYLISTS";
 export const CREATE_NEW_PLAYLIST = "CREATE_NEW_PLAYLIST";
 export const DELETE_PLAYLIST = "DELETE_PLAYLIST";
 export const RENAME_PLAYLIST = "RENAME_PLAYLIST";
@@ -258,7 +254,8 @@ type PlaylistType = {
 };
 
 export const findAllPlaylists = () => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     const playlists: Record<string, ShowSongType[]> = {};
     try {
       const res = await fetch(ENDPOINT + "/playlists", {
@@ -281,8 +278,15 @@ export const findAllPlaylists = () => {
   };
 };
 
+export const resetPlaylists = () => {
+  return {
+    type: RESET_LIST_PLAYLISTS,
+  };
+};
+
 export const createNewPlaylist = (namePlaylist: string) => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     try {
       const res = await fetch(ENDPOINT + "/playlists", {
         method: "POST",
@@ -303,6 +307,7 @@ export const createNewPlaylist = (namePlaylist: string) => {
 
 export const deletePlaylist = (namePlaylist: string) => {
   return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     try {
       const res = await fetch(ENDPOINT + "/playlists/" + namePlaylist, {
         method: "DELETE",
@@ -340,7 +345,8 @@ export const renamePlaylist = (
   oldNamePlaylist: string,
   newNamePlaylist: string
 ) => {
-  return () => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     fetch(
       ENDPOINT +
         "/playlists/" +
@@ -369,15 +375,15 @@ export const addSongToPlaylist = (
   newSong: ShowSongType,
   playlistName: string
 ) => {
-  return async (dispatch: AppDispatchFunction) => {
-    const token = localStorage.getItem("token");
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     try {
       const res = await fetch(
         ENDPOINT + "/playlists/" + playlistName + "/add",
         {
           method: "PATCH",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${TOKEN}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(newSong),
@@ -400,7 +406,8 @@ export const deleteSongFromPlaylist = (
   namePlaylist: string,
   song: ShowSongType
 ) => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     try {
       const res = await fetch(
         ENDPOINT + `/playlists/${namePlaylist}/${song.id}`,
@@ -426,90 +433,46 @@ export const deleteSongFromPlaylist = (
 export const PLAYLIST_NOT_TO_SAVE = "PLAYLIST_NOT_TO_SAVE";
 
 export const savePlaylistNotToSavePermanently = (country: string) => {
-  return async (dispatch: AppDispatchFunction) => {
+  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
     const AllFoundSongs: ShowSongType[] = [];
 
     try {
       const res = await fetch(
-        `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${country}&api_key=${TOKEN_LAST_FM}&format=json`
+        ENDPOINT + "/api/songs/country/all?country=" + country,
+        {
+          headers: { Authorization: `Bearer ${TOKEN}` },
+        }
       );
 
       if (!res.ok) {
         throw new Error("Response status: " + res.status);
       }
       const data = await res.json();
-      for (let i = 0; i < data.tracks.track.length; i++) {
-        if (AllFoundSongs.length < 30) {
-          const basicInfo = [
-            data.tracks.track[i].name,
-            data.tracks.track[i].artist.name,
-          ];
-          let foundSong: ShowSongType = {
-            id: "",
-            cover: "",
-            title: "",
-            author: "",
-            preview: "",
-          };
-
-          try {
-            const secondRes = await fetch(
-              "https://striveschool-api.herokuapp.com/api/deezer/search?q=" +
-                basicInfo[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "") +
-                basicInfo[1].normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-            );
-            if (!secondRes.ok) {
-              throw new Error("Response status: " + secondRes.status);
-            }
-            const data2 = await secondRes.json();
-
-            for (let j = 0; j < data2.data.length; j++) {
-              if (
-                data2.data[j].title_short
-                  .toLowerCase()
-                  .includes(basicInfo[0].toLowerCase()) &&
-                data2.data[j].artist.name
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
-                  .toLowerCase() ===
-                  basicInfo[1]
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
-                    .toLowerCase() &&
-                foundSong.id === ""
-              ) {
-                foundSong = {
-                  id: data2.data[j].id.toString(),
-                  cover: data2.data[j].album.cover_xl,
-                  title: data2.data[j].title,
-                  author: data2.data[j].artist.name,
-                  preview: data2.data[j].preview,
-                };
-                j = data2.data.length;
-              }
-            }
-            if (foundSong.id !== "") AllFoundSongs.push(foundSong);
-          } catch (e: unknown) {
-            console.log("This is the error: ", e);
-            let result;
-            if (typeof e === "string") {
-              result = e.toUpperCase();
-            } else if (e instanceof Error) {
-              result = e.message;
-            }
-            if (result?.includes("Response status: 429")) {
-              break;
-            }
-          }
-        }
-      }
+      let foundSong: ShowSongType = {
+        id: "",
+        cover: "",
+        title: "",
+        author: "",
+        preview: "",
+      };
+      data.forEach((song: SongAPI) => {
+        foundSong = {
+          id: song.id,
+          cover: song.album.cover_xl,
+          title: song.title,
+          author: song.artist.name,
+          preview: song.preview,
+        };
+        AllFoundSongs.push(foundSong);
+      });
+      dispatch({
+        type: PLAYLIST_NOT_TO_SAVE,
+        payload: AllFoundSongs,
+      });
     } catch (e) {
       console.log(e);
     }
-    dispatch({
-      type: PLAYLIST_NOT_TO_SAVE,
-      payload: AllFoundSongs,
-    });
   };
 };
 

@@ -6,8 +6,11 @@ import Song from "./Song";
 import { RiOrderPlayFill } from "react-icons/ri";
 import "../scss/search.scss";
 import Loader from "./Loader";
+import { ENDPOINT } from "../redux/actions";
+import { useAppSelector } from "../redux/store";
 
 const Search = () => {
+  const TOKEN = useAppSelector((state) => state.user.token);
   const [searchQuery, setSearchQuery] = useState("");
   const [songs, setSongs] = useState<ShowSongType[]>([]);
 
@@ -18,7 +21,7 @@ const Search = () => {
     setTimeout(() => setAlert(false), 5000);
   }, [alert]);
 
-  const [typeOfSearch, setTypeOfSearch] = useState("Discovery");
+  const [typeOfSearch, setTypeOfSearch] = useState("Normal");
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const iconRef = useRef<HTMLSpanElement>(null);
@@ -43,10 +46,9 @@ const Search = () => {
 
   const search = (type: string, addToPreviousSongs: boolean) => {
     setIsLoading(true);
-    fetch(
-      "https://striveschool-api.herokuapp.com/api/deezer/search?q=" +
-        searchQuery
-    )
+    fetch(ENDPOINT + "/api/search?query=" + searchQuery, {
+      headers: { Authorization: `Bearer ${TOKEN}` },
+    })
       .then((res) => {
         if (!res.ok) {
           {
@@ -85,7 +87,7 @@ const Search = () => {
             if (!idsPresent.includes(singleSong.id)) {
               songsToAdd.push({
                 id: singleSong.id,
-                cover: singleSong.album.cover_small,
+                cover: singleSong.album.cover_xl,
                 title: singleSong.title,
                 author: singleSong.artist.name,
                 preview: singleSong.preview,
@@ -97,7 +99,7 @@ const Search = () => {
             singleSong = data.data[i];
             songsToAdd.push({
               id: singleSong.id,
-              cover: singleSong.album.cover_small,
+              cover: singleSong.album.cover_xl,
               title: singleSong.title,
               author: singleSong.artist.name,
               preview: singleSong.preview,
@@ -214,15 +216,18 @@ const Search = () => {
         <div className="container-found-songs">
           {songs &&
             songs.length > 0 &&
-            songs.map((song) => (
-              <Song
-                key={song.id}
-                song={song}
-                playlist={[song]}
-                namePlaylist=""
-                dontShow={true}
-              />
-            ))}
+            songs.map((song) => {
+              const thisPlaylist = [song];
+              return (
+                <Song
+                  key={song.id}
+                  song={song}
+                  playlist={thisPlaylist}
+                  namePlaylist=""
+                  dontShow={true}
+                />
+              );
+            })}
         </div>
       </Row>
     </Container>

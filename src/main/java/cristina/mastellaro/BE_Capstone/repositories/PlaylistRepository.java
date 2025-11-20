@@ -12,9 +12,6 @@ import java.util.UUID;
 
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist, UUID> {
-    //    @Query("SELECT f FROM Fattura f WHERE f.data BETWEEN : start AND :end")
-//    List<Fattura> findByDataBetween(@Param("start")LocalDate start,
-//                                    @Param("end")LocalDate end);
     @Query("SELECT p.name FROM Playlist p WHERE p.user = :user")
     List<String> findTitlesByUser(@Param("user") User user);
 

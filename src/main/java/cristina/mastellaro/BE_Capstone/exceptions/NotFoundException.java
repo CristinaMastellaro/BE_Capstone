@@ -14,4 +14,8 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException(String mood, String typeMood) {
         super("No mood named " + mood + " found");
     }
+
+    public NotFoundException(String playlist, int num) {
+        super("You don't have any playlist by the name of " + playlist);
+    }
 }

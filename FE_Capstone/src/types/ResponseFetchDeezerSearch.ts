@@ -42,3 +42,26 @@ export interface AlbumDeezer {
   tracklist: string;
   type: string;
 }
+
+export interface SongAPI {
+  id: string;
+  title: string;
+  title_short: string;
+  preview: string;
+  artist: ArtistAPI;
+  album: AlbumAPI;
+}
+
+export interface ArtistAPI {
+  name: string;
+}
+
+export interface AlbumAPI {
+  cover_small: string;
+  cover_xl: string;
+}
+
+export interface CountriesSong {
+  artist: ArtistAPI;
+  name: string;
+}

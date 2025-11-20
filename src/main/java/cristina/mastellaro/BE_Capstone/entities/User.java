@@ -1,5 +1,6 @@
 package cristina.mastellaro.BE_Capstone.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,7 +32,8 @@ public class User implements UserDetails {
     private String password;
     private UserRoles userRole;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Playlist> playlists = new ArrayList<>();
 
     public User(String name, String surname, String username, String email, String password) {

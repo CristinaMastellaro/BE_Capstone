@@ -1,0 +1,65 @@
+.container-player-details {
+    height: fit-content;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    backdrop-filter: blur(10px);
+    @media screen and (min-width: 713px) {
+        bottom: 10vh;
+        right: 10vw;
+        left: 10vw;
+        top: 5vh;
+        width: 80vw;
+    }
+
+    @media screen and (min-width: 1200px) {
+        left: 25vw;
+        width: 35vw;
+    }
+}
+
+.row-details {
+    // width: 75%;
+    max-width: 80vh;
+    margin: 0 auto !important;
+}
+
+.icons-up-player {
+    width: fit-content;
+    cursor: pointer;
+}
+
+.icons-favourite-details {
+    position: absolute;
+    right: 2em;
+    top: 0.2em;
+    cursor: pointer;
+}
+
+.image-player-details {
+    width: 50%;
+    max-width: 300px;
+    height: auto;
+    margin: 3em auto;
+}
+
+.container-volume {
+    transform: rotate(270deg) translateY(4.1em) translateX(9em);
+    position: absolute;
+    right: 0.5em;
+    bottom: 0;
+    width: 15em;
+    height: 2em;
+}
+
+.icon-volume-details {
+    transform: rotate(90deg);
+}
+
+.volume-details {
+    // transform: rotate(-90deg);
+    width: auto !important;
+}

@@ -35,7 +35,7 @@ const CustomModal = () => {
         </Modal.Header>
         <Modal.Body>
           <button
-            className="my-btn-blue mb-4"
+            className="my-btn-blue mb-2"
             onClick={() => {
               setShowForm(true);
             }}
@@ -72,7 +72,7 @@ const CustomModal = () => {
                     dispatch(addSongToPlaylist(song, title));
                     alert(song.title + " added to the playlist " + title);
                   }}
-                  className="options-add-to-playlist"
+                  className="options-add-to-playlist mt-2"
                 >
                   {title}
                 </p>

@@ -10,16 +10,19 @@ import Form from "react-bootstrap/Form";
 import { BiDotsVerticalRounded, BiPlay, BiShuffle, BiX } from "react-icons/bi";
 import {
   deletePlaylist,
+  ENDPOINT,
+  findAllPlaylists,
   isShufflingSongs,
   renamePlaylist,
   resetPlaylist,
+  resetPlaylists,
   saveCurrentPlaylist,
   saveCurrentSong,
-  TOKEN_PEXEL,
 } from "../redux/actions";
 import { Modal } from "react-bootstrap";
 
 const Playlist = () => {
+  const TOKEN = useAppSelector((state) => state.user.token);
   const { specification } = useParams();
   const allMoods = useAppSelector(
     (state) => state.allSongs.allMoodsName as string[]
@@ -71,7 +74,11 @@ const Playlist = () => {
   const changeName = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(renamePlaylist(specification as string, newName));
-    navigate("/library");
+    dispatch(resetPlaylists());
+    setTimeout(() => {
+      dispatch(findAllPlaylists());
+      navigate("/library");
+    }, 2000);
   };
 
   const [isLoading, setIsLoading] = useState(true);
@@ -122,17 +129,24 @@ const Playlist = () => {
   const [picturePlaylist, setPicturePlaylist] = useState("");
 
   const getPicturePlaylist = () => {
-    fetch("https://api.pexels.com/v1/search?query=" + specification, {
-      headers: { Authorization: TOKEN_PEXEL as string },
-    })
+    fetch(
+      ENDPOINT + "/api/picture?search=" + specification?.replaceAll(" ", ""),
+      {
+        headers: { Authorization: `Bearer ${TOKEN}` },
+      }
+    )
       .then((res) => {
         if (!res.ok) {
           setIsPictureLoading(false);
           throw new Error("Couldn't fetch the image");
-        } else return res.json();
+        } else {
+          return res.json();
+        }
       })
       .then((data) => {
-        setPicturePlaylist(data.photos[0].src.landscape);
+        if (data && data.photos[0] && data.photos[0]) {
+          setPicturePlaylist(data.photos[0].src.landscape);
+        }
         setIsPictureLoading(false);
       })
       .catch((err) => console.log("Error!", err));

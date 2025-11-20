@@ -12,6 +12,7 @@ import {
   DELETE_PLAYLIST,
   DELETE_SONG_FROM_PLAYLIST,
   PLAYLIST_NOT_TO_SAVE,
+  RESET_LIST_PLAYLISTS,
   RESET_NOT_PERMANENT_PLAYLIST,
   SET_FAVOURITES_FROM_DB,
 } from "../actions";
@@ -95,6 +96,13 @@ const allSongsReducer = (
         playlists: {
           ...state.playlists,
           ...(action.payload as Record<string, ShowSongType[]>),
+        },
+      };
+    case RESET_LIST_PLAYLISTS:
+      return {
+        ...state,
+        playlists: {
+          favourite: [],
         },
       };
     case CREATE_NEW_PLAYLIST:

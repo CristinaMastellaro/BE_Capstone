@@ -5,18 +5,18 @@ import "jsvectormap/dist/maps/world.js";
 import { useEffect, useRef, useState } from "react";
 import "../scss/searchByCountry.scss";
 import Loader from "./Loader";
-import { useAppDispatch } from "../redux/store";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 import {
+  ENDPOINT,
   resetNotPermanentPlaylist,
   resetPlaylist,
   saveCurrentPlaylist,
   saveCurrentSong,
   savePlaylistNotToSavePermanently,
-  TOKEN_LAST_FM,
 } from "../redux/actions";
 import ShowSongType from "../types/ShowSongType";
 import { useNavigate } from "react-router-dom";
-import { Track } from "../types/TopSongType";
+import { CountriesSong } from "../types/ResponseFetchDeezerSearch";
 
 interface selectedRegionType {
   title: string;
@@ -25,6 +25,7 @@ interface selectedRegionType {
 }
 
 const SearchByCountry = () => {
+  const TOKEN = useAppSelector((state) => state.user.token);
   const mapRef = useRef<HTMLDivElement>(null);
   const [selectedRegionCode, setSelectedRegionCode] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
@@ -47,6 +48,7 @@ const SearchByCountry = () => {
       regionsSelectableOne: true,
       onRegionClick: function (_: MouseEvent, code: string) {
         setLoading(true);
+        setSelectedRegionSongs([]);
         setSelectedRegionCode(code);
       },
     });
@@ -56,22 +58,35 @@ const SearchByCountry = () => {
   }, []);
 
   useEffect(() => {
-    fetch("https://restcountries.com/v3.1/alpha/" + selectedRegionCode)
+    fetch(ENDPOINT + "/api/country?code=" + selectedRegionCode, {
+      headers: { Authorization: `Bearer ${TOKEN}` },
+    })
       .then((res) => {
         if (!res.ok)
           throw new Error("Couldn't retrieve the name of the region!");
         else return res.json();
       })
       .then(async (data) => {
-        setSelectedRegion(data[0].name.common);
+        setSelectedRegion(data[0].body.name.common);
         const songs: selectedRegionType[] = [];
 
         try {
           const res2 = await fetch(
-            `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].name.common}&api_key=${TOKEN_LAST_FM}&format=json&limit=30`
+            ENDPOINT +
+              "/api/songs/country?country=" +
+              data[0].body.name.common.replaceAll(" ", ""),
+            {
+              headers: { Authorization: `Bearer ${TOKEN}` },
+            }
           );
 
-          if (!res2.ok) throw new Error("Error while searching for top music");
+          if (!res2.ok) {
+            const resJson = await res2.json();
+            if (resJson.message.includes("because the return value of")) {
+              setError(true);
+            }
+            throw new Error("Error while searching for top music");
+          }
           const data2 = await res2.json();
 
           const artists: string[] = [];
@@ -81,7 +96,7 @@ const SearchByCountry = () => {
             setSelectedRegionSongs([]);
             throw new Error("Error while searching for songs!");
           } else {
-            data2.tracks.track.forEach((topSong: Track) => {
+            data2.forEach((topSong: CountriesSong) => {
               if (songs.length < 4) {
                 if (
                   artists.filter((artist) => artist === topSong.artist.name)
@@ -90,7 +105,7 @@ const SearchByCountry = () => {
                   songs.push({
                     title: topSong.name,
                     artist: topSong.artist.name,
-                    cover: data[0].flags.png,
+                    cover: data[0].body.flags.png,
                   });
                   artists.push(topSong.artist.name);
                 }
@@ -101,10 +116,12 @@ const SearchByCountry = () => {
             setLoading(false);
           }
         } catch (err) {
+          setLoading(false);
           console.log("Error!", err);
         }
       })
       .catch((err) => {
+        setLoading(false);
         console.log("Error!", err);
       });
   }, [selectedRegionCode]);
@@ -120,11 +137,14 @@ const SearchByCountry = () => {
       title: "",
     };
     fetch(
-      `https://striveschool-api.herokuapp.com/api/deezer/search?q=${song.title
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")} ${song.artist
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")}`
+      ENDPOINT +
+        `/api/search?query=${song.title
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replaceAll(" ", "")}`,
+      {
+        headers: { Authorization: `Bearer ${TOKEN}` },
+      }
     )
       .then((res) => {
         if (!res.ok) throw new Error("Error while searching for the song");
@@ -176,8 +196,11 @@ const SearchByCountry = () => {
 
   return (
     <>
-      <Container fluid>
+      <Container fluid className="w-100">
         <h1 className="pt-5 mb-5 ms-4 fw-bold">Countries</h1>
+        <p className="text-center mb-5 mx-auto" style={{ width: "95%" }}>
+          Choose a country to explore its top list of the week!
+        </p>
         <div ref={mapRef} id="map"></div>
         <Row className="p-4 pb-1 justify-content-center">
           {selectedRegionSongs.length > 0 && !loading && (
@@ -194,7 +217,8 @@ const SearchByCountry = () => {
             selectedRegionSongs.map((song, i) => {
               return (
                 <Col
-                  xs={5}
+                  xs={12}
+                  sm={5}
                   md={3}
                   lg={3}
                   key={i}
@@ -205,6 +229,7 @@ const SearchByCountry = () => {
                     src={song.cover}
                     alt="Cover song"
                     className="img-top-song"
+                    style={{ cursor: "pointer" }}
                   />
                   <div className="d-flex flex-column mt-1">
                     <p className="mb-0 text-center fw-semibold">{song.title}</p>
@@ -214,8 +239,8 @@ const SearchByCountry = () => {
               );
             })}
           {selectedRegionSongs.length > 0 && !loading && (
-            <div className="text-center pb-3">
-              <p className="mt-3">
+            <div className="text-center p-0 pb-3">
+              <p className="mt-3 mx-auto" style={{ width: "95%" }}>
                 Here are the first four songs listened to in {selectedRegion}!
                 Would you like to listen some more?
               </p>

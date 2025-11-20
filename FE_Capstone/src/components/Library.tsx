@@ -19,7 +19,7 @@ const Library = () => {
           <h2 className="mb-5">Playlist</h2>
           {playlists &&
             Object.keys(playlists).map((playlist) => (
-              <Col xs={4} md={3} lg={2} className="px-0" key={playlist}>
+              <Col xs={4} lg={3} className="px-0" key={playlist}>
                 <div
                   className="favourite-songs-picture d-flex align-items-center justify-content-center"
                   onClick={() => navigate("/playlist/" + playlist)}

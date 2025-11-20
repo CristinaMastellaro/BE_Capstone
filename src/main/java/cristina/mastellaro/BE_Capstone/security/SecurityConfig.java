@@ -24,7 +24,7 @@ import java.util.List;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFitlerChain(HttpSecurity httpSecurity, JwsFilter jwsFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwsFilter jwsFilter) throws Exception {
         httpSecurity.formLogin(fL -> fL.disable());
         httpSecurity.csrf(csrf -> csrf.disable());
         httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

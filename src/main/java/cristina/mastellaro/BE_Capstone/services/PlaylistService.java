@@ -9,7 +9,6 @@ import cristina.mastellaro.BE_Capstone.exceptions.SongAlreadyInPlaylistException
 import cristina.mastellaro.BE_Capstone.payloads.PlaylistDTO;
 import cristina.mastellaro.BE_Capstone.payloads.SongDTO;
 import cristina.mastellaro.BE_Capstone.repositories.PlaylistRepository;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,10 +27,10 @@ public class PlaylistService {
     @Autowired
     private SongService sServ;
 
-    @Transactional
+    //    @Transactional
     public Playlist savePlaylist(User autheticatedUser, PlaylistDTO newPlaylist) {
-
-        if (pRepo.findTitlesByUser(autheticatedUser).contains(newPlaylist.name()))
+        User userToUse = uServ.findUserById(autheticatedUser.getId());
+        if (pRepo.findTitlesByUser(userToUse).contains(newPlaylist.name()))
             throw new AlreadyUsedException("There is already a playlist by the name " + newPlaylist.name());
 
         List<Song> songsForPlaylist = new ArrayList<>();
@@ -55,7 +54,7 @@ public class PlaylistService {
         return playlist;
     }
 
-    @Transactional
+    //    @Transactional
     public Playlist getPlaylistByName(User authenticatedUser, String playlist) {
         Playlist found = pRepo.findByNameAndUser(authenticatedUser, playlist);
         if (found == null) {
@@ -64,7 +63,7 @@ public class PlaylistService {
                 pRepo.save(found);
                 return found;
             } else {
-                throw new NotFoundException("You don't have any playlist by the name of " + playlist);
+                throw new NotFoundException(playlist, 0);
             }
         } else {
             return found;
@@ -86,14 +85,15 @@ public class PlaylistService {
 
     }
 
-    @Transactional
+    //    @Transactional
     public Playlist addSongToPlaylist(User authenticatedUser, SongDTO newSong, String playlistName) {
+        User userToUse = uServ.findUserById(authenticatedUser.getId());
         Song song;
         if (sServ.existsSongById(newSong.id())) song = sServ.findSongById(newSong.id());
         else song = sServ.saveSong(newSong);
 
         Playlist playlist;
-        if (pRepo.findTitlesByUser(authenticatedUser).contains(playlistName))
+        if (pRepo.findTitlesByUser(userToUse).contains(playlistName))
             playlist = getPlaylistByName(authenticatedUser, playlistName);
         else {
             playlist = new Playlist(playlistName, authenticatedUser);
@@ -127,9 +127,31 @@ public class PlaylistService {
         return playlist;
     }
 
-    @Transactional
-    public List<Playlist> findAllPlaylists(User authenticatedUser) {
-        return pRepo.findAllPlaylistsByUser(authenticatedUser);
+    //    @Transactional
+    public List<PlaylistDTO> findAllPlaylists(User authenticatedUser) {
+        User userToUse = uServ.findUserById(authenticatedUser.getId());
+        List<Playlist> playlists = pRepo.findAllPlaylistsByUser(userToUse);
+
+        List<PlaylistDTO> response = new ArrayList<>();
+        playlists.forEach(playlist -> {
+            List<SongDTO> songs = new ArrayList<>();
+            playlist.getSongs().forEach(song -> {
+                SongDTO songToAdd = new SongDTO(song.getId(), song.getCover(), song.getTitle(), song.getAuthor(), song.getPreview());
+                songs.add(songToAdd);
+            });
+            response.add(new PlaylistDTO(playlist.getName(), songs));
+        });
+        return response;
+    }
+
+    public void deletePlaylist(User authenticatedUser, String namePlaylist) {
+        Playlist playlistToDelete = pRepo.findByNameAndUser(authenticatedUser, namePlaylist);
+
+        if (playlistToDelete == null) throw new NotFoundException("You don't have a playlist called " + namePlaylist);
+
+        pRepo.delete(playlistToDelete);
+
+        log.info("Playlist deleted!");
     }
 
     public void deletePlaylist(User authenticatedUser, String namePlaylist) {

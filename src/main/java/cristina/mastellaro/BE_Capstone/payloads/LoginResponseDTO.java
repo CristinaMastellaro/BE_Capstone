@@ -2,8 +2,9 @@ package cristina.mastellaro.BE_Capstone.payloads;
 
 public record LoginResponseDTO(
         String username,
-        String token,
-        String tokenLastFm,
-        String apikeyPexels
+        String name,
+        String surname,
+        String email,
+        String token
 ) {
 }

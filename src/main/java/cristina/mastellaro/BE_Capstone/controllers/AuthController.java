@@ -1,5 +1,6 @@
 package cristina.mastellaro.BE_Capstone.controllers;
 
+import cristina.mastellaro.BE_Capstone.email.EmailSender;
 import cristina.mastellaro.BE_Capstone.entities.User;
 import cristina.mastellaro.BE_Capstone.exceptions.PayloadValidationException;
 import cristina.mastellaro.BE_Capstone.payloads.LoginDTO;
@@ -13,8 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -23,7 +22,7 @@ public class AuthController {
     @Autowired
     private LoginService lServ;
     @Autowired
-    private List<String> apiKey;
+    private EmailSender eSender;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -39,7 +38,20 @@ public class AuthController {
         if (validation.hasErrors()) {
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(fE -> fE.getDefaultMessage()).toList());
         }
-        return new LoginResponseDTO(dto.username(), lServ.verifyUserAndGetToken(dto), apiKey.getFirst(), apiKey.getLast());
+        return uServ.getInfoUser(dto, lServ.verifyUserAndGetToken(dto));
+    }
+
+    @GetMapping("/changePassword")
+    public int requestChangePassword(@RequestParam String email) {
+        return eSender.sendChangePasswordEmail(email);
+    }
+
+    @PatchMapping("/changePassword")
+    public void changePassword(@RequestBody @Validated LoginDTO dto, BindingResult validation) {
+        if (validation.hasErrors()) {
+            throw new PayloadValidationException(validation.getFieldErrors().stream().map(fE -> fE.getDefaultMessage()).toList());
+        }
+        uServ.changePassword(dto);
     }
 
 }

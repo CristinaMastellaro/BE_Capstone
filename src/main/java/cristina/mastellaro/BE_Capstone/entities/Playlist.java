@@ -1,5 +1,6 @@
 package cristina.mastellaro.BE_Capstone.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class Playlist {
     private List<Song> songs = new ArrayList<>();
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     public Playlist(String name, User user) {
