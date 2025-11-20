@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @Slf4j
@@ -32,10 +33,18 @@ public class MusicService {
     //    public List<FoundSongDTO> findSongByMood(String mood) {
     public Flux<FoundSongDTO> findSongByMood(String mood) {
 
+        AtomicBoolean stop = new AtomicBoolean(false);
+
         return lFmServ.getInfoMoodSongsToSearch(mood)
-                .flatMap(track ->
-                        ssServ.searchSong(normalize(track.artist().name()))
-                                .map(striveSchoolResponseDTO -> {
+                .flatMap(track -> {
+
+                    if (stop.get()) {
+                        return Mono.empty();
+                    }
+
+                    return ssServ.searchSong(normalize(track.artist().name()))
+                            .map(striveSchoolResponseDTO -> {
+                                try {
                                     if (striveSchoolResponseDTO == null) return null;
 
                                     return striveSchoolResponseDTO.data().stream()
@@ -44,16 +53,27 @@ public class MusicService {
                                                             && normalize(singleTrackStrSch.title_short()).equalsIgnoreCase(normalize(track.name())))
                                             .findFirst()
                                             .orElse(null);
-                                }).onErrorResume(e -> {
-                                    System.err.println("Error on track " + track.name() + " by artist " + track.artist().name() + ": " + e.getMessage());
-                                    return Mono.empty();
-                                }), 45);
+                                } catch (Exception e) {
+                                    System.err.println("Error processing track "
+                                            + track.name() + " by "
+                                            + track.artist().name() + ": "
+                                            + e.getMessage());
+                                    if (e.getMessage().equalsIgnoreCase("Client error from strive-school")) {
+                                        stop.set(true);
+                                    }
+                                    return null;
+                                }
+                            }).onErrorResume(e -> {
+                                System.err.println("Error on track " + track.name() + " by artist " + track.artist().name() + ": " + e.getMessage());
+                                return Mono.empty();
+                            });
+                }, 4);
     }
 
     public Flux<FoundSongDTO> findSongsByCountry(String country) {
         return lFmServ.getInfoCountrySongsToSearch(country)
                 .flatMap(track ->
-                        ssServ.searchSong(normalize(track.artist().name()))
+                        ssServ.searchSong(normalize(track.name()))
                                 .map(striveSchoolResponseDTO -> {
                                     if (striveSchoolResponseDTO == null) return null;
 
@@ -66,6 +86,6 @@ public class MusicService {
                                 }).onErrorResume(e -> {
                                     System.err.println("Error on track " + track.name() + " by artist " + track.artist().name() + ": " + e.getMessage());
                                     return Mono.empty();
-                                }), 45);
+                                }), 5);
     }
 }

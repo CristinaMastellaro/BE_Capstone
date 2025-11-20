@@ -82,7 +82,6 @@ const SearchByCountry = () => {
 
           if (!res2.ok) {
             const resJson = await res2.json();
-            console.log("resJson", resJson);
             if (resJson.message.includes("because the return value of")) {
               setError(true);
             }
