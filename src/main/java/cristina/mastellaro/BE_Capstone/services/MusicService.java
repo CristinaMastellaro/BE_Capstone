@@ -42,7 +42,7 @@ public class MusicService {
                         return Mono.empty();
                     }
 
-                    return ssServ.searchSong(normalize(track.artist().name()))
+                    return ssServ.searchSong(normalize(track.name()))
                             .map(striveSchoolResponseDTO -> {
                                 try {
                                     if (striveSchoolResponseDTO == null) return null;
@@ -50,14 +50,10 @@ public class MusicService {
                                     return striveSchoolResponseDTO.data().stream()
                                             .filter(singleTrackStrSch ->
                                                     normalize(singleTrackStrSch.artist().name()).equalsIgnoreCase(normalize(track.artist().name()))
-                                                            && normalize(singleTrackStrSch.title_short()).equalsIgnoreCase(normalize(track.name())))
+                                                            && normalize(normalize(track.name())).equalsIgnoreCase(normalize(singleTrackStrSch.title_short())))
                                             .findFirst()
                                             .orElse(null);
                                 } catch (Exception e) {
-                                    System.err.println("Error processing track "
-                                            + track.name() + " by "
-                                            + track.artist().name() + ": "
-                                            + e.getMessage());
                                     if (e.getMessage().equalsIgnoreCase("Client error from strive-school")) {
                                         stop.set(true);
                                     }
@@ -71,10 +67,17 @@ public class MusicService {
     }
 
     public Flux<FoundSongDTO> findSongsByCountry(String country) {
+
+        AtomicBoolean stop = new AtomicBoolean(false);
+
         return lFmServ.getInfoCountrySongsToSearch(country)
-                .flatMap(track ->
-                        ssServ.searchSong(normalize(track.name()))
-                                .map(striveSchoolResponseDTO -> {
+                .flatMap(track -> {
+                    if (stop.get()) {
+                        return Mono.empty();
+                    }
+                    return ssServ.searchSong(normalize(track.name()))
+                            .map(striveSchoolResponseDTO -> {
+                                try {
                                     if (striveSchoolResponseDTO == null) return null;
 
                                     return striveSchoolResponseDTO.data().stream()
@@ -83,9 +86,16 @@ public class MusicService {
                                                             && normalize(singleTrackStrSch.title_short()).equalsIgnoreCase(normalize(track.name())))
                                             .findFirst()
                                             .orElse(null);
-                                }).onErrorResume(e -> {
-                                    System.err.println("Error on track " + track.name() + " by artist " + track.artist().name() + ": " + e.getMessage());
-                                    return Mono.empty();
-                                }), 5);
+                                } catch (Exception e) {
+                                    if (e.getMessage().equalsIgnoreCase("Client error from strive-school")) {
+                                        stop.set(true);
+                                    }
+                                    return null;
+                                }
+                            }).onErrorResume(e -> {
+                                System.err.println("Error on track " + track.name() + " by artist " + track.artist().name() + ": " + e.getMessage());
+                                return Mono.empty();
+                            });
+                }, 4);
     }
 }

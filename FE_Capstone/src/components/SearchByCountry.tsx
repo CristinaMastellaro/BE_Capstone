@@ -196,9 +196,9 @@ const SearchByCountry = () => {
 
   return (
     <>
-      <Container fluid>
+      <Container fluid className="w-100">
         <h1 className="pt-5 mb-5 ms-4 fw-bold">Countries</h1>
-        <p className="text-center mb-5">
+        <p className="text-center mb-5 mx-auto" style={{ width: "95%" }}>
           Choose a country to explore its top list of the week!
         </p>
         <div ref={mapRef} id="map"></div>
@@ -217,7 +217,8 @@ const SearchByCountry = () => {
             selectedRegionSongs.map((song, i) => {
               return (
                 <Col
-                  xs={5}
+                  xs={12}
+                  sm={5}
                   md={3}
                   lg={3}
                   key={i}
@@ -238,8 +239,8 @@ const SearchByCountry = () => {
               );
             })}
           {selectedRegionSongs.length > 0 && !loading && (
-            <div className="text-center pb-3">
-              <p className="mt-3">
+            <div className="text-center p-0 pb-3">
+              <p className="mt-3 mx-auto" style={{ width: "95%" }}>
                 Here are the first four songs listened to in {selectedRegion}!
                 Would you like to listen some more?
               </p>
