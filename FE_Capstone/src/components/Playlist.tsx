@@ -127,6 +127,7 @@ const Playlist = () => {
   }, [isPictureLoading, isLoading]);
 
   const [picturePlaylist, setPicturePlaylist] = useState("");
+  const [avgColor, setAvgColor] = useState("");
 
   const getPicturePlaylist = () => {
     fetch(
@@ -146,6 +147,7 @@ const Playlist = () => {
       .then((data) => {
         if (data && data.photos[0] && data.photos[0]) {
           setPicturePlaylist(data.photos[0].src.landscape);
+          setAvgColor(data.photos[0].avg_color);
         }
         setIsPictureLoading(false);
       })
@@ -208,14 +210,17 @@ const Playlist = () => {
               className="hero"
               style={{ backgroundImage: `url(${picturePlaylist})` }}
             ></div>
-            <div className="change-hero bg-transparent">
-              <h1 className="my-4 ms-5">
+            <div
+              className="change-hero text-center"
+              style={{ color: avgColor }}
+            >
+              <h1 className="mb-4 pt-4">
                 {specification
                   ? specification[0].toUpperCase() + specification.substring(1)
                   : "Playlist"}
               </h1>
               {songs && songs.length !== 0 && (
-                <div className="player-playlist d-flex justify-content-md-end gap-4 align-items-center mb-3 me-5">
+                <div className="player-playlist d-flex justify-content-center gap-4 align-items-center mb-3">
                   <BiShuffle
                     className={
                       isShuffle
@@ -226,7 +231,7 @@ const Playlist = () => {
                       dispatch(isShufflingSongs(!isShuffle));
                     }}
                   />
-                  <div className="my-bg-pink rounded-circle d-inline-block d-flex justify-content-center align-items-center play-button">
+                  <div className="my-bg-container rounded-circle d-inline-block d-flex justify-content-center align-items-center play-button">
                     <BiPlay
                       className="ms-2 icons-for-playing"
                       onClick={() => {

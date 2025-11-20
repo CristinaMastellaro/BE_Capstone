@@ -4,6 +4,7 @@ public record PhotoDTO(
         int id,
         String photographer,
         String photographer_url,
-        SrcDTO src
+        SrcDTO src,
+        String avg_color
 ) {
 }

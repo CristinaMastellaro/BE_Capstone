@@ -1,9 +1,4 @@
-// $new-primary: rgba(148, 187, 233, 1);
-$new-primary: rgb(122, 179, 245);
-// $new-secondary: rgba(238, 174, 202, 1);
-$new-secondary: rgb(241, 156, 193);
-$new-light: rgb(245, 249, 233);
-$new-dark: #2B2D42;
+@import "./scss/variables.scss";
 
 // $new-theme-colors: (
 //   'myBlue': $new-primary,
@@ -73,12 +68,29 @@ $new-dark: #2B2D42;
     max-width: fit-content !important;
 }
 
+.my-btn-pink {
+    border-radius: 10px;
+    background-color: $new-secondary;
+    color: black;
+    padding: 0.5em 2em;
+    border: 0;
+    -webkit-box-shadow: 0px 0px 5px 3px rgba(126,126,126,0.81); 
+    box-shadow: 0px 0px 5px 3px rgba(126, 126, 126, 0.238) !important; 
+    max-width: fit-content !important;
+}
+
 .my-bg-pink {
-  background-color: rgb(241, 156, 193);
+  // background-color: rgb(241, 156, 193);
+  background-color: $new-primary;
+}
+
+.my-bg-secondary {
+  background-color: $new-secondary;
 }
 
 .my-pink {
-    color: rgb(241, 156, 193)
+    // color: rgb(241, 156, 193)
+    color: $new-primary;
 }
 
 // #080705

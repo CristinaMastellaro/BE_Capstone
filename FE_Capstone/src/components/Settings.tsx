@@ -1,12 +1,4 @@
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  Image,
-  Modal,
-  Row,
-} from "react-bootstrap";
+import { Button, Col, Form, Image, Modal, Row } from "react-bootstrap";
 import "../scss/settings.scss";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import {
@@ -116,10 +108,13 @@ const Settings = () => {
   };
 
   return (
-    <Container fluid className="position-relative">
-      <h1 className="mt-5 ms-4 fw-bold">Settings</h1>
-      <Row className="ms-3 mt-5">
-        <h2 className="mb-5">Personal information</h2>
+    // <Container fluid className="position-relative">
+    <>
+      <div className="change-hero">
+        <h1 className="fw-semibold">Settings</h1>
+      </div>
+      <Row className="mx-0 mt-5 px-3">
+        <h2 className="mb-5 text-center">Personal information</h2>
         <Col xs={3} md={2}>
           <Image
             src={
@@ -220,7 +215,7 @@ const Settings = () => {
           </Row>
         </Col>
       </Row>
-      <Row className="ms-3 mt-3 mb-2 d-flex justify-content-center">
+      <Row className="mx-0 mt-3 mb-2 d-flex justify-content-center">
         <Col xs={4} md={2}>
           <Button
             variant="danger"
@@ -254,7 +249,7 @@ const Settings = () => {
           </Modal.Dialog>
         </div>
       )}
-    </Container>
+    </>
   );
 };
 

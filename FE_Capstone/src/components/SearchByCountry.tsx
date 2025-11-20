@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import jsVectorMap from "jsvectormap";
 import "jsvectormap/dist/jsvectormap.min.css";
 import "jsvectormap/dist/maps/world.js";
@@ -196,70 +196,72 @@ const SearchByCountry = () => {
 
   return (
     <>
-      <Container fluid className="w-100">
-        <h1 className="pt-5 mb-5 ms-4 fw-bold">Countries</h1>
-        <p className="text-center mb-5 mx-auto" style={{ width: "95%" }}>
-          Choose a country to explore its top list of the week!
-        </p>
-        <div ref={mapRef} id="map"></div>
-        <Row className="p-4 pb-1 justify-content-center">
-          {selectedRegionSongs.length > 0 && !loading && (
-            <h2 className="text-center">{selectedRegion}</h2>
-          )}
-          {loading && (
-            <>
-              <p className="text-center mt-3">Searching for the top songs...</p>
-              <Loader />
-            </>
-          )}
-          {selectedRegionSongs &&
-            !loading &&
-            selectedRegionSongs.map((song, i) => {
-              return (
-                <Col
-                  xs={12}
-                  sm={5}
-                  md={3}
-                  lg={3}
-                  key={i}
-                  className="d-flex flex-column align-items-center mb-2 mt-3"
-                  onClick={() => searchPreviewSong(song)}
-                >
-                  <img
-                    src={song.cover}
-                    alt="Cover song"
-                    className="img-top-song"
-                    style={{ cursor: "pointer" }}
-                  />
-                  <div className="d-flex flex-column mt-1">
-                    <p className="mb-0 text-center fw-semibold">{song.title}</p>
-                    <p className="mb-0 text-center small">{song.artist}</p>
-                  </div>
-                </Col>
-              );
-            })}
-          {selectedRegionSongs.length > 0 && !loading && (
-            <div className="text-center p-0 pb-3">
-              <p className="mt-3 mx-auto" style={{ width: "95%" }}>
-                Here are the first four songs listened to in {selectedRegion}!
-                Would you like to listen some more?
-              </p>
-              <button
-                className="my-btn-blue text-decoration-none"
-                onClick={() => goToPlaylist()}
+      {/* <Container fluid className="w-100"> */}
+      <div className="change-hero">
+        <h1 className="fw-semibold">Countries</h1>
+      </div>
+      <p className="text-center mb-5 mx-auto mt-4" style={{ width: "95%" }}>
+        Choose a country to explore its top list of the week!
+      </p>
+      <div ref={mapRef} id="map"></div>
+      <Row className="p-4 pb-1 justify-content-center mx-0">
+        {selectedRegionSongs.length > 0 && !loading && (
+          <h2 className="text-center">{selectedRegion}</h2>
+        )}
+        {loading && (
+          <>
+            <p className="text-center mt-3">Searching for the top songs...</p>
+            <Loader />
+          </>
+        )}
+        {selectedRegionSongs &&
+          !loading &&
+          selectedRegionSongs.map((song, i) => {
+            return (
+              <Col
+                xs={12}
+                sm={5}
+                md={3}
+                lg={3}
+                key={i}
+                className="d-flex flex-column align-items-center mb-2 mt-3"
+                onClick={() => searchPreviewSong(song)}
               >
-                Go to {selectedRegion}!
-              </button>
-            </div>
-          )}
-          {error && !loading && (
-            <p className="mt-4 text-center">
-              {selectedRegion} didn't want to share their music preferences, so
-              we don't know their favourite songs.{" "}
+                <img
+                  src={song.cover}
+                  alt="Cover song"
+                  className="img-top-song"
+                  style={{ cursor: "pointer" }}
+                />
+                <div className="d-flex flex-column mt-1">
+                  <p className="mb-0 text-center fw-semibold">{song.title}</p>
+                  <p className="mb-0 text-center small">{song.artist}</p>
+                </div>
+              </Col>
+            );
+          })}
+        {selectedRegionSongs.length > 0 && !loading && (
+          <div className="text-center p-0 pb-3">
+            <p className="mt-3 mx-auto" style={{ width: "95%" }}>
+              Here are the first four songs listened to in {selectedRegion}!
+              Would you like to listen some more?
             </p>
-          )}
-        </Row>
-      </Container>
+            <button
+              className="my-btn-blue text-decoration-none"
+              onClick={() => goToPlaylist()}
+            >
+              Go to {selectedRegion}!
+            </button>
+          </div>
+        )}
+        {error && !loading && (
+          <p className="mt-4 text-center">
+            {selectedRegion} didn't want to share their music preferences, so we
+            don't know their favourite songs.{" "}
+          </p>
+        )}
+      </Row>
+      {/* </Container> */}
     </>
   );
 };

@@ -32,7 +32,7 @@ const MainLayout = () => {
             }
             style={{ minHeight: "100vh" }}
           >
-            <div className="flex-grow-1">
+            <div className="flex-grow-1 px-0 mx-0">
               <Outlet />
             </div>
             <div className="z-0">

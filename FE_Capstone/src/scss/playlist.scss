@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 .hero {
     filter:blur(10px);
     background-position: center;
@@ -10,19 +12,36 @@
     background-repeat: no-repeat;
     background-size: cover;
     // background-color: #ffffff;
-    // z-index: -1;
+    z-index: 0;
 }
 
 .change-hero {
+    background-color: $new-primary;
+    border-radius: 0 0 40px 40px;
+    color: black;
+    text-align: center;
     // filter:blur(0);
+    position: relative;
     width: 100%;
-    min-height: 25vh;
+    padding: 0.5em 0;
+    min-height: fit-content;
+    z-index: 3;
+    // background-color: $new-dark !important;
     // background: #2B2D42 !important;
     // background: linear-gradient(0deg, rgba(43, 45, 66, 1) 5%, rgba(255, 255, 255, 0.28) 65%);   
+    
     h1 {
-        position: absolute;
-        top: 0.5em;
-        font-size: 4em;
+        font-size: 3em;
+    }
+
+    @media screen and (min-width: 768px){
+    
+        padding: 1.5em 0;
+        border-radius: 0 0 100px 100px;
+    
+        h1 {
+            font-size: 4em;
+        }
     }
 }
 
@@ -37,14 +56,13 @@
 }
 
 .player-playlist {
-    position: absolute;
-    top: 18vh;
-    right: 0;
+    position: relative;
 }
 
 .play-button {
     width: 3.7em; 
     height: 3.7em;
+    color: white;
 }
 
 .icons-for-playing {
@@ -55,9 +73,9 @@
 }
 
 .drop-order-playlist {
-  position: absolute;
-  right: 4em;
-  top: 3em;
+  position: fixed;
+  right: 28vw;
+  top: 26vh;
   background-color: rgb(56, 56, 56);
   z-index: 2;
 //   border: 0.5px solid rgba(0, 0, 0, 0.208);

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Alert, Container, Form, Row } from "react-bootstrap";
+import { Alert, Form, Row } from "react-bootstrap";
 import { BiSearch } from "react-icons/bi";
 import ShowSongType from "../types/ShowSongType";
 import Song from "./Song";
@@ -121,9 +121,12 @@ const Search = () => {
   };
 
   return (
-    <Container fluid>
-      <h1 className="mt-5 ms-4 fw-bold">Search</h1>
-      <Row className="ms-3 mt-5">
+    <>
+      {/* <Container fluid> */}
+      <div className="change-hero">
+        <h1 className="fw-semibold">Search</h1>
+      </div>
+      <Row className="mx-0 mt-5">
         <Form className="w-75 mx-auto" onSubmit={searchThroughForm}>
           <p>What would you like to look for?</p>
           <Form.Group
@@ -230,7 +233,8 @@ const Search = () => {
             })}
         </div>
       </Row>
-    </Container>
+      {/* </Container> */}
+    </>
   );
 };
 

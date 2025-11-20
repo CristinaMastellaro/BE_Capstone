@@ -1,5 +1,8 @@
+@import "./variables.scss";
+
 .my-icons {
-    color: rgb(122, 179, 245)
+    // color: rgb(122, 179, 245)
+    color: $new-primary;
 }
 
 .options {
@@ -8,7 +11,7 @@
 }
 
 .options:hover {
-    background-color: rgba(241, 156, 193, 0.318);
+    // background-color: rgba(241, 156, 193, 0.318);
     border-radius: 10px;
     cursor: pointer;
 }
