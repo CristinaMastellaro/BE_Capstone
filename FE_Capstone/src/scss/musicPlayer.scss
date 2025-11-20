@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 .music-player {
     position: fixed;
     bottom: 4.5em;
@@ -48,11 +50,11 @@ input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   margin-top: -4px;
-  background-color: white;
+  background-color: $new-primary;
   height: 0.5rem;
   width: 0.5rem;
   border-radius: 50%;
-  box-shadow: -407px 0 0 400px white;
+  box-shadow: -407px 0 0 400px $new-primary;
 }
 
 .cont-player-sm {
@@ -66,11 +68,13 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .selected {
-  color: rgb(241, 156, 193);
+  // color: rgb(241, 156, 193);
+  color: $new-primary;
 }
 
 .icon:hover {
-  color: rgb(122, 179, 245);
+  // color: rgb(122, 179, 245);
+  color: $new-primary;
   cursor: pointer;
 }
 

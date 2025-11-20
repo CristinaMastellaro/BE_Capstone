@@ -1,28 +1,31 @@
 .container-player-details {
+    max-width: 400px;
+    border-radius: 40px;
     height: fit-content;
     position: fixed;
-    bottom: 0;
     right: 0;
     left: 0;
-    top: 0;
-    width: 100vw;
+    top: 10%;
     backdrop-filter: blur(10px);
+    z-index: 3;
+    padding: 0;
     @media screen and (min-width: 713px) {
-        bottom: 10vh;
-        right: 10vw;
+       right: 10vw;
         left: 10vw;
-        top: 5vh;
-        width: 80vw;
+        top: 17%;
+    }
+
+    @media screen and (min-width: 992px) {
+        left: 30%;
     }
 
     @media screen and (min-width: 1200px) {
-        left: 25vw;
-        width: 35vw;
+        left: 15%;
+        top: 10%;
     }
 }
 
 .row-details {
-    // width: 75%;
     max-width: 80vh;
     margin: 0 auto !important;
 }
@@ -33,9 +36,7 @@
 }
 
 .icons-favourite-details {
-    position: absolute;
-    right: 2em;
-    top: 0.2em;
+    margin-bottom: 0.5em;
     cursor: pointer;
 }
 
@@ -43,14 +44,14 @@
     width: 50%;
     max-width: 300px;
     height: auto;
-    margin: 3em auto;
+    margin: 2em auto;
 }
 
 .container-volume {
     transform: rotate(270deg) translateY(4.1em) translateX(9em);
     position: absolute;
-    right: 0.5em;
-    bottom: 0;
+    right: 0.4em;
+    bottom: -2.2em;
     width: 15em;
     height: 2em;
 }
@@ -62,4 +63,20 @@
 .volume-details {
     // transform: rotate(-90deg);
     width: auto !important;
+}
+
+.bg-details {
+    position: fixed;
+    bottom: -1em;
+    right: -1em;
+    left: -2em;
+    top: -1em;
+    z-index: 3;
+    filter: blur(8px);
+    background-size: cover;
+    @media screen and (min-width: 992px) {
+        bottom: -1em;
+        left: 15em;
+    }
+    
 }

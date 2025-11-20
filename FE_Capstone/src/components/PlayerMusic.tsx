@@ -314,178 +314,191 @@ const PlayerMusic = () => {
           </Row>
         </Container>
       ) : (
-        <div className="position-relative h-100 w-100 z-3">
-          <Container fluid className="my-bg-container container-player-details">
-            <Row className="row-details px-3 justify-content-between pt-4">
-              <GrDown
-                className="text-white ms-4 icons-up-player"
-                onClick={() => {
-                  dispatch(showDetails(false));
-                }}
-              />
-              <span ref={iconRef} className="icons-up-player">
-                <BiDotsVerticalRounded
-                  className="text-white me-4 fs-4"
-                  onClick={() => setShowDropdown(!showDropdown)}
-                />
-              </span>
-              {showDropdown && (
-                <div ref={dropdownRef} className="drop-order text-dark small">
-                  <ul>
-                    <li
-                      onClick={() =>
-                        dispatch(changeShowModal(!showModal, currentSong))
-                      }
-                    >
-                      Add to playlist
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </Row>
-            <Row className="px-3 flex-column row-details">
-              <Col xs={12} className="text-center">
-                <Row className="position-relative">
-                  <Image
-                    src={currentSong.cover}
-                    className="image-player-details"
-                    roundedCircle
-                  />
-                  <div className="d-flex align-items-center container-volume">
-                    <BiVolumeFull className="opacity-50 me-3 icon-volume-details" />
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      className="volume-details"
-                      value={volumeValue}
-                      onChange={(e) => {
-                        setVolumeValue(Number(e.currentTarget.value));
-                        audioRef.current!.volume =
-                          Number(e.currentTarget.value) / 100;
-                      }}
-                      style={{
-                        background: `linear-gradient(to right, white ${volumeValue}%, grey ${volumeValue}%)`,
-                      }}
-                    />
-                  </div>
-                </Row>
-              </Col>
-              <Col xs={12} className="d-flex position-relative">
-                <div
-                  className="flex-grow-1 ms-4 mx-auto"
-                  style={{ maxWidth: "75%" }}
-                >
-                  <p className="text-center fs-4 fw-semibold mb-0">
-                    {currentSong.title}
-                  </p>
-                  <p className="text-center fs-6">{currentSong.author}</p>
-                </div>
-                {isFavourite ? (
-                  <BiSolidHeart
-                    className="icons-favourite-details fs-3 my-pink"
-                    onClick={() => dispatch(deleteFavourite(currentSong))}
-                  />
-                ) : (
-                  <BiHeart
-                    className="icons-favourite-details fs-3"
-                    onClick={() => dispatch(addNewFavourite(currentSong))}
-                  />
-                )}
-              </Col>
-            </Row>
-            <Row className="px-3 text-center row-details">
-              <Col
-                xs={12}
-                className="justify-content-between align-items-center mx-auto mb-4"
-              >
-                <input
-                  type="range"
-                  id="timeMusic"
-                  max="29"
-                  className="mx-4"
-                  value={valueTimeMusic}
-                  style={{ width: "60%" }}
-                  onChange={(e) => {
-                    setValueTimeMusic(Number(e.currentTarget.value));
-                    audioRef.current!.currentTime = Number(
-                      e.currentTarget.value
-                    );
-                    if (!audioRef.current!.paused) {
-                      requestAnimationFrame(whilePlaying);
-                    }
+        <>
+          <div
+            className="bg-details"
+            style={{ backgroundImage: `url(${currentSong.cover})` }}
+          ></div>
+          <div className="position-relative">
+            <Container
+              fluid
+              className="my-bg-container container-player-details"
+            >
+              <Row className="row-details px-3 justify-content-between pt-4">
+                <GrDown
+                  className="text-white ms-4 icons-up-player"
+                  onClick={() => {
+                    dispatch(showDetails(false));
                   }}
                 />
-
-                <Col xs={12} className="d-flex justify-content-center mt-1">
+                <span ref={iconRef} className="icons-up-player">
+                  <BiDotsVerticalRounded
+                    className="text-white me-4 fs-4"
+                    onClick={() => setShowDropdown(!showDropdown)}
+                  />
+                </span>
+                {showDropdown && (
+                  <div ref={dropdownRef} className="drop-order text-dark small">
+                    <ul>
+                      <li
+                        onClick={() =>
+                          dispatch(changeShowModal(!showModal, currentSong))
+                        }
+                      >
+                        Add to playlist
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </Row>
+              <Row className="px-3 flex-column row-details">
+                <Col xs={12} className="text-center">
+                  <Row className="position-relative">
+                    <Image
+                      src={currentSong.cover}
+                      className="image-player-details"
+                      roundedCircle
+                    />
+                    <div className="d-flex align-items-center container-volume">
+                      <BiVolumeFull className="opacity-50 me-3 icon-volume-details" />
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        className="volume-details"
+                        value={volumeValue}
+                        onChange={(e) => {
+                          setVolumeValue(Number(e.currentTarget.value));
+                          audioRef.current!.volume =
+                            Number(e.currentTarget.value) / 100;
+                        }}
+                        style={{
+                          background: `linear-gradient(to right, white ${volumeValue}%, grey ${volumeValue}%)`,
+                        }}
+                      />
+                    </div>
+                  </Row>
+                </Col>
+                <Col
+                  xs={12}
+                  className="d-flex flex-column position-relative align-items-center"
+                >
+                  {isFavourite ? (
+                    <BiSolidHeart
+                      className="icons-favourite-details fs-3 my-pink"
+                      onClick={() => dispatch(deleteFavourite(currentSong))}
+                    />
+                  ) : (
+                    <BiHeart
+                      className="icons-favourite-details fs-3"
+                      onClick={() => dispatch(addNewFavourite(currentSong))}
+                    />
+                  )}
                   <div
-                    style={{ width: "60%" }}
-                    className="d-flex justify-content-between"
+                    className="flex-grow-1 mx-auto"
+                    style={{ maxWidth: "85%" }}
                   >
-                    <span id="currentTime">
-                      {calculateTime(valueTimeMusic)}
-                    </span>
-                    <span>0:29</span>{" "}
+                    <p className="text-center fs-4 fw-semibold mb-0">
+                      {currentSong.title}
+                    </p>
+                    <p className="text-center fs-6">{currentSong.author}</p>
                   </div>
                 </Col>
-              </Col>
-            </Row>
-            <Row className="px-3 pb-4 row-details">
-              <div className="d-flex gap-2 align-items-center justify-content-around opacity-50 w-75 mx-auto">
-                <BiShuffle
-                  className={"icon " + classShuffle}
-                  onClick={() => {
-                    dispatch(isShufflingSongs(!isShuffle));
-                  }}
-                />
-                <BiSkipPrevious
-                  className="fs-3 icon"
-                  onClick={() => {
-                    let index = currentPlaylist.indexOf(currentSong);
-                    if (isShuffle) {
-                      index = Math.floor(
-                        Math.random() * currentPlaylist.length
+              </Row>
+              <Row className="px-3 text-center row-details">
+                <Col
+                  xs={12}
+                  className="justify-content-between align-items-center mx-auto mb-4"
+                >
+                  <input
+                    type="range"
+                    id="timeMusic"
+                    max="29"
+                    className="mx-4"
+                    value={valueTimeMusic}
+                    style={{ width: "60%" }}
+                    onChange={(e) => {
+                      setValueTimeMusic(Number(e.currentTarget.value));
+                      audioRef.current!.currentTime = Number(
+                        e.currentTarget.value
                       );
-                    } else {
-                      if (index === 0) {
-                        index = currentPlaylist.length - 1;
-                      } else {
-                        index--;
+                      if (!audioRef.current!.paused) {
+                        requestAnimationFrame(whilePlaying);
                       }
-                    }
-                    const newSong = currentPlaylist[index];
-                    dispatch(saveCurrentSong(newSong));
-                  }}
-                />
-                {isPlaying ? (
-                  <BiPause
-                    className="fs-1 icon"
-                    onClick={() => {
-                      dispatch(isPlayingSong(false));
-                      // cancelAnimationFrame(rAF);
                     }}
                   />
-                ) : (
-                  <BiPlay
-                    className="fs-1 icon"
+
+                  <Col xs={12} className="d-flex justify-content-center mt-1">
+                    <div
+                      style={{ width: "60%" }}
+                      className="d-flex justify-content-between"
+                    >
+                      <span id="currentTime">
+                        {calculateTime(valueTimeMusic)}
+                      </span>
+                      <span>0:29</span>{" "}
+                    </div>
+                  </Col>
+                </Col>
+              </Row>
+              <Row className="px-3 pb-4 row-details">
+                <div className="d-flex gap-2 align-items-center justify-content-around opacity-50 w-75 mx-auto">
+                  <BiShuffle
+                    className={"icon " + classShuffle}
                     onClick={() => {
-                      dispatch(isPlayingSong(true));
-                      // requestAnimationFrame(whilePlaying);
+                      dispatch(isShufflingSongs(!isShuffle));
                     }}
                   />
-                )}
-                <BiSkipNext className="fs-3 icon" onClick={goNext} />
-                <BiRepeat
-                  className={"icon " + classRepeat}
-                  onClick={() => {
-                    dispatch(isRepeatingSong(!isOnRepeat));
-                  }}
-                />
-              </div>
-            </Row>
-          </Container>
+                  <BiSkipPrevious
+                    className="fs-3 icon"
+                    onClick={() => {
+                      let index = currentPlaylist.indexOf(currentSong);
+                      if (isShuffle) {
+                        index = Math.floor(
+                          Math.random() * currentPlaylist.length
+                        );
+                      } else {
+                        if (index === 0) {
+                          index = currentPlaylist.length - 1;
+                        } else {
+                          index--;
+                        }
+                      }
+                      const newSong = currentPlaylist[index];
+                      dispatch(saveCurrentSong(newSong));
+                    }}
+                  />
+                  {isPlaying ? (
+                    <BiPause
+                      className="fs-1 icon"
+                      onClick={() => {
+                        dispatch(isPlayingSong(false));
+                        // cancelAnimationFrame(rAF);
+                      }}
+                    />
+                  ) : (
+                    <BiPlay
+                      className="fs-1 icon"
+                      onClick={() => {
+                        dispatch(isPlayingSong(true));
+                        // requestAnimationFrame(whilePlaying);
+                      }}
+                    />
+                  )}
+                  <BiSkipNext className="fs-3 icon" onClick={goNext} />
+                  <BiRepeat
+                    className={"icon " + classRepeat}
+                    onClick={() => {
+                      dispatch(isRepeatingSong(!isOnRepeat));
+                    }}
+                  />
+                </div>
+              </Row>
+            </Container>
+          </div>
+
           {showModal && <CustomModal />}
-        </div>
+        </>
       )}
     </>
   );
