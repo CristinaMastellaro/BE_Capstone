@@ -10,6 +10,7 @@ import {
   resetPlaylist,
   saveCurrentPlaylist,
   saveCurrentSong,
+  savePlaylistNotToSavePermanentlyNotCountry,
 } from "../redux/actions";
 import { useEffect, useRef, useState } from "react";
 
@@ -77,6 +78,7 @@ const Song = ({ song, playlist, namePlaylist, dontShow }: SongProps) => {
           dispatch(saveCurrentSong(song));
           if (savedPlaylist !== playlist) {
             dispatch(resetPlaylist());
+            dispatch(savePlaylistNotToSavePermanentlyNotCountry(playlist));
             playlist.forEach((singleSong) =>
               dispatch(saveCurrentPlaylist(singleSong))
             );

@@ -13,7 +13,7 @@ import {
   setToken,
 } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { BiEdit, BiInfoCircle } from "react-icons/bi";
 
 const Settings = () => {
@@ -116,13 +116,6 @@ const Settings = () => {
   const [newSurname, setNewSurname] = useState("");
   const [newUsername, setNewUsername] = useState("");
   const [newEmail, setNewEmail] = useState("");
-
-  // useEffect(() => {
-  //   setNewName(name);
-  //   setNewSurname(surname);
-  //   setNewEmail(email);
-  //   setNewUsername(username);
-  // }, []);
 
   const [isError, setIsError] = useState(false);
   const [messagesError, setMessagesError] = useState<string[]>([]);

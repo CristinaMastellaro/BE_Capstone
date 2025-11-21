@@ -457,6 +457,8 @@ export const deleteSongFromPlaylist = (
 };
 
 export const PLAYLIST_NOT_TO_SAVE = "PLAYLIST_NOT_TO_SAVE";
+export const PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY =
+  "PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY";
 
 export const savePlaylistNotToSavePermanently = (country: string) => {
   return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
@@ -499,6 +501,15 @@ export const savePlaylistNotToSavePermanently = (country: string) => {
     } catch (e) {
       console.log(e);
     }
+  };
+};
+
+export const savePlaylistNotToSavePermanentlyNotCountry = (
+  playlist: ShowSongType[]
+) => {
+  return {
+    type: PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY,
+    payload: playlist,
   };
 };
 

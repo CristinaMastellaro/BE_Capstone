@@ -12,6 +12,7 @@ import {
   DELETE_PLAYLIST,
   DELETE_SONG_FROM_PLAYLIST,
   PLAYLIST_NOT_TO_SAVE,
+  PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY,
   RESET_LIST_PLAYLISTS,
   RESET_NOT_PERMANENT_PLAYLIST,
   SET_FAVOURITES_FROM_DB,
@@ -156,6 +157,12 @@ const allSongsReducer = (
         ...state,
         playlistNotPermanentlySaved: action.payload as ShowSongType[],
       };
+    case PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY:
+      return {
+        ...state,
+        playlistNotPermanentlySaved: action.payload as ShowSongType[],
+      };
+
     case RESET_NOT_PERMANENT_PLAYLIST:
       return {
         ...state,

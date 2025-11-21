@@ -22,6 +22,8 @@ import {
   isPlayingSong,
   isRepeatingSong,
   isShufflingSongs,
+  resetPlaylist,
+  saveCurrentPlaylist,
   saveCurrentSong,
   showDetails,
 } from "../redux/actions";
@@ -111,15 +113,47 @@ const PlayerMusic = () => {
 
   const goNext = () => {
     let index = currentPlaylist.indexOf(currentSong);
-    if (isShuffle) {
-      index = Math.floor(Math.random() * currentPlaylist.length);
-    } else {
-      if (index === currentPlaylist.length - 1) {
-        index = 0;
-      } else index++;
-    }
+    // if (isShuffle) {
+    //   index = Math.floor(Math.random() * currentPlaylist.length);
+    // } else {
+    if (index === currentPlaylist.length - 1) {
+      index = 0;
+    } else index++;
+    // }
     const newSong = currentPlaylist[index];
     dispatch(saveCurrentSong(newSong));
+  };
+
+  // For shuffling
+
+  const playlistNormalOrder = useAppSelector(
+    (state) => state.allSongs.playlistNotPermanentlySaved
+  );
+
+  const shuffleSongs = () => {
+    console.log("isShuffle");
+    if (!isShuffle) {
+      const shuffledPlaylist: ShowSongType[] = [];
+      const indexesAlreadyInShuffledPlaylist: number[] = [];
+      while (shuffledPlaylist.length !== playlistNormalOrder.length) {
+        const randomIndex = Math.floor(
+          Math.random() * playlistNormalOrder.length
+        );
+        if (!indexesAlreadyInShuffledPlaylist.includes(randomIndex)) {
+          shuffledPlaylist.push(playlistNormalOrder[randomIndex]);
+          indexesAlreadyInShuffledPlaylist.push(randomIndex);
+        }
+      }
+      console.log("shuffledPlaylist", shuffledPlaylist);
+      dispatch(resetPlaylist());
+      shuffledPlaylist.forEach((song) => dispatch(saveCurrentPlaylist(song)));
+    } else {
+      dispatch(resetPlaylist());
+      console.log("playlistNormalOrder", playlistNormalOrder);
+      playlistNormalOrder.forEach((song) =>
+        dispatch(saveCurrentPlaylist(song))
+      );
+    }
   };
 
   // Volume
@@ -208,6 +242,7 @@ const PlayerMusic = () => {
                   className={" d-none d-md-block icon " + classShuffle}
                   onClick={() => {
                     dispatch(isShufflingSongs(!isShuffle));
+                    shuffleSongs();
                   }}
                 />
                 <BiSkipPrevious
@@ -447,6 +482,7 @@ const PlayerMusic = () => {
                     className={"icon " + classShuffle}
                     onClick={() => {
                       dispatch(isShufflingSongs(!isShuffle));
+                      shuffleSongs();
                     }}
                   />
                   <BiSkipPrevious
