@@ -19,17 +19,20 @@ import {
   addNewFavourite,
   changeShowModal,
   deleteFavourite,
+  ENDPOINT,
   isPlayingSong,
   isRepeatingSong,
   isShufflingSongs,
   resetPlaylist,
   saveCurrentPlaylist,
   saveCurrentSong,
+  savePlaylistNotToSavePermanentlyNotCountry,
   showDetails,
 } from "../redux/actions";
 import ShowSongType from "../types/ShowSongType";
 import { GrDown } from "react-icons/gr";
 import CustomModal from "./CustomModal";
+import { useNavigate } from "react-router-dom";
 
 const PlayerMusic = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -185,6 +188,45 @@ const PlayerMusic = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Search by artist
+  const navigate = useNavigate();
+  const TOKEN = useAppSelector((state) => state.user.token);
+
+  const searchArtist = () => {
+    fetch(ENDPOINT + "/api/search?query=" + currentSong.author, {
+      headers: { Authorization: `Bearer ${TOKEN}` },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          {
+            throw new Error("Error while searching for your query");
+          }
+        } else {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        const songsToAdd: ShowSongType[] = [];
+        let singleSong;
+
+        for (let i = 0; i < data.data.length; i++) {
+          singleSong = data.data[i];
+          songsToAdd.push({
+            id: singleSong.id,
+            cover: singleSong.album.cover_xl,
+            title: singleSong.title,
+            author: singleSong.artist.name,
+            preview: singleSong.preview,
+          });
+        }
+        dispatch(savePlaylistNotToSavePermanentlyNotCountry(songsToAdd));
+        navigate("/playlist/" + currentSong.author);
+      })
+      .catch((err) => {
+        console.log("Error!", err);
+      });
+  };
 
   return (
     <>
@@ -436,7 +478,9 @@ const PlayerMusic = () => {
                     <p className="text-center fs-4 fw-semibold mb-0">
                       {currentSong.title}
                     </p>
-                    <p className="text-center fs-6">{currentSong.author}</p>
+                    <p className="text-center fs-6 icon" onClick={searchArtist}>
+                      {currentSong.author}
+                    </p>
                   </div>
                 </Col>
               </Row>
