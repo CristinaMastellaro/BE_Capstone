@@ -296,7 +296,8 @@ const Playlist = () => {
                 </div>
               )}
             </div>
-            <section className="pt-4 pb-5 bg-transparent z-1 position-relative">
+            {/* <section className="pt-4 pb-5 bg-transparent z-1 position-relative"> */}
+            <section className="pt-4 pb-5 bg-transparent position-relative">
               {songs &&
                 songs.length === 0 &&
                 allPlaylistsNames.includes(specification as string) &&

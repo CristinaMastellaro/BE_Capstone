@@ -6,8 +6,6 @@ import "../scss/customNav.scss";
 import CustomFooter from "./CustomFooter";
 
 const MainLayout = () => {
-  // const doBlur = useAppSelector((state) => state.player.showDetails);
-
   return (
     <>
       <Container fluid className="my-bg-container">
@@ -16,7 +14,7 @@ const MainLayout = () => {
             xs={12}
             lg={3}
             xl={2}
-            className="py-2 p-lg-0 bg-black px-lg-3 pt-lg-4 position-fixed bottom-0 custom-nav z-0"
+            className="py-2 p-lg-0 bg-black px-lg-3 pt-lg-4 position-fixed bottom-0 custom-nav z-1"
           >
             <CustomNavbar />
           </Col>
@@ -24,24 +22,19 @@ const MainLayout = () => {
             xs={12}
             lg={9}
             xl={10}
-            className={
-              "px-0 ms-auto d-flex flex-column"
-              // doBlur
-              //   ? "px-0 ms-auto d-flex flex-column blurred-bg"
-              //   : "px-0 ms-auto d-flex flex-column"
-            }
+            className={"px-0 ms-auto d-flex flex-column"}
             style={{ minHeight: "100vh" }}
           >
             <div className="flex-grow-1 px-0 mx-0">
               <Outlet />
             </div>
-            <div className="z-0">
+            <div className="z-0 position-relative">
               <CustomFooter />
             </div>
           </Col>
         </Row>
       </Container>
-      <div className="z-2">
+      <div className="position-relative z-2">
         <PlayerMusic />
       </div>
     </>

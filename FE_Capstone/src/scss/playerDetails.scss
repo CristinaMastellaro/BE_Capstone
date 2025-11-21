@@ -7,7 +7,6 @@
     left: 0;
     top: 10%;
     backdrop-filter: blur(10px);
-    z-index: 3;
     padding: 0;
     @media screen and (min-width: 713px) {
        right: 10vw;
@@ -71,7 +70,6 @@
     right: -1em;
     left: -2em;
     top: -1em;
-    z-index: 3;
     filter: blur(8px);
     background-size: cover;
     @media screen and (min-width: 992px) {
