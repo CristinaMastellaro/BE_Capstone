@@ -172,14 +172,14 @@ const Settings = () => {
         <h1 className="fw-semibold">Settings</h1>
       </div>
       <Row className="mx-0 mt-5 px-3">
-        <div className="d-flex flex-column flex-md-row align-items-center mb-5">
+        <div className="d-flex flex-column flex-md-row align-items-center mb-4">
           <h2 className="text-center flex-grow-1">Personal information</h2>
           <BiEdit
             className="fs-4 mt-3 mt-md-0 my-icons icon"
             onClick={() => setIsChangingInfo(true)}
           />
         </div>
-        <Col xs={12} md={3} lg={2} className="text-center mb-5 mb-md-0">
+        <Col xs={12} className="text-center mb-4">
           <Image
             src={
               "https://ui-avatars.com/api/?name=" +
@@ -191,10 +191,10 @@ const Settings = () => {
             roundedCircle
           />
         </Col>
-        <Col xs={11} md={9} lg={10} className="mx-auto">
+        <Col xs={12} sm={11} md={6} xl={4} className="mx-auto">
           <Form onSubmit={requestChangeInfo}>
-            <Row className="mb-1">
-              <Col xs={4} md={3} className="fw-semibold">
+            <Row className="mb-1 justify-content-center">
+              <Col xs={4} md={3} className="fw-semibold text-end">
                 Name
               </Col>
               <Col xs={8} md={6}>
@@ -209,8 +209,8 @@ const Settings = () => {
                 )}
               </Col>
             </Row>
-            <Row className="mb-1">
-              <Col xs={4} md={3} className="fw-semibold">
+            <Row className="mb-1 justify-content-center">
+              <Col xs={4} md={3} className="fw-semibold text-end">
                 Surname
               </Col>
               <Col xs={8} md={6}>
@@ -225,8 +225,8 @@ const Settings = () => {
                 )}
               </Col>
             </Row>
-            <Row className="mb-3">
-              <Col xs={4} md={3} className="fw-semibold">
+            <Row className="mb-3 justify-content-center">
+              <Col xs={4} md={3} className="fw-semibold text-end">
                 Username
               </Col>
               <Col xs={8} md={6}>
@@ -241,8 +241,8 @@ const Settings = () => {
                 )}
               </Col>
             </Row>
-            <Row className="mb-4">
-              <Col xs={4} md={3} className="fw-semibold">
+            <Row className="mb-4 justify-content-center">
+              <Col xs={4} md={3} className="fw-semibold text-end">
                 Email
               </Col>
               <Col xs={8} md={6}>
@@ -269,7 +269,7 @@ const Settings = () => {
                   Change
                 </button>
                 <button
-                  className="my-btn-blue"
+                  className="my-btn-blue bg-body-secondary"
                   onClick={() => setIsChangingInfo(false)}
                 >
                   Back

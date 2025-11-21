@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 #map {
     margin-top: 2em;
     height: 30vh !important;
@@ -17,4 +19,51 @@
     & :hover {
         cursor: pointer;
     }
+}
+
+.whole-col-podium {
+    max-width: 200px;
+    justify-content: end;
+}
+
+.podium-0 {
+    height: 6em;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: $new-primary;
+}
+
+.podium-1 {
+    height: 4.5em;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #FF6160;
+}
+
+.podium-2 {
+    height: 3em;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #FF6160;
+}
+
+.podium-3 {
+    height: 1.5em;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #FF6160;
+}
+
+.position {
+    margin-bottom: 0;
+    color: black;
+    font-weight: bold;
 }

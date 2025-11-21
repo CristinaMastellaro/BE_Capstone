@@ -252,7 +252,7 @@ const Playlist = () => {
                   <BiShuffle
                     className={
                       isShuffle
-                        ? "icons-for-playing my-pink fs-3"
+                        ? "icons-for-playing text-white fs-3"
                         : "icons-for-playing fs-3"
                     }
                     onClick={() => {

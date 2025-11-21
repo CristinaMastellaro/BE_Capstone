@@ -2,6 +2,8 @@
     border: 1px solid black;
     border-radius: 15px;
     background-color: rgb(33, 33, 33);
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .song:hover {
@@ -23,6 +25,10 @@
     width: 3.5em;
     height: 3.5em;
     padding: 0.3em;
+}
+
+.dots-menu {
+  min-width: 51px;
 }
 
 .song img:hover, .song .dots-menu:hover {

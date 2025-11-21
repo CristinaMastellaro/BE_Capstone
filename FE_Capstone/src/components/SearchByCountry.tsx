@@ -21,7 +21,6 @@ import { CountriesSong } from "../types/ResponseFetchDeezerSearch";
 interface selectedRegionType {
   title: string;
   artist: string;
-  cover: string;
 }
 
 const SearchByCountry = () => {
@@ -74,7 +73,6 @@ const SearchByCountry = () => {
           const res2 = await fetch(
             ENDPOINT +
               "/api/songs/country?country=" +
-              // data[0].body.name.common.replaceAll(" ", ""),
               data.name.replaceAll(" ", ""),
             {
               headers: { Authorization: `Bearer ${TOKEN}` },
@@ -82,16 +80,11 @@ const SearchByCountry = () => {
           );
 
           if (!res2.ok) {
-            // const resJson = await res2.json();
+            const resJson = await res2.json();
             // This is the case where the search doesn't return anything (probably due to copyright?)
-            // if (resJson.message.includes("because the return value of")) {
-            //   setError(true);
-            // }
-            // if (
-            //   resJson.message.includes(
-            //     "ResCountry temprResCountries is temporarily not available"
-            //   )
-            // )
+            if (resJson.message.includes("because the return value of")) {
+              setError(true);
+            }
             throw new Error("Couldn't find the country");
           }
           const data2 = await res2.json();
@@ -112,8 +105,6 @@ const SearchByCountry = () => {
                   songs.push({
                     title: topSong.name,
                     artist: topSong.artist.name,
-                    // cover: data[0].body.flags.png,
-                    cover: "https://wallpaperaccess.com/full/1556608.jpg",
                   });
                   artists.push(topSong.artist.name);
                 }
@@ -228,22 +219,19 @@ const SearchByCountry = () => {
             return (
               <Col
                 xs={12}
-                sm={5}
+                sm={3}
                 md={3}
                 lg={3}
                 key={i}
-                className="d-flex flex-column align-items-center mb-2 mt-3"
+                className="d-flex flex-column align-items-center mb-2 mt-3 whole-col-podium"
                 onClick={() => searchPreviewSong(song)}
               >
-                <img
-                  src={song.cover}
-                  alt="Cover song"
-                  className="img-top-song"
-                  style={{ cursor: "pointer" }}
-                />
-                <div className="d-flex flex-column mt-1">
+                <div className="d-flex flex-column mt-1 icon mb-1">
                   <p className="mb-0 text-center fw-semibold">{song.title}</p>
                   <p className="mb-0 text-center small">{song.artist}</p>
+                </div>
+                <div className={"d-none d-sm-flex podium-" + i}>
+                  <p className="position">{"#" + (i + 1)}</p>
                 </div>
               </Col>
             );
