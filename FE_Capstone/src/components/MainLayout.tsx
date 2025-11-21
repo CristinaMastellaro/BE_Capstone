@@ -16,7 +16,7 @@ const MainLayout = () => {
             xs={12}
             lg={3}
             xl={2}
-            className="py-2 p-lg-0 bg-black px-lg-3 pt-lg-4 position-fixed bottom-0 custom-nav z-3"
+            className="py-2 p-lg-0 bg-black px-lg-3 pt-lg-4 position-fixed bottom-0 custom-nav z-0"
           >
             <CustomNavbar />
           </Col>
@@ -41,7 +41,7 @@ const MainLayout = () => {
           </Col>
         </Row>
       </Container>
-      <div className="">
+      <div className="z-2">
         <PlayerMusic />
       </div>
     </>

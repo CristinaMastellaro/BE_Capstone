@@ -172,8 +172,8 @@ const PlayerMusic = () => {
           fluid
           className={
             showPlayer
-              ? "music-player z-2 justify-content-between d-none"
-              : "music-player z-2 justify-content-between"
+              ? "music-player z-5 justify-content-between d-none"
+              : "music-player z-5 justify-content-between"
           }
         >
           {/* Info songs */}
