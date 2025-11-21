@@ -134,7 +134,6 @@ const PlayerMusic = () => {
   );
 
   const shuffleSongs = () => {
-    console.log("isShuffle");
     if (!isShuffle) {
       const shuffledPlaylist: ShowSongType[] = [];
       const indexesAlreadyInShuffledPlaylist: number[] = [];
@@ -147,12 +146,10 @@ const PlayerMusic = () => {
           indexesAlreadyInShuffledPlaylist.push(randomIndex);
         }
       }
-      console.log("shuffledPlaylist", shuffledPlaylist);
       dispatch(resetPlaylist());
       shuffledPlaylist.forEach((song) => dispatch(saveCurrentPlaylist(song)));
     } else {
       dispatch(resetPlaylist());
-      console.log("playlistNormalOrder", playlistNormalOrder);
       playlistNormalOrder.forEach((song) =>
         dispatch(saveCurrentPlaylist(song))
       );
@@ -221,6 +218,7 @@ const PlayerMusic = () => {
           });
         }
         dispatch(savePlaylistNotToSavePermanentlyNotCountry(songsToAdd));
+        dispatch(showDetails(false));
         navigate("/playlist/" + currentSong.author);
       })
       .catch((err) => {

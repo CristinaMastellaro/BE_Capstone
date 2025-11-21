@@ -10,7 +10,7 @@ import Form from "react-bootstrap/Form";
 import { BiDotsVerticalRounded, BiPlay, BiShuffle, BiX } from "react-icons/bi";
 import {
   deletePlaylist,
-  ENDPOINT,
+  // ENDPOINT,
   findAllPlaylists,
   isShufflingSongs,
   renamePlaylist,
@@ -22,7 +22,7 @@ import {
 import { Modal } from "react-bootstrap";
 
 const Playlist = () => {
-  const TOKEN = useAppSelector((state) => state.user.token);
+  // const TOKEN = useAppSelector((state) => state.user.token);
 
   const { specification } = useParams();
   const allMoods = useAppSelector(
@@ -105,7 +105,7 @@ const Playlist = () => {
   };
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isPictureLoading, setIsPictureLoading] = useState(true);
+  // const [isPictureLoading, setIsPictureLoading] = useState(true);
   const phrasesForLoading = [
     "Following the sound of your mood",
     "Is that the perfect song?",
@@ -136,7 +136,13 @@ const Playlist = () => {
   }, [songs]);
 
   useEffect(() => {
-    if (!(isLoading || isPictureLoading)) return;
+    if (
+      !(
+        isLoading
+        // || isPictureLoading
+      )
+    )
+      return;
 
     let change = 1;
     const interval = setInterval(() => {
@@ -147,36 +153,39 @@ const Playlist = () => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isPictureLoading, isLoading]);
+  }, [
+    // isPictureLoading,
+    isLoading,
+  ]);
 
-  const [picturePlaylist, setPicturePlaylist] = useState("");
+  // const [picturePlaylist, setPicturePlaylist] = useState("");
 
-  const getPicturePlaylist = () => {
-    fetch(
-      ENDPOINT + "/api/picture?search=" + specification?.replaceAll(" ", ""),
-      {
-        headers: { Authorization: `Bearer ${TOKEN}` },
-      }
-    )
-      .then((res) => {
-        if (!res.ok) {
-          setIsPictureLoading(false);
-          throw new Error("Couldn't fetch the image");
-        } else {
-          return res.json();
-        }
-      })
-      .then((data) => {
-        if (data && data.photos[0] && data.photos[0]) {
-          setPicturePlaylist(data.photos[0].src.landscape);
-        }
-        setIsPictureLoading(false);
-      })
-      .catch((err) => console.log("Error!", err));
-  };
+  // const getPicturePlaylist = () => {
+  //   fetch(
+  //     ENDPOINT + "/api/picture?search=" + specification?.replaceAll(" ", ""),
+  //     {
+  //       headers: { Authorization: `Bearer ${TOKEN}` },
+  //     }
+  //   )
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         setIsPictureLoading(false);
+  //         throw new Error("Couldn't fetch the image");
+  //       } else {
+  //         return res.json();
+  //       }
+  //     })
+  //     .then((data) => {
+  //       if (data && data.photos[0] && data.photos[0]) {
+  //         setPicturePlaylist(data.photos[0].src.landscape);
+  //       }
+  //       setIsPictureLoading(false);
+  //     })
+  //     .catch((err) => console.log("Error!", err));
+  // };
 
   useEffect(() => {
-    getPicturePlaylist();
+    // getPicturePlaylist();
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -185,7 +194,8 @@ const Playlist = () => {
 
   return (
     <>
-      {isLoading || isPictureLoading ? (
+      {isLoading ? (
+        // || isPictureLoading
         <div className="d-flex flex-column justify-content-center align-items-center w-75 mx-auto text-center h-100 my-auto">
           <p className="mb-5">{phrase}</p>
           <Loader />
@@ -229,7 +239,7 @@ const Playlist = () => {
             )}
             <div
               className="hero"
-              style={{ backgroundImage: `url(${picturePlaylist})` }}
+              // style={{ backgroundImage: `url(${picturePlaylist})` }}
             ></div>
             <div className="change-hero text-center">
               <h1 className="mb-4 pt-4">

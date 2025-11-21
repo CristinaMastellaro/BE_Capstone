@@ -18,4 +18,8 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException(String playlist, int num) {
         super("You don't have any playlist by the name of " + playlist);
     }
+
+    public NotFoundException(String message, boolean useless) {
+        super(message);
+    }
 }

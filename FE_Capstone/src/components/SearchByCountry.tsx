@@ -67,25 +67,32 @@ const SearchByCountry = () => {
         else return res.json();
       })
       .then(async (data) => {
-        setSelectedRegion(data[0].body.name.common);
+        setSelectedRegion(data.name);
         const songs: selectedRegionType[] = [];
 
         try {
           const res2 = await fetch(
             ENDPOINT +
               "/api/songs/country?country=" +
-              data[0].body.name.common.replaceAll(" ", ""),
+              // data[0].body.name.common.replaceAll(" ", ""),
+              data.name.replaceAll(" ", ""),
             {
               headers: { Authorization: `Bearer ${TOKEN}` },
             }
           );
 
           if (!res2.ok) {
-            const resJson = await res2.json();
-            if (resJson.message.includes("because the return value of")) {
-              setError(true);
-            }
-            throw new Error("Error while searching for top music");
+            // const resJson = await res2.json();
+            // This is the case where the search doesn't return anything (probably due to copyright?)
+            // if (resJson.message.includes("because the return value of")) {
+            //   setError(true);
+            // }
+            // if (
+            //   resJson.message.includes(
+            //     "ResCountry temprResCountries is temporarily not available"
+            //   )
+            // )
+            throw new Error("Couldn't find the country");
           }
           const data2 = await res2.json();
 
@@ -105,7 +112,8 @@ const SearchByCountry = () => {
                   songs.push({
                     title: topSong.name,
                     artist: topSong.artist.name,
-                    cover: data[0].body.flags.png,
+                    // cover: data[0].body.flags.png,
+                    cover: "https://wallpaperaccess.com/full/1556608.jpg",
                   });
                   artists.push(topSong.artist.name);
                 }

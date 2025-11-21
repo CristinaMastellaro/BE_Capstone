@@ -22,7 +22,8 @@ public class Config {
 
     @Bean
     public WebClient countryWebClient() {
-        return WebClient.builder().baseUrl("https://restcountries.com/v3.1/alpha").build();
+//        return WebClient.builder().baseUrl("https://restcountries.com/v3.1/alpha").build();
+        return WebClient.builder().baseUrl("https://api.first.org/data/v1/countries").build();
     }
 
     @Bean

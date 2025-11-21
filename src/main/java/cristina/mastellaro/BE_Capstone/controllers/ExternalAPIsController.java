@@ -1,7 +1,7 @@
 package cristina.mastellaro.BE_Capstone.controllers;
 
 import cristina.mastellaro.BE_Capstone.payloads.PexelsResponseDTO;
-import cristina.mastellaro.BE_Capstone.payloads.country.CountryInfoDTO;
+import cristina.mastellaro.BE_Capstone.payloads.country.CountryResponseDTO;
 import cristina.mastellaro.BE_Capstone.payloads.lastFm.AllTracksDTO;
 import cristina.mastellaro.BE_Capstone.payloads.lastFm.LastFmResponseDTO;
 import cristina.mastellaro.BE_Capstone.payloads.striveSchool.FoundSongDTO;
@@ -36,8 +36,8 @@ public class ExternalAPIsController {
 
     // Countries
     @GetMapping("/country")
-    public Flux<ResponseEntity<CountryInfoDTO>> getCountryNameFromCode(@RequestParam String code) {
-        return cServ.getNameCountry(code).map(ResponseEntity::ok);
+    public CountryResponseDTO getCountryNameFromCode(@RequestParam String code) {
+        return cServ.getCountryFromCode(code);
     }
 
     // Last.fm: categorize songs
