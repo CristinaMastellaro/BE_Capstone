@@ -170,11 +170,6 @@ const PlayerMusic = () => {
       {currentSong && !doShowDetails ? (
         <Container
           fluid
-          // className={
-          //   showPlayer
-          //     ? "music-player z-5 justify-content-between d-none"
-          //     : "music-player z-5 justify-content-between"
-          // }
           className={
             showPlayer
               ? "music-player justify-content-between d-none"

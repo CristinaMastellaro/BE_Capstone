@@ -13,6 +13,10 @@
   background-color: #2B2D42;
 }
 
+.my-primary-bg {
+  background-color: $new-primary;
+}
+
 .blurred-bg {
   filter: blur(10px);
 }

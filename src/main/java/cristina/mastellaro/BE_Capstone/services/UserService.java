@@ -4,9 +4,7 @@ import cristina.mastellaro.BE_Capstone.email.EmailSender;
 import cristina.mastellaro.BE_Capstone.entities.User;
 import cristina.mastellaro.BE_Capstone.exceptions.AlreadyUsedException;
 import cristina.mastellaro.BE_Capstone.exceptions.NotFoundException;
-import cristina.mastellaro.BE_Capstone.payloads.LoginDTO;
-import cristina.mastellaro.BE_Capstone.payloads.LoginResponseDTO;
-import cristina.mastellaro.BE_Capstone.payloads.UserDTO;
+import cristina.mastellaro.BE_Capstone.payloads.*;
 import cristina.mastellaro.BE_Capstone.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +73,39 @@ public class UserService {
         uRepo.save(user);
 
         log.info("New password saved!");
+    }
+
+    public ChangeInfoUserDTO changeInfo(UserChangeInfoDTO newInfo) {
+        User userToUpdate = findUserByUsername(newInfo.oldUsername());
+        String oldEmail = userToUpdate.getEmail();
+
+        userToUpdate.setName(newInfo.name());
+        userToUpdate.setSurname(newInfo.surname());
+
+        if (!userToUpdate.getEmail().equals(newInfo.email())) {
+            if (uRepo.existsByEmail(newInfo.email()))
+                throw new AlreadyUsedException("The email " + newInfo.email() + "has already been used");
+            else userToUpdate.setEmail(newInfo.email());
+        }
+
+        if (!userToUpdate.getUsername().equals(newInfo.username())) {
+            if (uRepo.existsByUsername(newInfo.username()))
+                throw new AlreadyUsedException("The username " + newInfo.username() + "has already been used");
+            else userToUpdate.setUsername(newInfo.username());
+        }
+
+        uRepo.save(userToUpdate);
+
+        log.info("The info has been updated correctly!");
+
+        if (!oldEmail.equals(newInfo.email())) {
+            try {
+                eSender.sendGeneralEmail(newInfo.email(), "Change email in SoundHaven", "Hello! Your email has been changed in SoundHaven and now the notifications will be sent here!\n\nIf this request wasn't made by you, contact us.\n\nHave an amazing day!\nSoundHaven Team");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return new ChangeInfoUserDTO(userToUpdate.getName(), userToUpdate.getSurname(), userToUpdate.getUsername(), userToUpdate.getEmail());
     }
 }

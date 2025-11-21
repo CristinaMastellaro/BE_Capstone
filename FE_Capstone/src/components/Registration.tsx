@@ -60,12 +60,12 @@ const Registration = () => {
   };
 
   return (
-    <Container fluid className="vh-100 my-bg-container">
+    <Container fluid className="vh-100 my-primary-bg">
       <Form
         className="d-flex flex-column align-items-center justify-content-center h-100"
         onSubmit={registration}
       >
-        <div className="d-flex flex-column myForm registrationForm">
+        <div className="d-flex flex-column myForm registrationForm my-bg-container">
           <h1 className="text-center mb-4">Sign up</h1>
           <Form.Group
             className="mb-3 d-flex flex-column align-items-center"

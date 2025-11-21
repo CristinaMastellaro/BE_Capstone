@@ -3,9 +3,7 @@ package cristina.mastellaro.BE_Capstone.controllers;
 import cristina.mastellaro.BE_Capstone.email.EmailSender;
 import cristina.mastellaro.BE_Capstone.entities.User;
 import cristina.mastellaro.BE_Capstone.exceptions.PayloadValidationException;
-import cristina.mastellaro.BE_Capstone.payloads.LoginDTO;
-import cristina.mastellaro.BE_Capstone.payloads.LoginResponseDTO;
-import cristina.mastellaro.BE_Capstone.payloads.UserDTO;
+import cristina.mastellaro.BE_Capstone.payloads.*;
 import cristina.mastellaro.BE_Capstone.services.LoginService;
 import cristina.mastellaro.BE_Capstone.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +50,14 @@ public class AuthController {
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(fE -> fE.getDefaultMessage()).toList());
         }
         uServ.changePassword(dto);
+    }
+
+    @PutMapping("/changeInfo")
+    public ChangeInfoUserDTO changeInfo(@RequestBody @Validated UserChangeInfoDTO newInfo, BindingResult validation) {
+        if (validation.hasErrors()) {
+            throw new PayloadValidationException(validation.getFieldErrors().stream().map(err -> err.getDefaultMessage()).toList());
+        }
+        return uServ.changeInfo(newInfo);
     }
 
 }

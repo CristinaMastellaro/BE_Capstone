@@ -13,14 +13,16 @@ import {
   setToken,
 } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
-import { FormEvent, useState } from "react";
-import { BiInfoCircle } from "react-icons/bi";
+import { FormEvent, useEffect, useState } from "react";
+import { BiEdit, BiInfoCircle } from "react-icons/bi";
 
 const Settings = () => {
   const name = useAppSelector((state) => state.user.name);
   const surname = useAppSelector((state) => state.user.surname);
   const email = useAppSelector((state) => state.user.email);
   const username = useAppSelector((state) => state.user.username);
+
+  // To change password
 
   const [isRequestChangePassword, setIsRequestChangePassword] = useState(false);
   const [changePasswordCode, setChangePasswordCode] = useState(0);
@@ -107,6 +109,69 @@ const Settings = () => {
     setTimeout(() => navigate("/"), 2000);
   };
 
+  // To update info
+  const TOKEN = useAppSelector((state) => state.user.token);
+  const [isChangingInfo, setIsChangingInfo] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newSurname, setNewSurname] = useState("");
+  const [newUsername, setNewUsername] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+
+  // useEffect(() => {
+  //   setNewName(name);
+  //   setNewSurname(surname);
+  //   setNewEmail(email);
+  //   setNewUsername(username);
+  // }, []);
+
+  const [isError, setIsError] = useState(false);
+  const [messagesError, setMessagesError] = useState<string[]>([]);
+
+  const requestChangeInfo = (e: FormEvent) => {
+    e.preventDefault();
+
+    const finalName = newName === "" ? name : newName;
+    const finalSurname = newSurname === "" ? surname : newSurname;
+    const finalEmail = newEmail === "" ? email : newEmail;
+    const finalUsername = newUsername === "" ? username : newUsername;
+
+    fetch(ENDPOINT + "/auth/changeInfo", {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: finalName,
+        surname: finalSurname,
+        username: finalUsername,
+        email: finalEmail,
+        oldUsername: username,
+      }),
+    })
+      .then(async (res) => {
+        setIsChangingInfo(false);
+        if (!res.ok) {
+          console.log("res error", res);
+          const data = await res.json();
+          setMessagesError(data.listErrors);
+          throw new Error("Error while changing the info!");
+        } else {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        dispatch(setLoginUsername(data.username));
+        dispatch(setLoginName(data.name));
+        dispatch(setLoginSurname(data.surname));
+        dispatch(setLoginEmail(data.email));
+      })
+      .catch((err) => {
+        setIsError(true);
+        console.log("Error!", err);
+      });
+  };
+
   return (
     // <Container fluid className="position-relative">
     <>
@@ -114,8 +179,14 @@ const Settings = () => {
         <h1 className="fw-semibold">Settings</h1>
       </div>
       <Row className="mx-0 mt-5 px-3">
-        <h2 className="mb-5 text-center">Personal information</h2>
-        <Col xs={3} md={2}>
+        <div className="d-flex flex-column flex-md-row align-items-center mb-5">
+          <h2 className="text-center flex-grow-1">Personal information</h2>
+          <BiEdit
+            className="fs-4 mt-3 mt-md-0 my-icons icon"
+            onClick={() => setIsChangingInfo(true)}
+          />
+        </div>
+        <Col xs={12} md={3} lg={2} className="text-center mb-5 mb-md-0">
           <Image
             src={
               "https://ui-avatars.com/api/?name=" +
@@ -127,27 +198,92 @@ const Settings = () => {
             roundedCircle
           />
         </Col>
-        <Col xs={9} md={10}>
-          <Row className="mb-1">
-            <Col xs={4} className="fw-semibold">
-              Full name
-            </Col>
-            <Col xs={8}>
-              {name} {surname}
-            </Col>
-          </Row>
-          <Row className="mb-3">
-            <Col xs={4} className="fw-semibold">
-              Username
-            </Col>
-            <Col xs={8}>{username}</Col>
-          </Row>
-          <Row className="mb-4">
-            <Col xs={4} className="fw-semibold">
-              Email
-            </Col>
-            <Col xs={8}>{email}</Col>
-          </Row>
+        <Col xs={11} md={9} lg={10} className="mx-auto">
+          <Form onSubmit={requestChangeInfo}>
+            <Row className="mb-1">
+              <Col xs={4} md={3} className="fw-semibold">
+                Name
+              </Col>
+              <Col xs={8} md={6}>
+                {isChangingInfo ? (
+                  <input
+                    value={newName}
+                    placeholder={name}
+                    onChange={(e) => setNewName(e.target.value)}
+                  />
+                ) : (
+                  name
+                )}
+              </Col>
+            </Row>
+            <Row className="mb-1">
+              <Col xs={4} md={3} className="fw-semibold">
+                Surname
+              </Col>
+              <Col xs={8} md={6}>
+                {isChangingInfo ? (
+                  <input
+                    value={newSurname}
+                    placeholder={surname}
+                    onChange={(e) => setNewSurname(e.target.value)}
+                  />
+                ) : (
+                  surname
+                )}
+              </Col>
+            </Row>
+            <Row className="mb-3">
+              <Col xs={4} md={3} className="fw-semibold">
+                Username
+              </Col>
+              <Col xs={8} md={6}>
+                {isChangingInfo ? (
+                  <input
+                    value={newUsername}
+                    placeholder={username}
+                    onChange={(e) => setNewUsername(e.target.value)}
+                  />
+                ) : (
+                  username
+                )}
+              </Col>
+            </Row>
+            <Row className="mb-4">
+              <Col xs={4} md={3} className="fw-semibold">
+                Email
+              </Col>
+              <Col xs={8} md={6}>
+                {isChangingInfo ? (
+                  <input
+                    value={newEmail}
+                    placeholder={email}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                  />
+                ) : (
+                  email
+                )}
+              </Col>
+            </Row>
+            {isError && (
+              <p className="text-danger">
+                <BiInfoCircle className="me-2" />
+                {messagesError}
+              </p>
+            )}
+            {isChangingInfo && (
+              <div className="d-flex flex-column flex-md-row gap-3 my-2">
+                <button className="my-btn-blue" type="submit">
+                  Change
+                </button>
+                <button
+                  className="my-btn-blue"
+                  onClick={() => setIsChangingInfo(false)}
+                >
+                  Back
+                </button>
+              </div>
+            )}
+          </Form>
           <Row className="mb-3">
             <span
               className="text-decoration-underline change-psw"
