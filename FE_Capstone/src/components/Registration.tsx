@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { BiInfoCircle } from "react-icons/bi";
 import Loader from "./Loader";
 import { ENDPOINT } from "../redux/actions";
+import { GrDown } from "react-icons/gr";
 
 const Registration = () => {
   const [name, setName] = useState("");
@@ -60,12 +61,25 @@ const Registration = () => {
   };
 
   return (
-    <Container fluid className="vh-100 my-primary-bg">
+    <Container
+      fluid
+      className="vh-100 vw-100 p-0"
+      style={{ maxHeight: "100vh" }}
+    >
+      <div
+        className="bg-first-page position-fixed w-100 z-n1"
+        style={{ transform: "translateY(-100vh)" }}
+      ></div>
       <Form
         className="d-flex flex-column align-items-center justify-content-center h-100"
         onSubmit={registration}
       >
         <div className="d-flex flex-column myForm registrationForm my-bg-container">
+          <GrDown
+            className="icon"
+            style={{ transform: "rotate(90deg)" }}
+            onClick={() => navigate("/")}
+          />
           <h1 className="text-center mb-4">Sign up</h1>
           <Form.Group
             className="mb-3 d-flex flex-column align-items-center"

@@ -75,6 +75,7 @@ function App() {
           </Route>
           <Route element={<Page404 />} path="*" />
           <Route element={<Login />} path="/" />
+          {/* <Route element={<FirstPage />} path="/" /> */}
           <Route element={<Registration />} path="/register" />
         </Routes>
       </BrowserRouter>

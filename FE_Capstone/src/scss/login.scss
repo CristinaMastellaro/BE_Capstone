@@ -6,6 +6,7 @@
 // #2B2D42
 // #353531
 .myForm {
+  margin-top: 5em;
   // border: 1px solid black;
   background-color: #2B2D42;
   // background-color: #080705;
@@ -32,6 +33,7 @@
   background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
   animation: l7 1s infinite linear alternate;
 }
+
 @keyframes l7 {
   0% {
     background-size: 10% 50%, 10% 50%, 10% 50%;

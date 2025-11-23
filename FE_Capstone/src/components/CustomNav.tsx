@@ -8,7 +8,8 @@ const CustomNavbar = () => {
     <>
       <div>
         {/* <h1 className="mb-4">Sound Adventure</h1> */}
-        <h1 className="mb-4 d-none d-lg-block">Moody</h1>
+        {/* <h1 className="mb-4 d-none d-lg-block">Moody</h1> */}
+        <h1 className="mb-4 d-none d-lg-block">Muse</h1>
         <div className="mt-lg-4 d-flex justify-content-around d-lg-block ">
           <Link
             to="/homepage"

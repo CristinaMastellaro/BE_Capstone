@@ -100,7 +100,7 @@ public class UserService {
 
         if (!oldEmail.equals(newInfo.email())) {
             try {
-                eSender.sendGeneralEmail(newInfo.email(), "Change email in SoundHaven", "Hello! Your email has been changed in SoundHaven and now the notifications will be sent here!\n\nIf this request wasn't made by you, contact us.\n\nHave an amazing day!\nSoundHaven Team");
+                eSender.sendGeneralEmail(newInfo.email(), "Change email in Muse", "Hello! Your email has been changed in Muse and now the notifications will be sent here!\n\nIf this request wasn't made by you, contact us.\n\nHave an amazing day!\nMuse Team");
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
