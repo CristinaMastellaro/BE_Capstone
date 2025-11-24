@@ -10,11 +10,13 @@ import {
 } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/store";
+import Loader from "./Loader";
 
 const Homepage = () => {
   const TOKEN = useAppSelector((state) => state.user.token);
   const [mood, setMood] = useState("Relaxed");
   const [options, setOptions] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -59,8 +61,12 @@ const Homepage = () => {
         data.forEach((singleMood) => moods.push(singleMood.name));
         setOptions(moods);
         dispatch(saveAllMoodsNames(moods));
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
+      });
   };
 
   const handleChange = (event: React.ChangeEvent<{ value: string }>): void => {
@@ -80,48 +86,54 @@ const Homepage = () => {
       <section className="pt-5 text-center d-flex flex-column align-items-center align-self-end homepage-section">
         {/* Emoticon? */}
         <h3>Hi {username || "gorgeous"}!</h3>
-        <h1 className="mb-4">How are you feeling today? </h1>
-        <Form
-          className="w-75 d-flex flex-column flex-lg-row"
-          onSubmit={findMoodSongs}
-        >
-          <div className="flex-grow-1 me-3">
-            <Form.Group>
-              <Form.Select
-                id="moodChoices"
-                name="moodChoices"
-                defaultValue="Relaxed"
-                onChange={handleChange}
-              >
-                {options.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-            {(!options.includes(mood) || mood === "Other") &&
-              mood.toLowerCase() !== "confused" && (
-                <Form.Group className="mt-3 flex-grow-1">
-                  {/* Ti prego, controlla la grammatica */}
-                  <Form.Label className="text-start">
-                    Oh, in which special mood are you?
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="I really feel..."
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <h1 className="mb-4">How are you feeling today? </h1>
+            <Form
+              className="w-75 d-flex flex-column flex-lg-row"
+              onSubmit={findMoodSongs}
+            >
+              <div className="flex-grow-1 me-3">
+                <Form.Group>
+                  <Form.Select
+                    id="moodChoices"
+                    name="moodChoices"
+                    defaultValue="Relaxed"
                     onChange={handleChange}
-                  />
+                  >
+                    {options.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </Form.Group>
-              )}
-          </div>
-          <button
-            type="submit"
-            className="mt-3 mt-lg-0 w-auto align-self-center my-btn-pink rounded-pill"
-          >
-            Music time!
-          </button>
-        </Form>
+                {(!options.includes(mood) || mood === "Other") &&
+                  mood.toLowerCase() !== "confused" && (
+                    <Form.Group className="mt-3 flex-grow-1">
+                      {/* Ti prego, controlla la grammatica */}
+                      <Form.Label className="text-start">
+                        Oh, someone's been feeling...
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="I really feel..."
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
+                  )}
+              </div>
+              <button
+                type="submit"
+                className="mt-3 mt-lg-0 w-auto align-self-center my-btn-pink rounded-pill"
+              >
+                Music time!
+              </button>
+            </Form>
+          </>
+        )}
       </section>
     </>
   );

@@ -20,13 +20,11 @@ import { BsEye, BsEyeSlash } from "react-icons/bs";
 import euterpe from "../assets/euterpe2.png";
 
 const Login = () => {
-  const [firstAnimation, setFirstAnimation] = useState(false);
-  // const [secondAnimation, setSecondAnimation] = useState(false);
+  const [firstAnimation, setFirstAnimation] = useState(true);
   const [thirdAnimation, setThirdAnimation] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setFirstAnimation(true), 1500);
-    // setTimeout(() => setSecondAnimation(true), 3500);
+    // setTimeout(() => setFirstAnimation(true), 1500);
     setTimeout(() => setThirdAnimation(true), 9000);
   }, []);
 
@@ -95,7 +93,6 @@ const Login = () => {
   useEffect(() => {
     document.addEventListener("click", () => {
       setFirstAnimation(false);
-      // setSecondAnimation(false);
       setThirdAnimation(true);
     });
   }, [thirdAnimation]);
@@ -114,12 +111,12 @@ const Login = () => {
         className={
           firstAnimation
             ? "title-first-page animation-title-first-page"
-            : "opacity-0"
+            : "opacity-0 d-none"
         }
       >
         Muse
       </h1>
-      <p className={firstAnimation ? "fs-5 p-first-page" : "opacity-0"}>
+      <p className={firstAnimation ? "fs-5 p-first-page" : "opacity-0 d-none"}>
         Inspiration for a musical odyssey
       </p>
       <p className="opacity-25 small position-absolute bottom-0">

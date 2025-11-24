@@ -6,11 +6,11 @@
 }
 
 .animation-title-first-page {
-    animation: starter-title 7s linear forwards;
+    animation: starter-title 8s linear forwards;
 }
 
 .p-first-page {
-    animation: starter-p 7s linear forwards;
+    animation: starter-p 8s linear forwards;
 }
 
 @keyframes starter-p {
@@ -18,17 +18,17 @@
         opacity: 0;
     }
     
-    20% {
+    50% {
         transform: translateY(2em);
         opacity: 0;
     }
 
-    40% {
+    70% {
         transform: translateY(0);
         opacity: 1;
     }
 
-    90% {
+    95% {
         opacity: 1;
     }
 
@@ -40,11 +40,15 @@
 
 @keyframes starter-title {
     0% {
-        transform: translateY(-1em);
         opacity: 0;
     }
 
     20% {
+        transform: translateY(-1em);
+        opacity: 0;
+    }
+
+    40% {
         transform: translateY(0);
         opacity: 1;
     }
@@ -62,12 +66,9 @@
 
 .picture-first-pg {
     position: absolute;
-    // right: 58vw;
     bottom: 68vh;
     width: 175px;
     height: 275px;
-    // color: white !important;
-    // filter: grayscale(200%);
     filter: contrast(75%);
 }
 
@@ -83,31 +84,4 @@
     // background: linear-gradient(149deg, rgba(43, 45, 66, 1), rgba(253, 29, 29, 1), rgba(237, 30, 32, 1), rgba(43, 45, 66, 1));
     // background: linear-gradient(0deg, rgba(43, 45, 66, 1) 0%, rgba(253, 29, 29, 1) 50%); 
     background: radial-gradient(circle, $new-primary 15%, $new-dark 80%);
-}
-
-@keyframes animation-bg {
-    0% {
-        background-color: $new-dark;
-        background-position: 0% 50%;
-    }
-
-    // 25% {
-    //     background: #2B2D42;
-    //     background: linear-gradient(149deg, rgba(43, 45, 66, 1) 45%, rgba(253, 29, 29, 1) 50%, rgba(237, 30, 32, 1) 60%, rgba(43, 45, 66, 1) 65%);
-    // }
-
-    // 50% {
-
-    // }
-
-    // 75% {
-
-    // }
-
-    100% {
-        background-position: 100% 50%;
-        // background: #2B2D42;
-        // background: linear-gradient(149deg, rgba(43, 45, 66, 1) 15%, rgba(253, 29, 29, 1) 40%, rgba(237, 30, 32, 1) 60%, rgba(43, 45, 66, 1) 85%);
-    }
-
 }

@@ -57,6 +57,10 @@ public class MusicService {
                                     if (e.getMessage().equalsIgnoreCase("Client error from strive-school")) {
                                         stop.set(true);
                                     }
+                                    System.out.println("getMEssage " + e.getMessage());
+                                    if (e.getMessage().equalsIgnoreCase("The connection observed an error") || e.getMessage().equalsIgnoreCase("Connection reset")) {
+                                        stop.set(true);
+                                    }
                                     return null;
                                 }
                             }).onErrorResume(e -> {
@@ -88,6 +92,10 @@ public class MusicService {
                                             .orElse(null);
                                 } catch (Exception e) {
                                     if (e.getMessage().equalsIgnoreCase("Client error from strive-school")) {
+                                        stop.set(true);
+                                    }
+                                    System.out.println("getMEssage " + e.getMessage());
+                                    if (e.getMessage().equalsIgnoreCase("The connection observed an error") || e.getMessage().equalsIgnoreCase("Connection reset")) {
                                         stop.set(true);
                                     }
                                     return null;

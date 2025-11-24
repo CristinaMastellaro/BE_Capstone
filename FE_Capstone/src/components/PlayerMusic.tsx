@@ -413,7 +413,11 @@ const PlayerMusic = () => {
                   />
                 </span>
                 {showDropdown && (
-                  <div ref={dropdownRef} className="drop-order text-dark small">
+                  <div
+                    ref={dropdownRef}
+                    // TODO: Stavo scrivendo questo drop-order-player-music
+                    className="drop-order icon drop-order-player-music text-dark small"
+                  >
                     <ul>
                       <li
                         onClick={() =>

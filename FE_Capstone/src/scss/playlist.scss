@@ -71,9 +71,10 @@
 }
 
 .drop-order-playlist {
-  position: fixed;
-  right: 28vw;
-  top: 26vh;
+  position: absolute;
+//   right: 0;
+//   top: 2.5em;
+    z-index: 1;
   background-color: rgb(56, 56, 56);
 //   border: 0.5px solid rgba(0, 0, 0, 0.208);
   /* padding: 0.5em 1em; */
