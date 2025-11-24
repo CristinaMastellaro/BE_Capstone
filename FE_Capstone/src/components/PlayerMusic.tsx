@@ -408,11 +408,28 @@ const PlayerMusic = () => {
                 />
                 <span ref={iconRef} className="icons-up-player">
                   <BiDotsVerticalRounded
-                    className="text-white me-4 fs-4"
+                    className="text-white me-4 fs-4 icon"
                     onClick={() => setShowDropdown(!showDropdown)}
                   />
+                  {showDropdown && (
+                    <div
+                      ref={dropdownRef}
+                      // TODO: Stavo scrivendo questo drop-order-player-music
+                      className="drop-order icon drop-order-player-music text-dark small"
+                    >
+                      <ul>
+                        <li
+                          onClick={() =>
+                            dispatch(changeShowModal(!showModal, currentSong))
+                          }
+                        >
+                          Add to playlist
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </span>
-                {showDropdown && (
+                {/* {showDropdown && (
                   <div
                     ref={dropdownRef}
                     // TODO: Stavo scrivendo questo drop-order-player-music
@@ -428,7 +445,7 @@ const PlayerMusic = () => {
                       </li>
                     </ul>
                   </div>
-                )}
+                )} */}
               </Row>
               <Row className="px-3 flex-column row-details">
                 <Col xs={12} className="text-center">

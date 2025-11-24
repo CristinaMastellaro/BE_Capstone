@@ -34,7 +34,11 @@ const Playlist = () => {
 
   const songs = useAppSelector((state: IRootState) => {
     if (specification !== undefined) {
-      if ((allMoods as string[]).includes(specification)) {
+      if (
+        (allMoods as string[]).includes(specification)
+        // ||
+        // specification === "confused"
+      ) {
         return state.allSongs.moods[specification];
       } else if (allPlaylistsNames.includes(specification)) {
         return (state.allSongs.playlists as Record<string, ShowSongType[]>)[
@@ -121,6 +125,7 @@ const Playlist = () => {
     if (
       !(
         (allMoods as string[]).includes(specification as string) ||
+        // specification === "confused" ||
         allPlaylistsNames.includes(specification as string)
       ) &&
       (songs as ShowSongType[]).length !== 0

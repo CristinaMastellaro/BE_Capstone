@@ -1,4 +1,4 @@
-import { Col, Row } from "react-bootstrap";
+import { Alert, Col, Row } from "react-bootstrap";
 import jsVectorMap from "jsvectormap";
 import "jsvectormap/dist/jsvectormap.min.css";
 import "jsvectormap/dist/maps/world.js";
@@ -33,6 +33,13 @@ const SearchByCountry = () => {
   >([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isAlert, setIsAlert] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsAlert(false);
+    }, 3000);
+  }, [isAlert]);
 
   useEffect(() => {
     const map = new jsVectorMap({
@@ -178,10 +185,10 @@ const SearchByCountry = () => {
           dispatch(resetPlaylist());
           dispatch(saveCurrentPlaylist(songToSave));
           dispatch(saveCurrentSong(songToSave));
-        } else alert("We couldn't load a preview of the song, sorry");
+        } else setIsAlert(true);
       })
       .catch(() => {
-        alert("We couldn't load a preview of the song, sorry");
+        setIsAlert(true);
       });
   };
 
@@ -236,6 +243,15 @@ const SearchByCountry = () => {
               </Col>
             );
           })}
+        {isAlert && (
+          <Alert
+            variant="danger"
+            className="text-center my-2 mx-auto"
+            style={{ width: "fit-content" }}
+          >
+            Preview not available
+          </Alert>
+        )}
         {selectedRegionSongs.length > 0 && !loading && (
           <div className="text-center p-0 pb-3">
             <p className="mt-3 mx-auto" style={{ width: "95%" }}>

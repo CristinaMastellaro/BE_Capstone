@@ -10,7 +10,6 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @Slf4j
@@ -33,77 +32,85 @@ public class MusicService {
     //    public List<FoundSongDTO> findSongByMood(String mood) {
     public Flux<FoundSongDTO> findSongByMood(String mood) {
 
-        AtomicBoolean stop = new AtomicBoolean(false);
-
         return lFmServ.getInfoMoodSongsToSearch(mood)
-                .flatMap(track -> {
+                .flatMap(track ->
+                        ssServ.searchSong(normalize(track.name()))
+                                .map(striveSchoolResponseDTO -> {
 
-                    if (stop.get()) {
-                        return Mono.empty();
-                    }
-
-                    return ssServ.searchSong(normalize(track.name()))
-                            .map(striveSchoolResponseDTO -> {
-                                try {
-                                    if (striveSchoolResponseDTO == null) return null;
+                                    if (striveSchoolResponseDTO == null)
+                                        return null;
 
                                     return striveSchoolResponseDTO.data().stream()
                                             .filter(singleTrackStrSch ->
-                                                    normalize(singleTrackStrSch.artist().name()).equalsIgnoreCase(normalize(track.artist().name()))
-                                                            && normalize(normalize(track.name())).equalsIgnoreCase(normalize(singleTrackStrSch.title_short())))
+                                                    normalize(singleTrackStrSch.artist().name()).equalsIgnoreCase(normalize(track.artist().name())) &&
+                                                            normalize(singleTrackStrSch.title_short()).equalsIgnoreCase(normalize(track.name()))
+                                            )
                                             .findFirst()
                                             .orElse(null);
-                                } catch (Exception e) {
-                                    if (e.getMessage().equalsIgnoreCase("Client error from strive-school")) {
-                                        stop.set(true);
+                                })
+                                .onErrorResume(e -> {
+                                    String msg = e.getMessage();
+
+                                    System.err.println("Error on track " + track.name() + " by artist " + track.artist().name() + ": " + e.getMessage());
+
+                                    if (msg.contains("Client error")
+                                            || msg.contains("Connection reset")
+                                            || msg.contains("The connection observed an error")) {
+                                        return Mono.error(new RuntimeException("STOP_FLOW"));
                                     }
-                                    System.out.println("getMEssage " + e.getMessage());
-                                    if (e.getMessage().equalsIgnoreCase("The connection observed an error") || e.getMessage().equalsIgnoreCase("Connection reset")) {
-                                        stop.set(true);
-                                    }
-                                    return null;
-                                }
-                            }).onErrorResume(e -> {
-                                System.err.println("Error on track " + track.name() + " by artist " + track.artist().name() + ": " + e.getMessage());
-                                return Mono.empty();
-                            });
-                }, 4);
+
+                                    return Mono.empty();
+                                }), 4
+                )
+                .onErrorResume(e -> {
+
+                    if ("STOP_FLOW".equals(e.getMessage())) {
+                        System.out.println("Flow interrupted");
+                        return Flux.empty();
+                    }
+                    return Flux.error(e);
+                });
     }
 
     public Flux<FoundSongDTO> findSongsByCountry(String country) {
 
-        AtomicBoolean stop = new AtomicBoolean(false);
-
         return lFmServ.getInfoCountrySongsToSearch(country)
-                .flatMap(track -> {
-                    if (stop.get()) {
-                        return Mono.empty();
-                    }
-                    return ssServ.searchSong(normalize(track.name()))
-                            .map(striveSchoolResponseDTO -> {
-                                try {
-                                    if (striveSchoolResponseDTO == null) return null;
+                .flatMap(track ->
+                        ssServ.searchSong(normalize(track.name()))
+                                .map(striveSchoolResponseDTO -> {
+
+                                    if (striveSchoolResponseDTO == null)
+                                        return null;
 
                                     return striveSchoolResponseDTO.data().stream()
                                             .filter(singleTrackStrSch ->
-                                                    normalize(singleTrackStrSch.artist().name()).equalsIgnoreCase(normalize(track.artist().name()))
-                                                            && normalize(singleTrackStrSch.title_short()).equalsIgnoreCase(normalize(track.name())))
+                                                    normalize(singleTrackStrSch.artist().name()).equalsIgnoreCase(normalize(track.artist().name())) &&
+                                                            normalize(singleTrackStrSch.title_short()).equalsIgnoreCase(normalize(track.name()))
+                                            )
                                             .findFirst()
                                             .orElse(null);
-                                } catch (Exception e) {
-                                    if (e.getMessage().equalsIgnoreCase("Client error from strive-school")) {
-                                        stop.set(true);
+                                })
+                                .onErrorResume(e -> {
+                                    String msg = e.getMessage();
+
+                                    System.err.println("Error on track " + track.name() + " by artist " + track.artist().name() + ": " + e.getMessage());
+
+                                    if (msg.contains("Client error")
+                                            || msg.contains("Connection reset")
+                                            || msg.contains("The connection observed an error")) {
+                                        return Mono.error(new RuntimeException("STOP_FLOW"));
                                     }
-                                    System.out.println("getMEssage " + e.getMessage());
-                                    if (e.getMessage().equalsIgnoreCase("The connection observed an error") || e.getMessage().equalsIgnoreCase("Connection reset")) {
-                                        stop.set(true);
-                                    }
-                                    return null;
-                                }
-                            }).onErrorResume(e -> {
-                                System.err.println("Error on track " + track.name() + " by artist " + track.artist().name() + ": " + e.getMessage());
-                                return Mono.empty();
-                            });
-                }, 4);
+
+                                    return Mono.empty();
+                                }), 4
+                )
+                .onErrorResume(e -> {
+
+                    if ("STOP_FLOW".equals(e.getMessage())) {
+                        System.out.println("Flow interrupted");
+                        return Flux.empty();
+                    }
+                    return Flux.error(e);
+                });
     }
 }

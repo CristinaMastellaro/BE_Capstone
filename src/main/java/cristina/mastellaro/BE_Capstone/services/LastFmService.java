@@ -35,6 +35,7 @@ public class LastFmService {
                 .fromHttpUrl("http://ws.audioscrobbler.com/2.0/")
                 .queryParam("method", "tag.getTopTracks")
                 .queryParam("tag", mood)
+                .queryParam("limit", 45)
                 .queryParam("api_key", apiKeys.getFirst())
                 .queryParam("format", "json")
                 .toUriString();

@@ -103,7 +103,7 @@ const Song = ({ song, playlist, namePlaylist, dontShow }: SongProps) => {
             />
           ) : (
             <BiHeart
-              className="me-2"
+              className="me-2 icon"
               onClick={() => {
                 setIsFavourite(true);
                 dispatch(addNewFavourite(song));
@@ -112,6 +112,7 @@ const Song = ({ song, playlist, namePlaylist, dontShow }: SongProps) => {
           )}
           <span ref={iconRef}>
             <BiDotsVerticalRounded
+              className="icon"
               onClick={() => setShowDropdown(!showDropdown)}
             />
           </span>

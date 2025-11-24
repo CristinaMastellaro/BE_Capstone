@@ -175,7 +175,7 @@ const Settings = () => {
         <div className="d-flex flex-column flex-md-row align-items-center mb-4">
           <h2 className="text-center flex-grow-1">Personal information</h2>
           <BiEdit
-            className="fs-4 mt-3 mt-md-0 my-icons icon"
+            className="fs-4 mt-3 mt-md-0 icon"
             onClick={() => setIsChangingInfo(true)}
           />
         </div>
@@ -277,8 +277,56 @@ const Settings = () => {
               </div>
             )}
           </Form>
-          <Row className="mb-3">
-            <span
+          <Row className="mb-3 justify-content-center">
+            <Col xs={10}>
+              <span
+                className="text-decoration-underline change-psw"
+                onClick={requestToChangePassword}
+              >
+                Change password
+              </span>
+              {isRequestChangePassword && !canChangePassword && (
+                <div className="my-2">
+                  <Form onSubmit={verifyCode}>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Label>
+                        Write here the code that was sent to you via email:
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        className="input-settings w-50"
+                        value={sentPasswordCode}
+                        onChange={(e) => {
+                          setSentPasswordCode(e.target.value);
+                        }}
+                      />
+                    </Form.Group>
+                    <Button variant="primary" type="submit" className="me-2">
+                      Check
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      onClick={() => setIsRequestChangePassword(false)}
+                    >
+                      Back
+                    </Button>
+                    {isWrong && (
+                      <p className="text-danger small d-flex align-items-center mb-0 mt-2">
+                        <BiInfoCircle className="me-2" /> Wrong code!
+                      </p>
+                    )}
+                    {isWrong && howManyErrors > 2 && (
+                      <p className="text-danger small mt-2">
+                        You made too many mistakes. You'll be redirected to the
+                        login page
+                      </p>
+                    )}
+                  </Form>
+                </div>
+              )}
+            </Col>
+            {/* <span
               className="text-decoration-underline change-psw"
               onClick={requestToChangePassword}
             >
@@ -316,7 +364,7 @@ const Settings = () => {
                   )}
                 </Form>
               </div>
-            )}
+            )} */}
             {canChangePassword && !hasChanged && (
               <Form onSubmit={changePassword}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">

@@ -73,7 +73,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 .icon:hover {
   // color: rgb(122, 179, 245);
-  color: $new-primary;
+  color: $new-primary !important;
   cursor: pointer;
 }
 

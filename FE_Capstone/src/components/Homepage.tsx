@@ -57,9 +57,13 @@ const Homepage = () => {
         }
       })
       .then((data: MoodType[]) => {
-        const moods: string[] = [];
-        data.forEach((singleMood) => moods.push(singleMood.name));
-        setOptions(moods);
+        const moods: string[] = ["confused"];
+        const moodsToPutInOptions: string[] = [];
+        data.forEach((singleMood) => {
+          moodsToPutInOptions.push(singleMood.name);
+          moods.push(singleMood.name);
+        });
+        setOptions(moodsToPutInOptions);
         dispatch(saveAllMoodsNames(moods));
         setIsLoading(false);
       })
@@ -87,7 +91,9 @@ const Homepage = () => {
         {/* Emoticon? */}
         <h3>Hi {username || "gorgeous"}!</h3>
         {isLoading ? (
-          <Loader />
+          <span className="mt-3">
+            <Loader />
+          </span>
         ) : (
           <>
             <h1 className="mb-4">How are you feeling today? </h1>
