@@ -364,7 +364,7 @@ const PlayerMusic = () => {
                 />
               ) : (
                 <BiHeart
-                  className="d-none d-sm-block ms-auto ms-md-5 me-lg-2"
+                  className="d-none d-sm-block ms-auto ms-md-5 me-lg-2 my-icons"
                   onClick={() => dispatch(addNewFavourite(currentSong))}
                 />
               )}
