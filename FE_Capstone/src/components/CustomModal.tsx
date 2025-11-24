@@ -21,7 +21,6 @@ const CustomModal = () => {
 
   const create = (namePlaylist: string) => {
     dispatch(createNewPlaylist(namePlaylist));
-    // alert("Created the new playlist " + namePlaylist);
     setShowForm(false);
   };
 
@@ -83,7 +82,6 @@ const CustomModal = () => {
                     setNamePlaylist(title);
                     setIsAdded(true);
                     dispatch(addSongToPlaylist(song, title));
-                    // alert(song.title + " added to the playlist " + title);
                   }}
                   className="options-add-to-playlist mt-2"
                 >

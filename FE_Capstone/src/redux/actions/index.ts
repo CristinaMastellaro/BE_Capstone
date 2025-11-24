@@ -460,14 +460,21 @@ export const PLAYLIST_NOT_TO_SAVE = "PLAYLIST_NOT_TO_SAVE";
 export const PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY =
   "PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY";
 
-export const savePlaylistNotToSavePermanently = (country: string) => {
+export const savePlaylistNotToSavePermanently = (
+  country: string,
+  isPeriod?: boolean
+) => {
   return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
     const TOKEN = getState().user.token;
     const AllFoundSongs: ShowSongType[] = [];
+    const completeEndpoint = isPeriod
+      ? "/period/" + country
+      : "/country/all?country=" + country;
 
     try {
       const res = await fetch(
-        ENDPOINT + "/api/songs/country/all?country=" + country,
+        // ENDPOINT + "/api/songs/country/all?country=" + country,
+        ENDPOINT + "/api/songs" + completeEndpoint,
         {
           headers: { Authorization: `Bearer ${TOKEN}` },
         }

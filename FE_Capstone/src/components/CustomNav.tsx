@@ -2,13 +2,12 @@ import { BiHome, BiLibrary, BiSearch, BiWorld } from "react-icons/bi";
 import "../scss/customNav.scss";
 import { Link } from "react-router-dom";
 import { GrSettingsOption } from "react-icons/gr";
+import { TiTime } from "react-icons/ti";
 
 const CustomNavbar = () => {
   return (
     <>
       <div>
-        {/* <h1 className="mb-4">Sound Adventure</h1> */}
-        {/* <h1 className="mb-4 d-none d-lg-block">Moody</h1> */}
         <h1
           className="mb-4 d-none d-lg-block text-center"
           style={{ fontSize: "3.8em" }}
@@ -29,6 +28,13 @@ const CustomNavbar = () => {
           >
             <BiWorld className="my-icons me-lg-2 fs-4" />
             <span className="d-none d-lg-block">Countries</span>
+          </Link>
+          <Link
+            to="/periods"
+            className="mt-2 p-1 options text-white text-decoration-none"
+          >
+            <TiTime className="my-icons me-lg-2 fs-4" />
+            <span className="d-none d-lg-block">Periods</span>
           </Link>
           <Link
             to="/search"

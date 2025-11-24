@@ -1,8 +1,14 @@
+@import "./variables.scss";
+
 .favourite-songs-picture {
+    background-color: #d20000;
+    // background-color: rgb(122, 179, 245);
+}
+
+.playlist-cover {
     height: 7em;
+    cursor: pointer;
     width: 7em;
-    background-color: rgb(122, 179, 245);
-    // background-color: rgb(241, 156, 193);
     margin: auto;
 }
 

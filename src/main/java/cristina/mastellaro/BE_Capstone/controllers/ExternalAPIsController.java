@@ -1,6 +1,5 @@
 package cristina.mastellaro.BE_Capstone.controllers;
 
-import cristina.mastellaro.BE_Capstone.payloads.PexelsResponseDTO;
 import cristina.mastellaro.BE_Capstone.payloads.country.CountryResponseDTO;
 import cristina.mastellaro.BE_Capstone.payloads.lastFm.AllTracksDTO;
 import cristina.mastellaro.BE_Capstone.payloads.lastFm.LastFmResponseDTO;
@@ -28,11 +27,11 @@ public class ExternalAPIsController {
     private MusicService mServ;
 
     // Pictures
-    @GetMapping("/picture")
-    public Mono<ResponseEntity<PexelsResponseDTO>> getPicturesFromPexels(@RequestParam String search) {
-        return pApiServ.findImage(search)
-                .map(ResponseEntity::ok);
-    }
+//    @GetMapping("/picture")
+//    public Mono<ResponseEntity<PexelsResponseDTO>> getPicturesFromPexels(@RequestParam String search) {
+//        return pApiServ.findImage(search)
+//                .map(ResponseEntity::ok);
+//    }
 
     // Countries
     @GetMapping("/country")
@@ -63,6 +62,16 @@ public class ExternalAPIsController {
         return mServ.findSongsByCountry(country);
     }
 
+    @GetMapping("/songs/period")
+    public Flux<AllTracksDTO> searchInfoForSongsByPeriod(@RequestParam String period) {
+        return lFmServ.getInfoPeriodSongsToSearch(period);
+    }
+
+    @GetMapping("/songs/period/{period}")
+    public Flux<FoundSongDTO> searchForAllSongsByPeriod(@PathVariable String period) {
+        return mServ.findSongByPeriod(period);
+    }
+
     @GetMapping("/search")
     public Mono<ResponseEntity<StriveSchoolResponseDTO>> generalSearch(@RequestParam String query) {
         return ssServ.searchSong(query).map(ResponseEntity::ok);
@@ -72,27 +81,4 @@ public class ExternalAPIsController {
     public Mono<FoundSongDTO> searchSingleSong(@PathVariable String idSong) {
         return ssServ.findSpecificSong(idSong);
     }
-/*
-    API for pictures
-    "https://api.pexels.com/v1/search?query="
-
-    API for country
-    "https://restcountries.com/v3.1/alpha/" + selectedRegionCode
-
-    Search for songs in Last.fm
-    `http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=${data[0].name.common}&api_key=${TOKEN_LAST_FM}&format=json&limit=30
-
-    Search for songs with strive-school
-    - Search songs by country
-`https://striveschool-api.herokuapp.com/api/deezer/search?q=${song.title
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")} ${song.artist
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")}`
-
-     - General search
-     "https://striveschool-api.herokuapp.com/api/deezer/search?q="
-
-     -
-*/
 }

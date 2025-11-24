@@ -18,7 +18,7 @@ import ShowSongType from "../types/ShowSongType";
 import { useNavigate } from "react-router-dom";
 import { CountriesSong } from "../types/ResponseFetchDeezerSearch";
 
-interface selectedRegionType {
+export interface selectedRegionType {
   title: string;
   artist: string;
 }

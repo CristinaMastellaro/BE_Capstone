@@ -35,7 +35,7 @@ public class LastFmService {
                 .fromHttpUrl("http://ws.audioscrobbler.com/2.0/")
                 .queryParam("method", "tag.getTopTracks")
                 .queryParam("tag", mood)
-                .queryParam("limit", 45)
+                .queryParam("limit", 25)
                 .queryParam("api_key", apiKeys.getFirst())
                 .queryParam("format", "json")
                 .toUriString();
@@ -91,6 +91,38 @@ public class LastFmService {
 
     public Flux<AllTracksDTO> getInfoCountrySongsToSearch(String country) {
         return findSongsByCountry(country).flatMapMany(res -> Flux.fromIterable(res.tracks().track()));
+    }
+
+    // For period
+    public Mono<LastFmResponseDTO> findSongsByPeriod(String period) {
+        String url = UriComponentsBuilder
+                .fromHttpUrl("http://ws.audioscrobbler.com/2.0/")
+                .queryParam("method", "tag.getTopTracks")
+                .queryParam("tag", period)
+                .queryParam("limit", 45)
+                .queryParam("api_key", apiKeys.getFirst())
+                .queryParam("format", "json")
+                .toUriString();
+        return webClient.get()
+                .uri(url)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, res -> {
+                    return res.bodyToMono(String.class)
+                            .flatMap(body -> {
+                                log.error("Error 4xx from Last.fm");
+                                return Mono.error(new LastFmException());
+                            });
+                }).onStatus(HttpStatusCode::is5xxServerError, res -> {
+                    return res.bodyToMono(String.class)
+                            .flatMap(body -> {
+                                log.error("Server error from Last.fm");
+                                return Mono.error(new RuntimeException("Server error from Last.fm"));
+                            });
+                }).bodyToMono(LastFmResponseDTO.class);
+    }
+
+    public Flux<AllTracksDTO> getInfoPeriodSongsToSearch(String period) {
+        return findSongsByPeriod(period).flatMapMany(res -> Flux.fromIterable(res.tracks().track()));
     }
 
 }

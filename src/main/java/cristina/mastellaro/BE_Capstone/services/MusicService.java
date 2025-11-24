@@ -113,4 +113,47 @@ public class MusicService {
                     return Flux.error(e);
                 });
     }
+
+    public Flux<FoundSongDTO> findSongByPeriod(String period) {
+
+        return lFmServ.getInfoPeriodSongsToSearch(period)
+                .flatMap(track ->
+                        ssServ.searchSong(normalize(track.name()))
+                                .map(striveSchoolResponseDTO -> {
+
+                                    if (striveSchoolResponseDTO == null)
+                                        return null;
+
+                                    return striveSchoolResponseDTO.data().stream()
+                                            .filter(singleTrackStrSch ->
+                                                    normalize(singleTrackStrSch.artist().name()).equalsIgnoreCase(normalize(track.artist().name())) &&
+                                                            normalize(singleTrackStrSch.title_short()).equalsIgnoreCase(normalize(track.name()))
+                                            )
+                                            .findFirst()
+                                            .orElse(null);
+                                })
+                                .onErrorResume(e -> {
+                                    String msg = e.getMessage();
+
+                                    System.err.println("Error on track " + track.name() + " by artist " + track.artist().name() + ": " + e.getMessage());
+
+                                    if (msg.contains("Client error")
+                                            || msg.contains("Connection reset")
+                                            || msg.contains("The connection observed an error")) {
+                                        return Mono.error(new RuntimeException("STOP_FLOW"));
+                                    }
+
+                                    return Mono.empty();
+                                }), 4
+                )
+                .onErrorResume(e -> {
+
+                    if ("STOP_FLOW".equals(e.getMessage())) {
+                        System.out.println("Flow interrupted");
+                        return Flux.empty();
+                    }
+                    return Flux.error(e);
+                });
+    }
 }
+

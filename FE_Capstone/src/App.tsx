@@ -23,6 +23,7 @@ import {
 } from "./redux/actions";
 import { useEffect } from "react";
 import { useAppDispatchFunction } from "./redux/store";
+import Periods from "./components/Periods";
 
 function App() {
   const dispatch = useAppDispatchFunction();
@@ -70,6 +71,7 @@ function App() {
             <Route element={<Playlist />} path="/playlist/:specification" />
             <Route element={<Library />} path="/library" />
             <Route element={<SearchByCountry />} path="/searchCountry" />
+            <Route element={<Periods />} path="/periods" />
             <Route element={<Search />} path="/search" />
             <Route element={<Settings />} path="/settings" />
           </Route>
