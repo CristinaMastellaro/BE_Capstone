@@ -281,28 +281,30 @@ const Playlist = () => {
                           className="icons-for-playing fs-3"
                           onClick={() => setShowDropdown(!showDropdown)}
                         />
+                        {showDropdown && (
+                          <div
+                            ref={dropdownRef}
+                            className="drop-order-playlist text-dark small"
+                          >
+                            <ul>
+                              <li onClick={() => setIsChangingName(true)}>
+                                Rename playlist
+                              </li>
+                              <li
+                                onClick={() => {
+                                  dispatch(
+                                    deletePlaylist(specification as string)
+                                  );
+                                  navigate("/library");
+                                }}
+                              >
+                                Delete playlist
+                              </li>
+                            </ul>
+                          </div>
+                        )}
                       </span>
                     )}
-                  {showDropdown && (
-                    <div
-                      ref={dropdownRef}
-                      className="drop-order-playlist text-dark small"
-                    >
-                      <ul>
-                        <li onClick={() => setIsChangingName(true)}>
-                          Rename playlist
-                        </li>
-                        <li
-                          onClick={() => {
-                            dispatch(deletePlaylist(specification as string));
-                            navigate("/library");
-                          }}
-                        >
-                          Delete playlist
-                        </li>
-                      </ul>
-                    </div>
-                  )}
                 </div>
               )}
             </div>

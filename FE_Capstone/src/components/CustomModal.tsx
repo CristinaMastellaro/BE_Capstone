@@ -1,4 +1,4 @@
-import { Modal } from "react-bootstrap";
+import { Alert, Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import "../scss/customModal.scss";
 import {
@@ -6,7 +6,7 @@ import {
   changeShowModal,
   createNewPlaylist,
 } from "../redux/actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiPlus } from "react-icons/bi";
 
 const CustomModal = () => {
@@ -14,14 +14,20 @@ const CustomModal = () => {
   const song = useAppSelector((state) => state.options.songToSave);
   const [showForm, setShowForm] = useState(false);
   const [newPlaylistName, setNewPlaylistName] = useState("");
+  const [isAdded, setIsAdded] = useState(false);
+  const [namePlaylist, setNamePlaylist] = useState("");
 
   const dispatch = useAppDispatch();
 
   const create = (namePlaylist: string) => {
     dispatch(createNewPlaylist(namePlaylist));
-    alert("Created the new playlist " + namePlaylist);
+    // alert("Created the new playlist " + namePlaylist);
     setShowForm(false);
   };
+
+  useEffect(() => {
+    setTimeout(() => setIsAdded(false), 2000);
+  }, [isAdded]);
 
   return (
     <div className="modal show custom-modal">
@@ -42,6 +48,11 @@ const CustomModal = () => {
           >
             New playlist
           </button>
+          {isAdded && (
+            <Alert variant="danger" className="my-2">
+              {song.title + " added to the playlist " + namePlaylist}
+            </Alert>
+          )}
           {showForm && (
             <form
               onSubmit={(e: React.FormEvent) => {
@@ -69,8 +80,10 @@ const CustomModal = () => {
                 <p
                   key={title}
                   onClick={() => {
+                    setNamePlaylist(title);
+                    setIsAdded(true);
                     dispatch(addSongToPlaylist(song, title));
-                    alert(song.title + " added to the playlist " + title);
+                    // alert(song.title + " added to the playlist " + title);
                   }}
                   className="options-add-to-playlist mt-2"
                 >
