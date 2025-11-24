@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../scss/periods.scss";
 import "../App.scss";
 import {
@@ -27,6 +27,12 @@ const Periods = () => {
   const [loading, setLoading] = useState(false);
   const [isAlert, setIsAlert] = useState(false);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsAlert(false);
+    }, 2500);
+  }, [isAlert]);
+
   const token = useAppSelector((state) => state.user.token);
 
   const dispatch = useAppDispatch();
@@ -44,7 +50,6 @@ const Periods = () => {
         } else return res.json();
       })
       .then((data) => {
-        console.log("data for period", data);
         const artists: string[] = [];
         const songs: selectedRegionType[] = [];
 
@@ -143,21 +148,6 @@ const Periods = () => {
       <div className="container-timeline">
         <div className="timeline">
           <div className="point-time year-active"></div>
-          <div
-            className={
-              activePeriod === "first" ? "point-time year-active" : "point-time"
-            }
-            id="first"
-            onClick={() => {
-              setActivePeriod("first");
-              setYears("1910s");
-              setBackgroundColor("#784D4C");
-              setBackgroundColorSong("#FFF9E2");
-              searchSongsFromPeriod("1910s");
-            }}
-          >
-            <span className="year-span">1910</span>
-          </div>
           <div
             className={
               activePeriod === "second"
@@ -317,7 +307,9 @@ const Periods = () => {
           <h3 className="text-center py-4 fs-2 fw-semibold">{years}</h3>
         )}
         {isAlert && (
-          <Alert variant="danger" className="my-2 custom-alert"></Alert>
+          <Alert variant="danger" className="mb-3 custom-alert">
+            The preview is not available
+          </Alert>
         )}
         {periodSongs &&
           !loading &&
