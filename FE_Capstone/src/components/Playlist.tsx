@@ -97,6 +97,7 @@ const Playlist = () => {
   const [isChangingName, setIsChangingName] = useState(false);
   const [newName, setNewName] = useState("");
 
+  const [isDeleted, setIsDeleted] = useState(false);
   const navigate = useNavigate();
   const changeName = (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,9 +112,9 @@ const Playlist = () => {
   const [isLoading, setIsLoading] = useState(true);
   // const [isPictureLoading, setIsPictureLoading] = useState(true);
   const phrasesForLoading = [
-    "Following the sound of your mood",
+    "Following the muses' whispers",
     "Is that the perfect song?",
-    "Maybe not. The adventure goes on",
+    "Maybe not. The odyssey goes on",
     "There's an Italian saying that goes: 'The one who walks slowlys walks safely and goes far'. \nOur connection is taking this saying to the next level",
     "No, we haven't forgotten about you. How can we?",
     "So... You've been here for a while. Care to talk about your favourite song?",
@@ -140,6 +141,7 @@ const Playlist = () => {
     }
   }, [songs]);
 
+  // While waiting for the songs
   useEffect(() => {
     if (
       !(
@@ -158,10 +160,7 @@ const Playlist = () => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [
-    // isPictureLoading,
-    isLoading,
-  ]);
+  }, [isLoading]);
 
   // const [picturePlaylist, setPicturePlaylist] = useState("");
 
@@ -252,6 +251,7 @@ const Playlist = () => {
                   ? specification[0].toUpperCase() + specification.substring(1)
                   : "Playlist"}
               </h1>
+
               {songs && songs.length !== 0 && (
                 <div className="player-playlist d-flex justify-content-center gap-4 align-items-center mb-3">
                   <BiShuffle
@@ -281,7 +281,7 @@ const Playlist = () => {
                   {allPlaylistsNames.includes(specification as string) &&
                     (specification as string).toLocaleLowerCase() !==
                       "favourite" && (
-                      <span ref={iconRef}>
+                      <span ref={iconRef} className="position-relative">
                         <BiDotsVerticalRounded
                           className="icons-for-playing fs-3"
                           onClick={() => setShowDropdown(!showDropdown)}
@@ -297,10 +297,11 @@ const Playlist = () => {
                               </li>
                               <li
                                 onClick={() => {
+                                  setIsDeleted(true);
                                   dispatch(
                                     deletePlaylist(specification as string)
                                   );
-                                  navigate("/library");
+                                  setTimeout(() => navigate("/library"), 2000);
                                 }}
                               >
                                 Delete playlist
@@ -313,6 +314,11 @@ const Playlist = () => {
                 </div>
               )}
             </div>
+            {isDeleted && (
+              <p className="pt-5 text-center mx-auto">
+                You'll be redirected to the library in a couple of seconds
+              </p>
+            )}
             {/* <section className="pt-4 pb-5 bg-transparent z-1 position-relative"> */}
             <section className="pt-4 pb-5 bg-transparent position-relative">
               {songs &&
@@ -351,18 +357,16 @@ const Playlist = () => {
                     )}
                   </>
                 )}
-              {songs && songs.length === 0 && (
+              {songs && songs.length === 0 && !isDeleted && (
                 <>
                   <p className="w-75 mx-auto mt-3 text-center">
                     {specification === "favourite"
                       ? "It's time to save your favourite songs or to look for new ones!"
-                      : allMoods.includes(specification as string)
+                      : !allMoods.includes(specification as string)
                       ? `Your feelings are amazing, but our system isn't smart enough
                   yet to understand which songs are fitted for "${specification}
                   ". Want to give it another try with a more generic word?`
-                      : "Isn't there some good music that feels like " +
-                        specification +
-                        "?"}
+                      : "Uhm, the muses have decided to take away our inspiration. Can you give us a couple of seconds to convince them we're worth it?"}
                   </p>
                 </>
               )}

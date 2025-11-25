@@ -138,7 +138,7 @@ const Search = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 type="text"
-                placeholder="Seashells"
+                placeholder="ophelia"
               />
             </div>
             <button

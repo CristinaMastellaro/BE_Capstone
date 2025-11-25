@@ -26,6 +26,7 @@ const Periods = () => {
 
   const [loading, setLoading] = useState(false);
   const [isAlert, setIsAlert] = useState(false);
+  const [couldNotFindSongs, setCouldNotFindSongs] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -39,6 +40,7 @@ const Periods = () => {
   const navigate = useNavigate();
 
   const searchSongsFromPeriod = (periodToSearch: string) => {
+    setCouldNotFindSongs(false);
     setLoading(true);
     setPeriodSongs([]);
     fetch(ENDPOINT + "/api/songs/period?period=" + periodToSearch, {
@@ -46,12 +48,15 @@ const Periods = () => {
     })
       .then((res) => {
         if (!res.ok) {
+          setCouldNotFindSongs(true);
           throw new Error("Couldn't retrieve songs");
         } else return res.json();
       })
       .then((data) => {
         const artists: string[] = [];
         const songs: selectedRegionType[] = [];
+
+        if (data.length === 0) setCouldNotFindSongs(true);
 
         data.forEach((topSong: CountriesSong) => {
           if (songs.length < 6) {
@@ -314,6 +319,7 @@ const Periods = () => {
         {periodSongs &&
           !loading &&
           periodSongs.length > 0 &&
+          !couldNotFindSongs &&
           periodSongs.map((song, i) => (
             <div
               key={i}
@@ -324,6 +330,15 @@ const Periods = () => {
               <p className="mb-0">{song.artist}</p>
             </div>
           ))}
+        {periodSongs &&
+          !loading &&
+          periodSongs.length === 0 &&
+          !couldNotFindSongs && (
+            <p className="mt-3 text-white text-center">
+              We'll take you back to relive some of the best songs of the past
+              years! When would you like to go?
+            </p>
+          )}
         {periodSongs && !loading && periodSongs.length > 0 && (
           <div className="w-100 text-center">
             <button
@@ -338,6 +353,18 @@ const Periods = () => {
             >
               Love the {years}!
             </button>
+          </div>
+        )}
+        {couldNotFindSongs && (
+          <div
+            className="text-white text-center p-4 pb-0"
+            style={{ mixBlendMode: "difference" }}
+          >
+            <p>Our time machine is not working right now.</p>
+            <p>
+              Give us a couple of minutes to find some electricity, here in{" "}
+              {years || 2025}.
+            </p>
           </div>
         )}
       </section>

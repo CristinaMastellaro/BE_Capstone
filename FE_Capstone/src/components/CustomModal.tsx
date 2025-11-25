@@ -8,24 +8,49 @@ import {
 } from "../redux/actions";
 import { useEffect, useState } from "react";
 import { BiPlus } from "react-icons/bi";
+import ShowSongType from "../types/ShowSongType";
 
 const CustomModal = () => {
-  const namePlaylists = useAppSelector((state) => state.allSongs.playlists);
   const song = useAppSelector((state) => state.options.songToSave);
+  const namePlaylists = useAppSelector(
+    (state) => state.allSongs.playlists as Record<string, ShowSongType[]>
+  );
+  const [playlistsWithoutTheSongToSave, setPlaylistsWithoutTheSongToSave] =
+    useState<string[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [newPlaylistName, setNewPlaylistName] = useState("");
   const [isAdded, setIsAdded] = useState(false);
   const [namePlaylist, setNamePlaylist] = useState("");
 
+  useEffect(() => {
+    const keys = Object.keys(namePlaylists);
+    const playlistsToUse: string[] = [];
+    keys.forEach((key) => {
+      let isSongInsidePlaylist = false;
+      namePlaylists[key].forEach((songInsidePlaylist) => {
+        if (songInsidePlaylist.id === song.id) {
+          isSongInsidePlaylist = true;
+        }
+      });
+      if (!isSongInsidePlaylist) {
+        playlistsToUse.push(key);
+      }
+    });
+    setPlaylistsWithoutTheSongToSave(playlistsToUse);
+  }, []);
+
   const dispatch = useAppDispatch();
 
   const create = (namePlaylist: string) => {
     dispatch(createNewPlaylist(namePlaylist));
+    const addToPlaylistsNames = [...playlistsWithoutTheSongToSave];
+    addToPlaylistsNames.push(namePlaylist);
+    setPlaylistsWithoutTheSongToSave(addToPlaylistsNames);
     setShowForm(false);
   };
 
   useEffect(() => {
-    setTimeout(() => setIsAdded(false), 2000);
+    setTimeout(() => setIsAdded(false), 3000);
   }, [isAdded]);
 
   return (
@@ -48,7 +73,11 @@ const CustomModal = () => {
             New playlist
           </button>
           {isAdded && (
-            <Alert variant="danger" className="my-2">
+            <Alert
+              variant="success"
+              className="my-2 mx-auto"
+              style={{ width: "fit-content", maxWidth: "75%" }}
+            >
               {song.title + " added to the playlist " + namePlaylist}
             </Alert>
           )}
@@ -73,8 +102,8 @@ const CustomModal = () => {
               </div>
             </form>
           )}
-          {namePlaylists &&
-            Object.keys(namePlaylists).map((title) => {
+          {playlistsWithoutTheSongToSave &&
+            playlistsWithoutTheSongToSave.map((title) => {
               return (
                 <p
                   key={title}
@@ -82,6 +111,8 @@ const CustomModal = () => {
                     setNamePlaylist(title);
                     setIsAdded(true);
                     dispatch(addSongToPlaylist(song, title));
+                    const index = playlistsWithoutTheSongToSave.indexOf(title);
+                    delete playlistsWithoutTheSongToSave[index];
                   }}
                   className="options-add-to-playlist mt-2"
                 >

@@ -244,13 +244,15 @@ const SearchByCountry = () => {
             );
           })}
         {isAlert && (
-          <Alert
-            variant="danger"
-            className="text-center my-2 mx-auto"
-            style={{ width: "fit-content" }}
-          >
-            Preview not available
-          </Alert>
+          <Col xs={12}>
+            <Alert
+              variant="danger"
+              className="text-center my-2 mx-auto"
+              style={{ width: "fit-content" }}
+            >
+              Preview not available
+            </Alert>
+          </Col>
         )}
         {selectedRegionSongs.length > 0 && !loading && (
           <div className="text-center p-0 pb-3">

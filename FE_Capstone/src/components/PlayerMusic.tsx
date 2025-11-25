@@ -258,9 +258,6 @@ const PlayerMusic = () => {
               lg={5}
               onClick={() => {
                 dispatch(showDetails(true));
-                // setTimeout(() => {
-                //   navigate("/details");
-                // }, 2000);
               }}
             >
               <img
@@ -364,7 +361,7 @@ const PlayerMusic = () => {
                 />
               ) : (
                 <BiHeart
-                  className="d-none d-sm-block ms-auto ms-md-5 me-lg-2 my-icons"
+                  className="d-none d-sm-block ms-auto ms-md-5 me-lg-2 icon"
                   onClick={() => dispatch(addNewFavourite(currentSong))}
                 />
               )}
@@ -429,23 +426,6 @@ const PlayerMusic = () => {
                     </div>
                   )}
                 </span>
-                {/* {showDropdown && (
-                  <div
-                    ref={dropdownRef}
-                    // TODO: Stavo scrivendo questo drop-order-player-music
-                    className="drop-order icon drop-order-player-music text-dark small"
-                  >
-                    <ul>
-                      <li
-                        onClick={() =>
-                          dispatch(changeShowModal(!showModal, currentSong))
-                        }
-                      >
-                        Add to playlist
-                      </li>
-                    </ul>
-                  </div>
-                )} */}
               </Row>
               <Row className="px-3 flex-column row-details">
                 <Col xs={12} className="text-center">
@@ -486,7 +466,7 @@ const PlayerMusic = () => {
                     />
                   ) : (
                     <BiHeart
-                      className="icons-favourite-details fs-3"
+                      className="icons-favourite-details fs-3 icon"
                       onClick={() => dispatch(addNewFavourite(currentSong))}
                     />
                   )}

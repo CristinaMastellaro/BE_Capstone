@@ -71,7 +71,7 @@ const Song = ({ song, playlist, namePlaylist, dontShow }: SongProps) => {
 
   return (
     <div className="my-1 song d-flex align-items-center">
-      <button
+      <div
         data-audio-id={song.id}
         title="Play preview"
         onClick={() => {
@@ -86,7 +86,7 @@ const Song = ({ song, playlist, namePlaylist, dontShow }: SongProps) => {
         }}
       >
         <img src={song.cover} alt="Cover of the song" className="me-3" />
-      </button>
+      </div>
       <div className="flex-grow-1 d-flex flex-column justify-content-center container-info">
         <p className="mb-0 fw-bold">{song.title}</p>
         <p className="mb-0">{song.author}</p>

@@ -3,8 +3,12 @@ import "../scss/customNav.scss";
 import { Link } from "react-router-dom";
 import { GrSettingsOption } from "react-icons/gr";
 import { TiTime } from "react-icons/ti";
+import { useAppDispatch } from "../redux/store";
+import { showDetails } from "../redux/actions";
 
 const CustomNavbar = () => {
+  const dispatch = useAppDispatch();
+
   return (
     <>
       <div>
@@ -18,6 +22,7 @@ const CustomNavbar = () => {
           <Link
             to="/homepage"
             className="mt-2 p-1 options text-white text-decoration-none"
+            onClick={() => dispatch(showDetails(false))}
           >
             <BiHome className="my-icons me-lg-2 fs-4" />
             <span className="d-none d-lg-block">Home</span>
@@ -25,6 +30,7 @@ const CustomNavbar = () => {
           <Link
             to="/searchCountry"
             className="mt-2 p-1 options text-white text-decoration-none"
+            onClick={() => dispatch(showDetails(false))}
           >
             <BiWorld className="my-icons me-lg-2 fs-4" />
             <span className="d-none d-lg-block">Countries</span>
@@ -32,6 +38,7 @@ const CustomNavbar = () => {
           <Link
             to="/periods"
             className="mt-2 p-1 options text-white text-decoration-none"
+            onClick={() => dispatch(showDetails(false))}
           >
             <TiTime className="my-icons me-lg-2 fs-4" />
             <span className="d-none d-lg-block">Periods</span>
@@ -39,6 +46,7 @@ const CustomNavbar = () => {
           <Link
             to="/search"
             className="mt-2 p-1 options text-white text-decoration-none"
+            onClick={() => dispatch(showDetails(false))}
           >
             <BiSearch className="my-icons me-lg-2 fs-4" />
             <span className="d-none d-lg-block">Search</span>
@@ -46,6 +54,7 @@ const CustomNavbar = () => {
           <Link
             to="/library"
             className="mt-2 p-1 options text-white text-decoration-none"
+            onClick={() => dispatch(showDetails(false))}
           >
             <BiLibrary className="my-icons me-lg-2 fs-4" />
             <span className="d-none d-lg-block">Library</span>
@@ -53,6 +62,7 @@ const CustomNavbar = () => {
           <Link
             to="/settings"
             className="mt-2 p-1 options text-white text-decoration-none"
+            onClick={() => dispatch(showDetails(false))}
           >
             <GrSettingsOption className="my-icons me-lg-2 fs-4" />
             <span className="d-none d-lg-block">Settings</span>
