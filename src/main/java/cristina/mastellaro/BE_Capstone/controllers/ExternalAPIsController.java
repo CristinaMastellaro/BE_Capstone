@@ -1,5 +1,6 @@
 package cristina.mastellaro.BE_Capstone.controllers;
 
+import cristina.mastellaro.BE_Capstone.payloads.country.AllCountriesDTO;
 import cristina.mastellaro.BE_Capstone.payloads.country.CountryResponseDTO;
 import cristina.mastellaro.BE_Capstone.payloads.lastFm.AllTracksDTO;
 import cristina.mastellaro.BE_Capstone.payloads.lastFm.LastFmResponseDTO;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -50,6 +53,12 @@ public class ExternalAPIsController {
     @GetMapping("/songs/mood")
     public Flux<FoundSongDTO> searchForSongs(@RequestParam String mood) {
         return mServ.findSongByMood(mood);
+    }
+
+    @GetMapping("/nameCountries")
+    public AllCountriesDTO getAllCountriesNames() {
+        List<String> countriesNames = cServ.countriesNames();
+        return new AllCountriesDTO(countriesNames);
     }
 
     @GetMapping("/songs/country")

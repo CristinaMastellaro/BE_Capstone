@@ -5,14 +5,15 @@ import {
   addSongToPlaylist,
   changeShowModal,
   createNewPlaylist,
+  ENDPOINT,
 } from "../redux/actions";
 import { useEffect, useState } from "react";
-import { BiPlus } from "react-icons/bi";
+import { BiInfoCircle, BiPlus } from "react-icons/bi";
 import ShowSongType from "../types/ShowSongType";
 
 const CustomModal = () => {
   const song = useAppSelector((state) => state.options.songToSave);
-  const namePlaylists = useAppSelector(
+  const allPlaylists = useAppSelector(
     (state) => state.allSongs.playlists as Record<string, ShowSongType[]>
   );
   const [playlistsWithoutTheSongToSave, setPlaylistsWithoutTheSongToSave] =
@@ -21,13 +22,20 @@ const CustomModal = () => {
   const [newPlaylistName, setNewPlaylistName] = useState("");
   const [isAdded, setIsAdded] = useState(false);
   const [namePlaylist, setNamePlaylist] = useState("");
+  const [nameCountries, setNameCountries] = useState<string[]>([]);
+  const nameMoods = useAppSelector(
+    (state) => state.allSongs.allMoodsName as string[]
+  );
+  const token = useAppSelector((state) => state.user.token);
+  const [alert, setAlert] = useState(false);
 
   useEffect(() => {
-    const keys = Object.keys(namePlaylists);
+    // When I want to add a song to a playlist, I don't need the names of the playlists in which the song already is in
+    const keys = Object.keys(allPlaylists);
     const playlistsToUse: string[] = [];
     keys.forEach((key) => {
       let isSongInsidePlaylist = false;
-      namePlaylists[key].forEach((songInsidePlaylist) => {
+      allPlaylists[key].forEach((songInsidePlaylist) => {
         if (songInsidePlaylist.id === song.id) {
           isSongInsidePlaylist = true;
         }
@@ -37,16 +45,38 @@ const CustomModal = () => {
       }
     });
     setPlaylistsWithoutTheSongToSave(playlistsToUse);
+
+    // I don't want the name of the new playlist be the same as one of the countries, because it creates issues
+    fetch(ENDPOINT + "/api/nameCountries", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Couldn't find the name of the countries");
+        else return res.json();
+      })
+      .then((data) => {
+        console.log("data countries", data);
+        setNameCountries(data.allCountriesNames);
+      })
+      .catch((err) => console.log("Error!", err));
   }, []);
 
   const dispatch = useAppDispatch();
 
   const create = (namePlaylist: string) => {
-    dispatch(createNewPlaylist(namePlaylist));
-    const addToPlaylistsNames = [...playlistsWithoutTheSongToSave];
-    addToPlaylistsNames.push(namePlaylist);
-    setPlaylistsWithoutTheSongToSave(addToPlaylistsNames);
-    setShowForm(false);
+    if (
+      !nameCountries.includes(namePlaylist) &&
+      !nameMoods.includes(namePlaylist) &&
+      !Object.keys(allPlaylists).includes(namePlaylist)
+    ) {
+      dispatch(createNewPlaylist(namePlaylist));
+      const addToPlaylistsNames = [...playlistsWithoutTheSongToSave];
+      addToPlaylistsNames.push(namePlaylist);
+      setPlaylistsWithoutTheSongToSave(addToPlaylistsNames);
+      setShowForm(false);
+    } else {
+      setAlert(true);
+    }
   };
 
   useEffect(() => {
@@ -82,25 +112,39 @@ const CustomModal = () => {
             </Alert>
           )}
           {showForm && (
-            <form
-              onSubmit={(e: React.FormEvent) => {
-                e.preventDefault();
-                create(newPlaylistName);
-              }}
-            >
-              <legend className="small fs-7">Name of the new playlist:</legend>
-              <div className="d-flex gap-2 justify-content-center">
-                <input
-                  type="text"
-                  className="rounded-2"
-                  value={newPlaylistName}
-                  onChange={(e) => setNewPlaylistName(e.target.value)}
-                />
-                <button type="submit" className="my-btn-blue">
-                  <BiPlus />
-                </button>
-              </div>
-            </form>
+            <>
+              <form
+                onSubmit={(e: React.FormEvent) => {
+                  e.preventDefault();
+                  create(newPlaylistName);
+                }}
+              >
+                <legend className="small fs-7">
+                  Name of the new playlist:
+                </legend>
+                <div className="d-flex gap-2 justify-content-center">
+                  <input
+                    type="text"
+                    className="rounded-2"
+                    value={newPlaylistName}
+                    onChange={(e) => setNewPlaylistName(e.target.value)}
+                  />
+                  <button type="submit" className="my-btn-blue">
+                    <BiPlus />
+                  </button>
+                </div>
+              </form>
+              {alert && (
+                <p
+                  className="text-danger small mb-3 mt-2 d-flex align-items-center w-75 mx-auto"
+                  style={{ minWidth: "200px", maxWidth: "400px" }}
+                >
+                  <BiInfoCircle className="me-2" style={{ width: "30px" }} />{" "}
+                  Don't use the name of a default mood, a country or one that
+                  has already been used for anouther playlist
+                </p>
+              )}
+            </>
           )}
           {playlistsWithoutTheSongToSave &&
             playlistsWithoutTheSongToSave.map((title) => {

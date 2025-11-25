@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class CountryService {
@@ -35,6 +37,10 @@ public class CountryService {
     public CountryResponseDTO getCountryFromCode(String code) {
         String name = cRepo.findById(code).orElseThrow(() -> new NotFoundException("No country found by the code " + code, false)).getName();
         return new CountryResponseDTO(name);
+    }
+
+    public List<String> countriesNames() {
+        return cRepo.findAllNames();
     }
 
 //    public Flux<CountryInfoDTO> getNameCountry(String code) {
