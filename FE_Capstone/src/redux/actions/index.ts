@@ -456,6 +456,29 @@ export const deleteSongFromPlaylist = (
   };
 };
 
+export const GET_ALL_COUTRIES_NAMES = "GET_ALL_COUTRIES_NAMES";
+
+export const getCoutriesNames = () => {
+  return (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+    const TOKEN = getState().user.token;
+
+    fetch(ENDPOINT + "/api/nameCountries", {
+      headers: { Authorization: `Bearer ${TOKEN}` },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Couldn't find the name of the countries");
+        else return res.json();
+      })
+      .then((data) => {
+        dispatch({
+          type: GET_ALL_COUTRIES_NAMES,
+          payload: data.allCountriesNames,
+        });
+      })
+      .catch((err) => console.log("Error!", err));
+  };
+};
+
 export const PLAYLIST_NOT_TO_SAVE = "PLAYLIST_NOT_TO_SAVE";
 export const PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY =
   "PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY";

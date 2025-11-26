@@ -9,6 +9,7 @@ import { useAppDispatch } from "../redux/store";
 import {
   ENDPOINT,
   findAllPlaylists,
+  getCoutriesNames,
   setFavFromDb,
   setLoginEmail,
   setLoginName,
@@ -81,6 +82,7 @@ const Login = () => {
         dispatch(setLoginEmail(data.email));
         dispatch(findAllPlaylists());
         dispatch(setFavFromDb());
+        dispatch(getCoutriesNames());
         setIsLoading(false);
         navigate("/homepage");
       })

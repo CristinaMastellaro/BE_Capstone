@@ -5,14 +5,15 @@ import {
   addSongToPlaylist,
   changeShowModal,
   createNewPlaylist,
-  ENDPOINT,
 } from "../redux/actions";
 import { useEffect, useState } from "react";
 import { BiInfoCircle, BiPlus } from "react-icons/bi";
 import ShowSongType from "../types/ShowSongType";
 
 const CustomModal = () => {
-  const song = useAppSelector((state) => state.options.songToSave);
+  const song = useAppSelector(
+    (state) => state.options.songToSave as ShowSongType
+  );
   const allPlaylists = useAppSelector(
     (state) => state.allSongs.playlists as Record<string, ShowSongType[]>
   );
@@ -22,11 +23,12 @@ const CustomModal = () => {
   const [newPlaylistName, setNewPlaylistName] = useState("");
   const [isAdded, setIsAdded] = useState(false);
   const [namePlaylist, setNamePlaylist] = useState("");
-  const [nameCountries, setNameCountries] = useState<string[]>([]);
+  const nameCountries = useAppSelector(
+    (state) => state.options.nameCountries as string[]
+  );
   const nameMoods = useAppSelector(
     (state) => state.allSongs.allMoodsName as string[]
   );
-  const token = useAppSelector((state) => state.user.token);
   const [alert, setAlert] = useState(false);
 
   useEffect(() => {
@@ -47,18 +49,18 @@ const CustomModal = () => {
     setPlaylistsWithoutTheSongToSave(playlistsToUse);
 
     // I don't want the name of the new playlist be the same as one of the countries, because it creates issues
-    fetch(ENDPOINT + "/api/nameCountries", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Couldn't find the name of the countries");
-        else return res.json();
-      })
-      .then((data) => {
-        console.log("data countries", data);
-        setNameCountries(data.allCountriesNames);
-      })
-      .catch((err) => console.log("Error!", err));
+    // fetch(ENDPOINT + "/api/nameCountries", {
+    //   headers: { Authorization: `Bearer ${token}` },
+    // })
+    //   .then((res) => {
+    //     if (!res.ok) throw new Error("Couldn't find the name of the countries");
+    //     else return res.json();
+    //   })
+    //   .then((data) => {
+    //     console.log("data countries", data);
+    //     setNameCountries(data.allCountriesNames);
+    //   })
+    //   .catch((err) => console.log("Error!", err));
   }, []);
 
   const dispatch = useAppDispatch();

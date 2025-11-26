@@ -14,6 +14,7 @@ import Settings from "./components/Settings";
 import {
   ENDPOINT,
   findAllPlaylists,
+  getCoutriesNames,
   setFavFromDb,
   setLoginEmail,
   setLoginName,
@@ -55,6 +56,7 @@ function App() {
         dispatch(setLoginSurname(data.surname));
         dispatch(setLoginEmail(data.email));
         dispatch(findAllPlaylists());
+        dispatch(getCoutriesNames());
         dispatch(setFavFromDb());
       })
       .catch(() => {

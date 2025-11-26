@@ -7,7 +7,13 @@ import Loader from "./Loader";
 import ShowSongType from "../types/ShowSongType";
 import CustomModal from "./CustomModal";
 import Form from "react-bootstrap/Form";
-import { BiDotsVerticalRounded, BiPlay, BiShuffle, BiX } from "react-icons/bi";
+import {
+  BiDotsVerticalRounded,
+  BiInfoCircle,
+  BiPlay,
+  BiShuffle,
+  BiX,
+} from "react-icons/bi";
 import {
   deletePlaylist,
   // ENDPOINT,
@@ -96,17 +102,35 @@ const Playlist = () => {
   // For change name playlist
   const [isChangingName, setIsChangingName] = useState(false);
   const [newName, setNewName] = useState("");
+  const nameCountries = useAppSelector(
+    (state) => state.options.nameCountries as string[]
+  );
 
   const [isDeleted, setIsDeleted] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const [isChangedName, setIsChangedName] = useState(false);
   const navigate = useNavigate();
+
   const changeName = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(renamePlaylist(specification as string, newName));
-    dispatch(resetPlaylists());
-    setTimeout(() => {
-      dispatch(findAllPlaylists());
-      navigate("/library");
-    }, 2000);
+    setAlert(false);
+    if (
+      !nameCountries.includes(newName) &&
+      !allMoods.includes(newName) &&
+      !Object.keys(allPlaylists).includes(newName)
+    ) {
+      dispatch(renamePlaylist(specification as string, newName));
+      dispatch(resetPlaylists());
+      setIsChangedName(true);
+      setTimeout(() => {
+        dispatch(findAllPlaylists());
+      }, 2000);
+      setTimeout(() => {
+        navigate("/library");
+      }, 4000);
+    } else {
+      setAlert(true);
+    }
   };
 
   const [isLoading, setIsLoading] = useState(true);
@@ -200,7 +224,10 @@ const Playlist = () => {
     <>
       {isLoading ? (
         // || isPictureLoading
-        <div className="d-flex flex-column justify-content-center align-items-center w-75 mx-auto text-center h-100 my-auto">
+        <div
+          className="d-flex flex-column justify-content-center align-items-center w-75 mx-auto text-center h-100 my-auto"
+          style={{ minHeight: "90vh" }}
+        >
           <p className="mb-5">{phrase}</p>
           <Loader />
         </div>
@@ -210,7 +237,11 @@ const Playlist = () => {
             {isChangingName && (
               <div
                 className="modal show modal-change-name"
-                style={{ display: "block", position: "absolute" }}
+                style={{
+                  display: "block",
+                  position: "absolute",
+                  minHeight: "fit-content",
+                }}
               >
                 <Modal.Dialog>
                   <Modal.Header className="d-flex justify-content-between">
@@ -233,6 +264,28 @@ const Playlist = () => {
                           onChange={(e) => setNewName(e.target.value)}
                         />
                       </Form.Group>
+                      {alert && (
+                        <p
+                          className="text-danger small mb-3 mt-2 d-flex align-items-center w-75 mx-auto"
+                          style={{ minWidth: "200px", maxWidth: "400px" }}
+                        >
+                          <BiInfoCircle
+                            className="me-2"
+                            style={{ width: "30px" }}
+                          />{" "}
+                          Don't use the name of a default mood, a country or one
+                          that has already been used for anouther playlist
+                        </p>
+                      )}
+                      {isChangedName && (
+                        <p
+                          className="text-white small mb-3 mt-2 d-flex align-items-center w-75 mx-auto"
+                          style={{ minWidth: "200px", maxWidth: "400px" }}
+                        >
+                          Name of the playlist changed to {newName}! You'll be
+                          redirected to the library shortly
+                        </p>
+                      )}
                       <button type="submit" className="my-btn-blue">
                         Save
                       </button>
