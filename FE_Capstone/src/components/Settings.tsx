@@ -14,7 +14,7 @@ import {
   setToken,
 } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { BiEdit, BiInfoCircle } from "react-icons/bi";
 
 const Settings = () => {
@@ -103,6 +103,12 @@ const Settings = () => {
     dispatch(setLoginSurname(""));
     dispatch(setLoginEmail(""));
     dispatch(resetPlaylists());
+    localStorage.setItem("token", "");
+    localStorage.setItem("name", "");
+    localStorage.setItem("username", "");
+    localStorage.setItem("surname", "");
+    localStorage.setItem("email", "");
+    localStorage.setItem("avatar", "");
     dispatch(
       saveCurrentSong({ id: "", cover: "", preview: "", author: "", title: "" })
     );
@@ -126,10 +132,19 @@ const Settings = () => {
   const [isError, setIsError] = useState(false);
   const [messagesError, setMessagesError] = useState<string[]>([]);
 
+  useEffect(() => {
+    if (isError) {
+      setTimeout(() => {
+        setIsError(false);
+      }, 3500);
+    }
+  }, [isError]);
+
   const requestChangeInfo = (e: FormEvent) => {
     e.preventDefault();
 
     setIsWrong(false);
+    setIsError(false);
 
     const finalName = newName === "" ? name : newName;
     const finalSurname = newSurname === "" ? surname : newSurname;
@@ -155,7 +170,11 @@ const Settings = () => {
         if (!res.ok) {
           console.log("res error", res);
           const data = await res.json();
-          setMessagesError(data.listErrors);
+          if (data.message) {
+            setMessagesError(data.message);
+          } else {
+            setMessagesError(data.listErrors);
+          }
           throw new Error("Error while changing the info!");
         } else {
           return res.json();

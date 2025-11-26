@@ -47,20 +47,6 @@ const CustomModal = () => {
       }
     });
     setPlaylistsWithoutTheSongToSave(playlistsToUse);
-
-    // I don't want the name of the new playlist be the same as one of the countries, because it creates issues
-    // fetch(ENDPOINT + "/api/nameCountries", {
-    //   headers: { Authorization: `Bearer ${token}` },
-    // })
-    //   .then((res) => {
-    //     if (!res.ok) throw new Error("Couldn't find the name of the countries");
-    //     else return res.json();
-    //   })
-    //   .then((data) => {
-    //     console.log("data countries", data);
-    //     setNameCountries(data.allCountriesNames);
-    //   })
-    //   .catch((err) => console.log("Error!", err));
   }, []);
 
   const dispatch = useAppDispatch();

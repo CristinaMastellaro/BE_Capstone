@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
 import Loader from "./Loader";
-import { useAppDispatch } from "../redux/store";
 import {
   ENDPOINT,
   findAllPlaylists,
@@ -20,13 +19,13 @@ import {
 } from "../redux/actions";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import euterpe from "../assets/euterpe2.png";
+import { useAppDispatch } from "../redux/store";
 
 const Login = () => {
   const [firstAnimation, setFirstAnimation] = useState(true);
   const [thirdAnimation, setThirdAnimation] = useState(false);
 
   useEffect(() => {
-    // setTimeout(() => setFirstAnimation(true), 1500);
     setTimeout(() => setThirdAnimation(true), 9000);
   }, []);
 
@@ -48,8 +47,8 @@ const Login = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const login = (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,6 +75,11 @@ const Login = () => {
       })
       .then((data) => {
         localStorage.setItem("token", data.token);
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("name", data.name);
+        localStorage.setItem("surname", data.surname);
+        localStorage.setItem("email", data.email);
+        localStorage.setItem("avatar", data.avatar);
         dispatch(setToken(data.token));
         dispatch(setLoginUsername(data.username));
         dispatch(setLoginName(data.name));
@@ -102,7 +106,6 @@ const Login = () => {
   }, [thirdAnimation]);
 
   return (
-    // <Container fluid className="vh-100 colored-bg-container">
     <Container
       fluid
       className="d-flex flex-column vh-100 vw-100 justify-content-center align-items-center"

@@ -25,7 +25,7 @@ const Page404 = () => {
           <p>Did you get lost?</p>
           <p>
             Let us help! You'll find your way back home{" "}
-            <Link to="/homepage" className="text-white">
+            <Link to="/" className="text-white">
               here
             </Link>
           </p>

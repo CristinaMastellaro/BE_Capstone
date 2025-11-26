@@ -1,11 +1,57 @@
 import { Col, Container, Row } from "react-bootstrap";
 import CustomNavbar from "./CustomNav";
 import PlayerMusic from "./PlayerMusic";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import "../scss/customNav.scss";
 import CustomFooter from "./CustomFooter";
+import { useAppDispatch, useAppSelector } from "../redux/store";
+import { useEffect } from "react";
+import {
+  findAllPlaylists,
+  getCoutriesNames,
+  setFavFromDb,
+  setLoginAvatar,
+  setLoginEmail,
+  setLoginName,
+  setLoginSurname,
+  setLoginUsername,
+  setToken,
+} from "../redux/actions";
 
 const MainLayout = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token") || "";
+  const username = localStorage.getItem("username") || "";
+  const name = localStorage.getItem("name") || "";
+  const surname = localStorage.getItem("surname") || "";
+  const email = localStorage.getItem("email") || "";
+  const avatar = localStorage.getItem("avatar") || "";
+  const isAlreadySavedInRedux = useAppSelector(
+    (state) => state.user.token !== ""
+  );
+
+  useEffect(() => {
+    // If a user isn't logged in, it's redirected to the login page
+    if (token === "" || username === "") {
+      navigate("/");
+    } else {
+      // If the user didn't come from the login page, it can still enter, if there's a token saved in the localStorage
+      if (!isAlreadySavedInRedux) {
+        dispatch(setToken(token));
+        dispatch(setLoginUsername(username));
+        dispatch(setLoginName(name));
+        dispatch(setLoginSurname(surname));
+        dispatch(setLoginEmail(email));
+        dispatch(setLoginAvatar(avatar));
+        dispatch(findAllPlaylists());
+        dispatch(setFavFromDb());
+        dispatch(getCoutriesNames());
+      }
+    }
+  }, []);
+
   return (
     <>
       <Container fluid className="my-bg-container">

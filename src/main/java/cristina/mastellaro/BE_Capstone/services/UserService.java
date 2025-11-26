@@ -91,13 +91,13 @@ public class UserService {
 
         if (!userToUpdate.getEmail().equals(newInfo.email())) {
             if (uRepo.existsByEmail(newInfo.email()))
-                throw new AlreadyUsedException("The email " + newInfo.email() + "has already been used");
+                throw new AlreadyUsedException("The email " + newInfo.email() + " has already been used");
             else userToUpdate.setEmail(newInfo.email());
         }
 
         if (!userToUpdate.getUsername().equals(newInfo.username())) {
             if (uRepo.existsByUsername(newInfo.username()))
-                throw new AlreadyUsedException("The username " + newInfo.username() + "has already been used");
+                throw new AlreadyUsedException("The username " + newInfo.username() + " has already been used");
             else userToUpdate.setUsername(newInfo.username());
         }
 
