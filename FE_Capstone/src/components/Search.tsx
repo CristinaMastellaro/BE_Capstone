@@ -122,7 +122,6 @@ const Search = () => {
 
   return (
     <>
-      {/* <Container fluid> */}
       <div className="change-hero">
         <h1 className="fw-semibold">Search</h1>
       </div>
@@ -188,36 +187,6 @@ const Search = () => {
                 )}
               </span>
             </button>
-            {/* {showDropdown && (
-              <div
-                ref={dropdownRef}
-                className="drop-order-playlist drop-order-search text-dark small"
-              >
-                <p className="mb-1 text-white fw-bold p-2 border-bottom">
-                  Type of search
-                </p>
-                <ul>
-                  <li
-                    onClick={() => {
-                      setTypeOfSearch("Discovery");
-                      setShowDropdown(false);
-                      if (songs.length !== 0) search("Discovery", false);
-                    }}
-                  >
-                    Discovery
-                  </li>
-                  <li
-                    onClick={() => {
-                      setTypeOfSearch("Normal");
-                      setShowDropdown(false);
-                      if (songs.length !== 0) search("Normal", false);
-                    }}
-                  >
-                    Normal
-                  </li>
-                </ul>
-              </div>
-            )} */}
           </Form.Group>
         </Form>
       </Row>
@@ -263,7 +232,6 @@ const Search = () => {
             })}
         </div>
       </Row>
-      {/* </Container> */}
     </>
   );
 };

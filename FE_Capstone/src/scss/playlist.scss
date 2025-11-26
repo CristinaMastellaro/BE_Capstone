@@ -11,7 +11,6 @@
     min-height: 100vh;
     background-repeat: no-repeat;
     background-size: cover;
-    // background-color: #ffffff;
 }
 
 .change-hero {
@@ -19,14 +18,10 @@
     border-radius: 0 0 40px 40px;
     color: black;
     text-align: center;
-    // filter:blur(0);
     position: relative;
     width: 100%;
     padding: 0.5em 0;
     min-height: fit-content;
-    // background-color: $new-dark !important;
-    // background: #2B2D42 !important;
-    // background: linear-gradient(0deg, rgba(43, 45, 66, 1) 5%, rgba(255, 255, 255, 0.28) 65%);   
     
     h1 {
         font-size: 3em;
@@ -73,19 +68,11 @@
 .drop-order-playlist {
   position: absolute;
   right: 0vw;
-//   top: 2.5em;
     z-index: 1;
   background-color: rgb(56, 56, 56);
-//   border: 0.5px solid rgba(0, 0, 0, 0.208);
-  /* padding: 0.5em 1em; */
   width: 9em;
   border-radius: 0.3em;
 }
-
-// .drop-order-playlist legend {
-//   font-size: 1.2em;
-//   font-weight: 600;
-// }
 
 .drop-order-playlist ul {
   padding-left: 0;
@@ -104,11 +91,6 @@
 .drop-order-playlist ul li:focus {
   background-color: rgba(187, 187, 187, 0.156);
 }
-
-// .modal-change-name {
-//     position: absolute;
-//     top: 1em;
-// }
 
 .modal-change-name {
     backdrop-filter: blur(4px);

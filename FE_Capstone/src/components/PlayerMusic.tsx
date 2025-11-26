@@ -86,7 +86,6 @@ const PlayerMusic = () => {
   }, [isShuffle]);
 
   // Elements to make the buttons and volume work
-
   const [valueTimeMusic, setValueTimeMusic] = useState(
     audioRef.current === null ? 0 : audioRef.current.currentTime
   );
@@ -116,19 +115,14 @@ const PlayerMusic = () => {
 
   const goNext = () => {
     let index = currentPlaylist.indexOf(currentSong);
-    // if (isShuffle) {
-    //   index = Math.floor(Math.random() * currentPlaylist.length);
-    // } else {
     if (index === currentPlaylist.length - 1) {
       index = 0;
     } else index++;
-    // }
     const newSong = currentPlaylist[index];
     dispatch(saveCurrentSong(newSong));
   };
 
   // For shuffling
-
   const playlistNormalOrder = useAppSelector(
     (state) => state.allSongs.playlistNotPermanentlySaved
   );
@@ -306,7 +300,6 @@ const PlayerMusic = () => {
                     className="fs-1 icon"
                     onClick={() => {
                       dispatch(isPlayingSong(false));
-                      // cancelAnimationFrame(rAF);
                     }}
                   />
                 ) : (
@@ -314,7 +307,6 @@ const PlayerMusic = () => {
                     className="fs-1 icon"
                     onClick={() => {
                       dispatch(isPlayingSong(true));
-                      // requestAnimationFrame(whilePlaying);
                     }}
                   />
                 )}
@@ -411,7 +403,6 @@ const PlayerMusic = () => {
                   {showDropdown && (
                     <div
                       ref={dropdownRef}
-                      // TODO: Stavo scrivendo questo drop-order-player-music
                       className="drop-order icon drop-order-player-music text-dark small"
                     >
                       <ul>
@@ -552,7 +543,6 @@ const PlayerMusic = () => {
                       className="fs-1 icon"
                       onClick={() => {
                         dispatch(isPlayingSong(false));
-                        // cancelAnimationFrame(rAF);
                       }}
                     />
                   ) : (
@@ -560,7 +550,6 @@ const PlayerMusic = () => {
                       className="fs-1 icon"
                       onClick={() => {
                         dispatch(isPlayingSong(true));
-                        // requestAnimationFrame(whilePlaying);
                       }}
                     />
                   )}

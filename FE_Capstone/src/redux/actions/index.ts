@@ -85,6 +85,11 @@ export const findSongs = (mood: string) => {
         }
       })
       .then((data) => {
+        if (data.message === "Connection reset")
+          dispatch({
+            type: ALL_SONGS_MOOD,
+            payload: [mood, AllFoundSongs],
+          });
         data.forEach((song: SongAPI) => {
           foundSong = {
             id: song.id,
@@ -125,7 +130,6 @@ export const RESET_PLAYLIST = "RESET_PLAYLIST";
 export const IS_PLAYING = "IS_PLAYING";
 export const IS_ON_REPEAT = "IS_ON_REPEAT";
 export const IS_SHUFFLED = "IS_SHUFFLED";
-// Attenta che se la canzone non è in una playlist... Cosa succede?
 
 export const saveCurrentSong = (song: ShowSongType) => {
   return {
@@ -464,6 +468,7 @@ export const deleteSongFromPlaylist = (
   };
 };
 
+// Get names of countries
 export const GET_ALL_COUTRIES_NAMES = "GET_ALL_COUTRIES_NAMES";
 
 export const getCoutriesNames = () => {
@@ -487,6 +492,9 @@ export const getCoutriesNames = () => {
   };
 };
 
+// Beacuse playlists like the ones from periods or countries aren't permanent
+// Yeah, I should have thought about this before doing everything,
+// But ideas and solutions came slowly
 export const PLAYLIST_NOT_TO_SAVE = "PLAYLIST_NOT_TO_SAVE";
 export const PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY =
   "PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY";
@@ -503,13 +511,9 @@ export const savePlaylistNotToSavePermanently = (
       : "/country/all?country=" + country;
 
     try {
-      const res = await fetch(
-        // ENDPOINT + "/api/songs/country/all?country=" + country,
-        ENDPOINT + "/api/songs" + completeEndpoint,
-        {
-          headers: { Authorization: `Bearer ${TOKEN}` },
-        }
-      );
+      const res = await fetch(ENDPOINT + "/api/songs" + completeEndpoint, {
+        headers: { Authorization: `Bearer ${TOKEN}` },
+      });
 
       if (!res.ok) {
         throw new Error("Response status: " + res.status);

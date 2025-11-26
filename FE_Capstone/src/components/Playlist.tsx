@@ -16,7 +16,6 @@ import {
 } from "react-icons/bi";
 import {
   deletePlaylist,
-  // ENDPOINT,
   findAllPlaylists,
   isShufflingSongs,
   renamePlaylist,
@@ -28,8 +27,6 @@ import {
 import { Modal } from "react-bootstrap";
 
 const Playlist = () => {
-  // const TOKEN = useAppSelector((state) => state.user.token);
-
   const { specification } = useParams();
   const allMoods = useAppSelector(
     (state) => state.allSongs.allMoodsName as string[]
@@ -40,11 +37,7 @@ const Playlist = () => {
 
   const songs = useAppSelector((state: IRootState) => {
     if (specification !== undefined) {
-      if (
-        (allMoods as string[]).includes(specification)
-        // ||
-        // specification === "confused"
-      ) {
+      if ((allMoods as string[]).includes(specification)) {
         return state.allSongs.moods[specification];
       } else if (allPlaylistsNames.includes(specification)) {
         return (state.allSongs.playlists as Record<string, ShowSongType[]>)[
@@ -55,26 +48,6 @@ const Playlist = () => {
       }
     }
   });
-
-  // The songs saved in the db don't have the preview: we have to ask a request to the API for each song
-  // useEffect(() => {
-  //   if (specification && allPlaylistsNames.includes(specification)) {
-  //     songs?.forEach((song: ShowSongType) => {
-  //       fetch(ENDPOINT + "/api/track/" + song.id, {
-  //         headers: { Authorization: `Bearer ${TOKEN}` },
-  //       })
-  //         .then((res) => {
-  //           if (!res.ok) throw new Error("We couldn't retrieve the song");
-  //           else return res.json();
-  //         })
-  //         .then((data) => {
-  //           console.log("data da db", data);
-  //           song.preview = data.preview;
-  //         })
-  //         .catch((err) => console.log("Error!", err));
-  //     });
-  //   }
-  // }, []);
 
   // For playing songs
   const savedPlaylist = useAppSelector((state) => state.player.currentPlaylist);
@@ -99,7 +72,7 @@ const Playlist = () => {
     }
   };
 
-  // For change name playlist
+  // Change name playlist
   const [isChangingName, setIsChangingName] = useState(false);
   const [newName, setNewName] = useState("");
   const nameCountries = useAppSelector(
@@ -134,7 +107,6 @@ const Playlist = () => {
   };
 
   const [isLoading, setIsLoading] = useState(true);
-  // const [isPictureLoading, setIsPictureLoading] = useState(true);
   const phrasesForLoading = [
     "Following the muses' whispers",
     "Is that the perfect song?",
@@ -150,7 +122,6 @@ const Playlist = () => {
     if (
       !(
         (allMoods as string[]).includes(specification as string) ||
-        // specification === "confused" ||
         allPlaylistsNames.includes(specification as string)
       ) &&
       (songs as ShowSongType[]).length !== 0
@@ -167,13 +138,7 @@ const Playlist = () => {
 
   // While waiting for the songs
   useEffect(() => {
-    if (
-      !(
-        isLoading
-        // || isPictureLoading
-      )
-    )
-      return;
+    if (!isLoading) return;
 
     let change = 1;
     const interval = setInterval(() => {
@@ -186,34 +151,7 @@ const Playlist = () => {
     return () => clearInterval(interval);
   }, [isLoading]);
 
-  // const [picturePlaylist, setPicturePlaylist] = useState("");
-
-  // const getPicturePlaylist = () => {
-  //   fetch(
-  //     ENDPOINT + "/api/picture?search=" + specification?.replaceAll(" ", ""),
-  //     {
-  //       headers: { Authorization: `Bearer ${TOKEN}` },
-  //     }
-  //   )
-  //     .then((res) => {
-  //       if (!res.ok) {
-  //         setIsPictureLoading(false);
-  //         throw new Error("Couldn't fetch the image");
-  //       } else {
-  //         return res.json();
-  //       }
-  //     })
-  //     .then((data) => {
-  //       if (data && data.photos[0] && data.photos[0]) {
-  //         setPicturePlaylist(data.photos[0].src.landscape);
-  //       }
-  //       setIsPictureLoading(false);
-  //     })
-  //     .catch((err) => console.log("Error!", err));
-  // };
-
   useEffect(() => {
-    // getPicturePlaylist();
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -223,7 +161,6 @@ const Playlist = () => {
   return (
     <>
       {isLoading ? (
-        // || isPictureLoading
         <div
           className="d-flex flex-column justify-content-center align-items-center w-75 mx-auto text-center h-100 my-auto"
           style={{ minHeight: "90vh" }}
@@ -294,10 +231,7 @@ const Playlist = () => {
                 </Modal.Dialog>
               </div>
             )}
-            <div
-              className="hero"
-              // style={{ backgroundImage: `url(${picturePlaylist})` }}
-            ></div>
+            <div className="hero"></div>
             <div className="change-hero text-center">
               <h1 className="mb-4 pt-4">
                 {specification
@@ -372,7 +306,6 @@ const Playlist = () => {
                 You'll be redirected to the library in a couple of seconds
               </p>
             )}
-            {/* <section className="pt-4 pb-5 bg-transparent z-1 position-relative"> */}
             <section className="pt-4 pb-5 bg-transparent position-relative">
               {songs &&
                 songs.length === 0 &&

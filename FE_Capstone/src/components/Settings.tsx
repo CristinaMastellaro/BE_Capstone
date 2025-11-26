@@ -25,7 +25,6 @@ const Settings = () => {
   const avatar = useAppSelector((state) => state.user.avatar);
 
   // To change password
-
   const [isRequestChangePassword, setIsRequestChangePassword] = useState(false);
   const [changePasswordCode, setChangePasswordCode] = useState(0);
   const [sentPasswordCode, setSentPasswordCode] = useState("");
@@ -191,6 +190,7 @@ const Settings = () => {
         console.log("Error!", err);
       });
 
+    // There's a different endpoint for the avatar
     if (formData.avatarUrl !== null) {
       const data = new FormData();
       data.append("avatarUrl", formData.avatarUrl);
@@ -210,7 +210,6 @@ const Settings = () => {
   };
 
   return (
-    // <Container fluid className="position-relative">
     <>
       <div className="change-hero">
         <h1 className="fw-semibold">Settings</h1>
@@ -244,15 +243,12 @@ const Settings = () => {
                 <input
                   type="file"
                   className="form-control-file rounded-pill"
-                  // placeholder="Crea un post"
-                  // value={formData.text}
                   onChange={(e) => {
                     if (e.target.files && e.target.files.length > 0) {
                       setFormData({ avatarUrl: e.target.files[0] });
                       setNameFile(e.target.files[0].name);
                     }
                   }}
-                  // style={{ backgroundColor: "#f3f2ef", border: "none" }}
                 />
                 <BiEdit className="edit-image-icon" />
                 <p className="pt-2 mb-0">{nameFile}</p>
@@ -398,45 +394,6 @@ const Settings = () => {
                 </div>
               )}
             </Col>
-            {/* <span
-              className="text-decoration-underline change-psw"
-              onClick={requestToChangePassword}
-            >
-              Change password
-            </span>
-            {isRequestChangePassword && !canChangePassword && (
-              <div className="my-2">
-                <Form onSubmit={verifyCode}>
-                  <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>
-                      Write here the code that was sent to you via email:
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      className="input-settings w-50"
-                      value={sentPasswordCode}
-                      onChange={(e) => {
-                        setSentPasswordCode(e.target.value);
-                      }}
-                    />
-                  </Form.Group>
-                  <Button variant="primary" type="submit">
-                    Check
-                  </Button>
-                  {isWrong && (
-                    <p className="text-danger small d-flex align-items-center mb-0 mt-2">
-                      <BiInfoCircle className="me-2" /> Wrong code!
-                    </p>
-                  )}
-                  {isWrong && howManyErrors > 2 && (
-                    <p className="text-danger small mt-2">
-                      You made too many mistakes. You'll be redirected to the
-                      login page
-                    </p>
-                  )}
-                </Form>
-              </div>
-            )} */}
             {canChangePassword && !hasChanged && (
               <Form onSubmit={changePassword}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">

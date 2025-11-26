@@ -36,7 +36,7 @@ const Homepage = () => {
       dispatch(addSingleMood(mood));
     }
     if (savedMoodInStore !== mood) {
-      if (songs === undefined) {
+      if (songs === undefined || songs.length === 0) {
         dispatch(findSongs(mood));
       }
     }
@@ -88,7 +88,6 @@ const Homepage = () => {
   return (
     <>
       <section className="pt-5 text-center d-flex flex-column align-items-center align-self-end homepage-section">
-        {/* Emoticon? */}
         <h3>Hi {username || "gorgeous"}!</h3>
         {isLoading ? (
           <span className="mt-3">

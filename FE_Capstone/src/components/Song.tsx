@@ -36,7 +36,6 @@ const Song = ({ song, playlist, namePlaylist, dontShow }: SongProps) => {
   const [isFavourite, setIsFavourite] = useState(isFavouriteAtTheBeginning);
 
   // To save the song in a playlist
-  // TODO: What happens if a song is already saved in the playlist?
   const showModal = useAppSelector((state) => state.options.showModal);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -63,10 +62,10 @@ const Song = ({ song, playlist, namePlaylist, dontShow }: SongProps) => {
   }, []);
 
   // Remove song from playlist
-
   const isNamePlaylistInSavedPlaylist = useAppSelector((state) =>
     Object.keys(state.allSongs.playlists).includes(namePlaylist)
-  ); // To see if the playlist is saved in the library (the playlist could be used to show the songs connected to a mood: in this case, the playlist is not saved in the library)
+  ); // To see if the playlist is saved in the library (the playlist could be used to show the songs connected
+  // to a mood: in this case, the playlist is not saved in the library)
   // If this is true, than you can remove the song from the current playlist
 
   return (

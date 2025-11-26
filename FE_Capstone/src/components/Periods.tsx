@@ -363,7 +363,7 @@ const Periods = () => {
             <p>Our time machine is not working right now.</p>
             <p>
               Give us a couple of minutes to find some electricity, here in{" "}
-              {years || 2025}.
+              {years || new Date().getFullYear()}.
             </p>
           </div>
         )}

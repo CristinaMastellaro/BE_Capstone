@@ -6,7 +6,7 @@ const CustomFooter = () => {
           © Copyright - {new Date().getFullYear()}
         </p>
         <p className="text-center small mb-0">
-          Made by:{" "}
+          Made by{" "}
           <a
             href="https://github.com/CristinaMastellaro/BE_Capstone"
             target="_blank"

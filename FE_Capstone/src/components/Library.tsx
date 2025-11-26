@@ -13,7 +13,6 @@ const Library = () => {
 
   return (
     <>
-      {/* <Container fluid> */}
       <div className="change-hero">
         <h1 className="fw-semibold">Library</h1>
       </div>
@@ -60,7 +59,6 @@ const Library = () => {
             }
           })}
       </Row>
-      {/* </Container> */}
     </>
   );
 };

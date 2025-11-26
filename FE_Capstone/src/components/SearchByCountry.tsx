@@ -48,8 +48,8 @@ const SearchByCountry = () => {
       // @ts-expect-error: The library is not meant for TypeScript
       regionsSelectable: true,
       regionStyle: {
-        selected: { fill: "rgb(241, 156, 193)" },
-        selectedHover: { fill: "rgb(241, 156, 193)" },
+        selected: { fill: "#ba0303ff" },
+        selectedHover: { fill: "#ba0303ff" },
       },
       regionsSelectableOne: true,
       onRegionClick: function (_: MouseEvent, code: string) {
@@ -202,7 +202,6 @@ const SearchByCountry = () => {
 
   return (
     <>
-      {/* <Container fluid className="w-100"> */}
       <div className="change-hero">
         <h1 className="fw-semibold">Countries</h1>
       </div>
@@ -275,7 +274,6 @@ const SearchByCountry = () => {
           </p>
         )}
       </Row>
-      {/* </Container> */}
     </>
   );
 };
