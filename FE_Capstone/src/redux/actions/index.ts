@@ -10,6 +10,7 @@ export const SET_USERNAME = "SET_USERNAME";
 export const SET_NAME = "SET_NAME";
 export const SET_SURNAME = "SET_SURNAME";
 export const SET_EMAIL = "SET_EMAIL";
+export const SET_AVATAR = "SET_AVATAR";
 export const SET_TOKEN = "SET_TOKEN";
 
 export const setToken = (token: string) => {
@@ -44,6 +45,13 @@ export const setLoginEmail = (email: string) => {
   return {
     type: SET_EMAIL,
     payload: email,
+  };
+};
+
+export const setLoginAvatar = (avatar: string) => {
+  return {
+    type: SET_AVATAR,
+    payload: avatar,
   };
 };
 

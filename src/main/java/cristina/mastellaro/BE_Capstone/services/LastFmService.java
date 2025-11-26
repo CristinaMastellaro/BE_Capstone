@@ -13,14 +13,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 @Service
 @Slf4j
 public class LastFmService {
     private final WebClient webClient;
     @Autowired
-    private List<String> apiKeys;
+    private String apiKeyLastFm;
     @Autowired
     private StriveSchoolService ssServ;
 
@@ -36,7 +34,7 @@ public class LastFmService {
                 .queryParam("method", "tag.getTopTracks")
                 .queryParam("tag", mood)
                 .queryParam("limit", 25)
-                .queryParam("api_key", apiKeys.getFirst())
+                .queryParam("api_key", apiKeyLastFm)
                 .queryParam("format", "json")
                 .toUriString();
         return webClient.get()
@@ -67,7 +65,7 @@ public class LastFmService {
                 .fromHttpUrl("http://ws.audioscrobbler.com/2.0/")
                 .queryParam("method", "geo.getTopTracks")
                 .queryParam("country", country)
-                .queryParam("api_key", apiKeys.getFirst())
+                .queryParam("api_key", apiKeyLastFm)
                 .queryParam("format", "json")
                 .queryParam("limit", "40")
                 .toUriString();
@@ -100,7 +98,7 @@ public class LastFmService {
                 .queryParam("method", "tag.getTopTracks")
                 .queryParam("tag", period)
                 .queryParam("limit", 45)
-                .queryParam("api_key", apiKeys.getFirst())
+                .queryParam("api_key", apiKeyLastFm)
                 .queryParam("format", "json")
                 .toUriString();
         return webClient.get()

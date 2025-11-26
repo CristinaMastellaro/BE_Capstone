@@ -6,6 +6,7 @@ import {
   isPlayingSong,
   resetPlaylists,
   saveCurrentSong,
+  setLoginAvatar,
   setLoginEmail,
   setLoginName,
   setLoginSurname,
@@ -21,6 +22,7 @@ const Settings = () => {
   const surname = useAppSelector((state) => state.user.surname);
   const email = useAppSelector((state) => state.user.email);
   const username = useAppSelector((state) => state.user.username);
+  const avatar = useAppSelector((state) => state.user.avatar);
 
   // To change password
 
@@ -116,6 +118,10 @@ const Settings = () => {
   const [newSurname, setNewSurname] = useState("");
   const [newUsername, setNewUsername] = useState("");
   const [newEmail, setNewEmail] = useState("");
+  const [formData, setFormData] = useState<{ avatarUrl: File | null }>({
+    avatarUrl: null,
+  });
+  const [nameFile, setNameFile] = useState("");
 
   const [isError, setIsError] = useState(false);
   const [messagesError, setMessagesError] = useState<string[]>([]);
@@ -123,12 +129,14 @@ const Settings = () => {
   const requestChangeInfo = (e: FormEvent) => {
     e.preventDefault();
 
+    setIsWrong(false);
+
     const finalName = newName === "" ? name : newName;
     const finalSurname = newSurname === "" ? surname : newSurname;
     const finalEmail = newEmail === "" ? email : newEmail;
     const finalUsername = newUsername === "" ? username : newUsername;
 
-    fetch(ENDPOINT + "/auth/changeInfo", {
+    fetch(ENDPOINT + "/user/changeInfo", {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${TOKEN}`,
@@ -163,6 +171,23 @@ const Settings = () => {
         setIsError(true);
         console.log("Error!", err);
       });
+
+    if (formData.avatarUrl !== null) {
+      const data = new FormData();
+      data.append("avatarUrl", formData.avatarUrl);
+      fetch(ENDPOINT + "/user/upload", {
+        method: "PATCH",
+        body: data,
+        headers: { Authorization: `Bearer ${TOKEN}` },
+      })
+        .then((res) => {
+          console.log("res", res);
+          if (!res.ok) throw new Error("Error while changing picture");
+          else return res.json();
+        })
+        .then((res2) => dispatch(setLoginAvatar(res2.avatar)))
+        .catch((err) => console.log("Error!", err));
+    }
   };
 
   return (
@@ -174,22 +199,47 @@ const Settings = () => {
       <Row className="mx-0 mt-5 px-3">
         <div className="d-flex flex-column flex-md-row align-items-center mb-4">
           <h2 className="text-center flex-grow-1">Personal information</h2>
-          <BiEdit
-            className="fs-4 mt-3 mt-md-0 icon"
-            onClick={() => setIsChangingInfo(true)}
-          />
+          {!isChangingInfo && (
+            <BiEdit
+              className="fs-4 mt-3 mt-md-0 icon"
+              onClick={() => setIsChangingInfo(true)}
+            />
+          )}
         </div>
         <Col xs={12} className="text-center mb-4">
-          <Image
-            src={
-              "https://ui-avatars.com/api/?name=" +
-              name.substring(0) +
-              "+" +
-              surname.substring(0)
-            }
-            className="img-settings"
-            roundedCircle
-          />
+          <div className="mx-auto container-avatar">
+            <Image
+              src={
+                avatar
+                  ? avatar
+                  : "https://ui-avatars.com/api/?name=" +
+                    name.substring(0) +
+                    "+" +
+                    surname.substring(0)
+              }
+              className="img-settings"
+              roundedCircle
+            />
+            {isChangingInfo && (
+              <>
+                <input
+                  type="file"
+                  className="form-control-file rounded-pill"
+                  // placeholder="Crea un post"
+                  // value={formData.text}
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      setFormData({ avatarUrl: e.target.files[0] });
+                      setNameFile(e.target.files[0].name);
+                    }
+                  }}
+                  // style={{ backgroundColor: "#f3f2ef", border: "none" }}
+                />
+                <BiEdit className="edit-image-icon" />
+                <p className="pt-2 mb-0">{nameFile}</p>
+              </>
+            )}
+          </div>
         </Col>
         <Col xs={12} sm={11} md={6} xl={4} className="mx-auto">
           <Form onSubmit={requestChangeInfo}>
@@ -264,7 +314,10 @@ const Settings = () => {
               </p>
             )}
             {isChangingInfo && (
-              <div className="d-flex flex-column flex-md-row gap-3 my-2">
+              <div
+                className="d-flex flex-column flex-sm-row gap-3 my-2 mx-auto"
+                style={{ width: "fit-content" }}
+              >
                 <button className="my-btn-blue" type="submit">
                   Change
                 </button>

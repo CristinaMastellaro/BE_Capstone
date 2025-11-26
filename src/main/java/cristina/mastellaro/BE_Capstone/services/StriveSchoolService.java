@@ -11,14 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 @Service
 @Slf4j
 public class StriveSchoolService {
     private final WebClient webClient;
-    @Autowired
-    private List<String> apiKey;
+//    @Autowired
+//    private String apiKey;
 
     @Autowired
     public StriveSchoolService(@Qualifier("striveSchoolWebClient") WebClient webClientStriveSchool) {

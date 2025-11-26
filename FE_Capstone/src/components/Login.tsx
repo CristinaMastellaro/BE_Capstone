@@ -11,6 +11,7 @@ import {
   findAllPlaylists,
   getCoutriesNames,
   setFavFromDb,
+  setLoginAvatar,
   setLoginEmail,
   setLoginName,
   setLoginSurname,
@@ -80,6 +81,7 @@ const Login = () => {
         dispatch(setLoginName(data.name));
         dispatch(setLoginSurname(data.surname));
         dispatch(setLoginEmail(data.email));
+        dispatch(setLoginAvatar(data.avatar));
         dispatch(findAllPlaylists());
         dispatch(setFavFromDb());
         dispatch(getCoutriesNames());

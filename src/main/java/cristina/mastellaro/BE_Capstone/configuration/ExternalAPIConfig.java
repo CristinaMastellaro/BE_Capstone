@@ -5,14 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.List;
-
 @Configuration
-public class Config {
+public class ExternalAPIConfig {
 
     @Bean
-    public List<String> getApiKeys(@Value("${lastfm.api.key}") String apiKeyLastfm, @Value("${pexels.api.key}") String apiKeyPexels) {
-        return List.of(apiKeyLastfm, apiKeyPexels);
+    public String getApiKeyLastFm(@Value("${lastfm.api.key}") String apiKeyLastfm) {
+        return apiKeyLastfm;
     }
 
     @Bean

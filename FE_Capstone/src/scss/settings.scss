@@ -1,6 +1,7 @@
 .img-settings {
     width: 100%;
-    max-width: 20vh;
+    max-width: 150px;
+    height: 150px;    
 }
 
 .change-psw {
@@ -9,4 +10,35 @@
 
 .input-settings {
     min-width: 5em;
+}
+
+.container-avatar {
+    width: fit-content;
+    min-width: 200px;
+    position: relative;
+}
+
+// .change-avatar {
+//     position: absolute;
+//     bottom: 0.5em;
+//     left: 58%;
+// }
+
+.edit-image-icon {
+    position: absolute;
+    // bottom: 1.5em;
+    cursor: pointer;
+    right: 1.5em;
+    z-index: 0;
+}
+
+.form-control-file {
+    position: absolute;
+    cursor: pointer;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
 }

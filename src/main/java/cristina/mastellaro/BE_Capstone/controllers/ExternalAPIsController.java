@@ -6,7 +6,10 @@ import cristina.mastellaro.BE_Capstone.payloads.lastFm.AllTracksDTO;
 import cristina.mastellaro.BE_Capstone.payloads.lastFm.LastFmResponseDTO;
 import cristina.mastellaro.BE_Capstone.payloads.striveSchool.FoundSongDTO;
 import cristina.mastellaro.BE_Capstone.payloads.striveSchool.StriveSchoolResponseDTO;
-import cristina.mastellaro.BE_Capstone.services.*;
+import cristina.mastellaro.BE_Capstone.services.CountryService;
+import cristina.mastellaro.BE_Capstone.services.LastFmService;
+import cristina.mastellaro.BE_Capstone.services.MusicService;
+import cristina.mastellaro.BE_Capstone.services.StriveSchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class ExternalAPIsController {
-    @Autowired
-    private PexelsAPIService pApiServ;
+    //    @Autowired
+//    private PexelsAPIService pApiServ;
     @Autowired
     private CountryService cServ;
     @Autowired

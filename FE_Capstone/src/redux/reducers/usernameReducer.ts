@@ -1,5 +1,6 @@
 import ActionType from "../../types/ActionType";
 import {
+  SET_AVATAR,
   SET_EMAIL,
   SET_NAME,
   SET_SURNAME,
@@ -12,6 +13,7 @@ type stateType = {
   name: string;
   surname: string;
   email: string;
+  avatar: string;
   token: string;
 };
 
@@ -20,6 +22,7 @@ const initialState: stateType = {
   name: "",
   surname: "",
   email: "",
+  avatar: "",
   token: "",
 };
 
@@ -49,6 +52,11 @@ const usernameReducer = (state = initialState, action: ActionType<string>) => {
       return {
         ...state,
         email: action.payload,
+      };
+    case SET_AVATAR:
+      return {
+        ...state,
+        avatar: action.payload,
       };
     default:
       return state;

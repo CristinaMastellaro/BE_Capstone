@@ -30,6 +30,7 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
+    private String avatar;
     private UserRoles userRole;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
@@ -42,7 +43,13 @@ public class User implements UserDetails {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.avatar = "https://ui-avatars.com/api/?name=" + name.charAt(0) + "+" + surname.charAt(0);
         this.userRole = UserRoles.SIMPLEUSER;
+    }
+
+    public User(String name, String surname, String username, String email, String password, String avatar) {
+        this(name, surname, username, email, password);
+        this.avatar = avatar;
     }
 
     @Override

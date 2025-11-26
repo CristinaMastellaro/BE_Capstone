@@ -1,8 +1,11 @@
 package cristina.mastellaro.BE_Capstone.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import cristina.mastellaro.BE_Capstone.email.EmailSender;
 import cristina.mastellaro.BE_Capstone.entities.User;
 import cristina.mastellaro.BE_Capstone.exceptions.AlreadyUsedException;
+import cristina.mastellaro.BE_Capstone.exceptions.CustomBadRequestException;
 import cristina.mastellaro.BE_Capstone.exceptions.NotFoundException;
 import cristina.mastellaro.BE_Capstone.payloads.*;
 import cristina.mastellaro.BE_Capstone.repositories.UserRepository;
@@ -10,8 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -23,8 +28,10 @@ public class UserService {
     private PasswordEncoder pEncoder;
     @Autowired
     private EmailSender eSender;
+    //    @Autowired
+//    private List<String> apiKey;
     @Autowired
-    private List<String> apiKey;
+    private Cloudinary avtarUploader;
 
     public User findUserById(UUID id) {
         return uRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
@@ -62,7 +69,7 @@ public class UserService {
     public LoginResponseDTO getInfoUser(LoginDTO dto, String token) {
         User user = uRepo.findByUsername(dto.username());
 
-        return new LoginResponseDTO(dto.username(), user.getName(), user.getSurname(), user.getEmail(), token);
+        return new LoginResponseDTO(dto.username(), user.getName(), user.getSurname(), user.getEmail(), user.getAvatar(), token);
     }
 
     public void changePassword(LoginDTO dto) {
@@ -107,5 +114,20 @@ public class UserService {
         }
 
         return new ChangeInfoUserDTO(userToUpdate.getName(), userToUpdate.getSurname(), userToUpdate.getUsername(), userToUpdate.getEmail());
+    }
+
+    public ChangeAvatarDTO avatarUploader(User authenticateduser, MultipartFile file) {
+        User found = findUserById(authenticateduser.getId());
+
+        if (file.isEmpty()) throw new CustomBadRequestException("The picture cannot be blank");
+        try {
+            Map result = avtarUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            String imageUrl = (String) result.get("url");
+            found.setAvatar(imageUrl);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        uRepo.save(found);
+        return new ChangeAvatarDTO(found.getAvatar());
     }
 }
