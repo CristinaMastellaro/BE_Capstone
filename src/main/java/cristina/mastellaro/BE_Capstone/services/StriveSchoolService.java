@@ -15,8 +15,6 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class StriveSchoolService {
     private final WebClient webClient;
-//    @Autowired
-//    private String apiKey;
 
     @Autowired
     public StriveSchoolService(@Qualifier("striveSchoolWebClient") WebClient webClientStriveSchool) {
@@ -43,10 +41,6 @@ public class StriveSchoolService {
                             return Mono.error(new RuntimeException("Server Error from strive-school"));
                         }))
                 .bodyToMono(StriveSchoolResponseDTO.class);
-//                .onErrorResume(e -> {
-//                    log.error("Generic error from strive-school: {}", e.getMessage());
-//                    return Mono.error((new RuntimeException("strive-school is temporarily not available")));
-//                });
     }
 
     public Mono<FoundSongDTO> findSpecificSong(String id) {

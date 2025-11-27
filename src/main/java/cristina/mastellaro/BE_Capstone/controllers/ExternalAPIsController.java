@@ -32,13 +32,6 @@ public class ExternalAPIsController {
     @Autowired
     private MusicService mServ;
 
-    // Pictures
-//    @GetMapping("/picture")
-//    public Mono<ResponseEntity<PexelsResponseDTO>> getPicturesFromPexels(@RequestParam String search) {
-//        return pApiServ.findImage(search)
-//                .map(ResponseEntity::ok);
-//    }
-
     // Countries
     @GetMapping("/country")
     public CountryResponseDTO getCountryNameFromCode(@RequestParam String code) {

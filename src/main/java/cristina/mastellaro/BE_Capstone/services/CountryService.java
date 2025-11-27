@@ -13,14 +13,8 @@ import java.util.List;
 @Service
 @Slf4j
 public class CountryService {
-    //    private final WebClient webClient;
     @Autowired
     private CountryRepository cRepo;
-
-//    @Autowired
-//    public CountryService(@Qualifier("countryWebClient") WebClient webClientCountry) {
-//        this.webClient = webClientCountry;
-//    }
 
     public void saveCountry(String name, String code) {
         Country country = new Country(code, name);
@@ -42,26 +36,4 @@ public class CountryService {
     public List<String> countriesNames() {
         return cRepo.findAllNames();
     }
-
-//    public Flux<CountryInfoDTO> getNameCountry(String code) {
-//        return webClient.get()
-//                .uri(uriBuilder -> uriBuilder.path("/" + code).build())
-//                .retrieve()
-//                .onStatus(HttpStatusCode::is4xxClientError, response ->
-//                        response.bodyToMono(String.class)
-//                                .flatMap(body -> {
-//                                    log.error("Error 4xx from ResCountries: {}", body);
-//                                    return Mono.error(new ResCountriesException());
-//                                }))
-//                .onStatus(HttpStatusCode::is5xxServerError, res -> res.bodyToMono(String.class)
-//                        .flatMap(body -> {
-//                            log.error("Error 5xx from ResCountries: {}", body);
-//                            return Mono.error(new RuntimeException("Server Error from ResCountries"));
-//                        }))
-//                .bodyToFlux(CountryInfoDTO.class)
-//                .onErrorResume(e -> {
-//                    log.error("Generic error from Pexels: {}", e.getMessage());
-//                    return Mono.error((new RuntimeException("ResCountries is temporarily not available")));
-//                });
-//    }
 }

@@ -28,8 +28,6 @@ public class UserService {
     private PasswordEncoder pEncoder;
     @Autowired
     private EmailSender eSender;
-    //    @Autowired
-//    private List<String> apiKey;
     @Autowired
     private Cloudinary avtarUploader;
 
