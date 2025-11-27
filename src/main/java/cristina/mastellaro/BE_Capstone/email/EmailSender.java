@@ -42,17 +42,4 @@ public class EmailSender {
         mailSender.send(message);
         System.out.println("Mail sent!");
     }
-
-    public int sendChangePasswordEmail(String email) {
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        int rdmNumber = (int) Math.floor(Math.random() * 1000000 + 1000000);
-        message.setTo(email);
-        message.setSubject("Change password in SoundHaven");
-        message.setText("A change of password was requested. If it wasn't you, ignore this email.\n\nThis is the code: " + rdmNumber);
-        mailSender.send(message);
-        System.out.println("Mail sent!");
-
-        return rdmNumber;
-    }
 }
