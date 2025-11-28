@@ -383,7 +383,7 @@ export const renamePlaylist = (
   oldNamePlaylist: string,
   newNamePlaylist: string
 ) => {
-  return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
+  return async (_dispatch: AppDispatchFunction, getState: () => IRootState) => {
     const TOKEN = getState().user.token;
     fetch(
       ENDPOINT +
