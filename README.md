@@ -75,7 +75,7 @@ JWT_SECRET
 
 #Per le comunicazioni tramite mail:
 JTOKEN 
-# Il JToken si ottiene andando su myaccount.google.com > Sicurezza > abilitazione verifica in due passaggi > Password per le app > App > Mail, Dispositivo > Altro > Genera > copia la password di 16 caratteri che appare)
+# Il JToken si ottiene andando su myaccount.google.com > Sicurezza > abilitazione verifica in due passaggi. Poi cerca Password per le app > App > Mail, Dispositivo > Altro > Genera > copia la password di 16 caratteri che appare
 MAIL 
 # Mail di Google utilizzata per ottenere il token
 
