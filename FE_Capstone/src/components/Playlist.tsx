@@ -163,7 +163,7 @@ const Playlist = () => {
       {isLoading ? (
         <div
           className="d-flex flex-column justify-content-center align-items-center w-75 mx-auto text-center h-100 my-auto"
-          style={{ minHeight: "90vh" }}
+          style={{ minHeight: "75vh" }}
         >
           <p className="mb-5">{phrase}</p>
           <Loader />
