@@ -429,7 +429,7 @@ const Settings = () => {
               setShowModal(true);
             }}
           >
-            Disconnect
+            Log out
           </Button>
         </Col>
       </Row>
