@@ -2,8 +2,6 @@
 
 ## Progetto Capstone
 
-Link: https://capstonemusicapp.netlify.app/
-
 # Muse, insipiration for a musical odyssey
 
 L'applicazione **Muse** è nata dal desiderio di ampliare i propri orizzonti musicali, utilizzando varie tecniche per
