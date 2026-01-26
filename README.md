@@ -19,11 +19,11 @@ apparire come primo risultato di una ricerca.
 * Ricerca delle singole canzoni in due modalità:
     * "Normale": i risultati si basano sulle canzoni più ricercate e ascoltate
     * "Discovery": i risultati non dipendono dalla popolarità del brano
-* Salvataggio le canzoni preferite
+* Salvataggio delle canzoni preferite
 * Aggiunta e rimozione di canzoni dalle playlist
 * Eliminazione e rinomina delle playlist
 * Ascolto delle preview delle canzoni attraverso un player musicale funzionante, ovvero che permette di:
-    - regolare il volume secondo le proprie esigenze
+    - regolare il volume
     - avanzare o retrocedere nell'ascolto della traccia
     - salvare la canzone corrente in una playlist o tra i preferiti
     - passare al brano successivo o precedente
