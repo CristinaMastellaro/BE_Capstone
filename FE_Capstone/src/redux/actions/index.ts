@@ -2,7 +2,9 @@ import { SongAPI } from "../../types/ResponseFetchDeezerSearch";
 import ShowSongType from "../../types/ShowSongType";
 import { AppDispatchFunction, IRootState } from "../store";
 
-export const ENDPOINT = "http://localhost:8888";
+export const ENDPOINT =
+  "https://ax4rm17oz9.execute-api.eu-north-1.amazonaws.com/default/backend-capstone-java";
+// export const ENDPOINT = "http://localhost:8888";
 // export const ENDPOINT = "https://soundadventure-be.up.railway.app";
 
 // For login
