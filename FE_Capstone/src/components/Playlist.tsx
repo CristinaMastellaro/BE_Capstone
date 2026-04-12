@@ -29,7 +29,7 @@ import { Modal } from "react-bootstrap";
 const Playlist = () => {
   const { specification } = useParams();
   const allMoods = useAppSelector(
-    (state) => state.allSongs.allMoodsName as string[]
+    (state) => state.allSongs.allMoodsName as string[],
   );
 
   const allPlaylists = useAppSelector((state) => state.allSongs.playlists);
@@ -76,7 +76,7 @@ const Playlist = () => {
   const [isChangingName, setIsChangingName] = useState(false);
   const [newName, setNewName] = useState("");
   const nameCountries = useAppSelector(
-    (state) => state.options.nameCountries as string[]
+    (state) => state.options.nameCountries as string[],
   );
 
   const [isDeleted, setIsDeleted] = useState(false);
@@ -146,9 +146,15 @@ const Playlist = () => {
       if (change === phrasesForLoading.length - 1) {
         change = 0;
       } else change++;
-    }, 5000);
+    }, 4000);
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 30000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, [isLoading]);
 
   useEffect(() => {
@@ -163,7 +169,7 @@ const Playlist = () => {
       {isLoading ? (
         <div
           className="d-flex flex-column justify-content-center align-items-center w-75 mx-auto text-center h-100 my-auto"
-          style={{ minHeight: "90vh" }}
+          style={{ minHeight: "75vh" }}
         >
           <p className="mb-5">{phrase}</p>
           <Loader />
@@ -259,7 +265,7 @@ const Playlist = () => {
                         if (savedPlaylist !== songs) {
                           dispatch(resetPlaylist());
                           songs.forEach((song) =>
-                            dispatch(saveCurrentPlaylist(song))
+                            dispatch(saveCurrentPlaylist(song)),
                           );
                         }
                       }}
@@ -286,7 +292,7 @@ const Playlist = () => {
                                 onClick={() => {
                                   setIsDeleted(true);
                                   dispatch(
-                                    deletePlaylist(specification as string)
+                                    deletePlaylist(specification as string),
                                   );
                                   setTimeout(() => navigate("/library"), 2000);
                                 }}
@@ -348,11 +354,11 @@ const Playlist = () => {
                   <p className="w-75 mx-auto mt-3 text-center">
                     {specification === "favourite"
                       ? "It's time to save your favourite songs or to look for new ones!"
-                      : !allMoods.includes(specification as string)
-                      ? `Your feelings are amazing, but our system isn't smart enough
+                      : allMoods.includes(specification as string)
+                        ? `Your feelings are amazing, but our system isn't smart enough
                   yet to understand which songs are fitted for "${specification}
                   ". Want to give it another try with a more generic word?`
-                      : "Uhm, the muses have decided to take away our inspiration. Can you give us a couple of seconds to convince them we're worth it?"}
+                        : "Uhm, the muses have decided to take away our inspiration. Can you give us a couple of seconds to convince them we're worth it?"}
                   </p>
                 </>
               )}

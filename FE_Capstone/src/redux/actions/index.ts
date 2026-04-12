@@ -2,8 +2,10 @@ import { SongAPI } from "../../types/ResponseFetchDeezerSearch";
 import ShowSongType from "../../types/ShowSongType";
 import { AppDispatchFunction, IRootState } from "../store";
 
+export const ENDPOINT =
+  "https://ax4rm17oz9.execute-api.eu-north-1.amazonaws.com/default/backend-capstone-java";
 // export const ENDPOINT = "http://localhost:8888";
-export const ENDPOINT = "https://soundadventure-be.up.railway.app";
+// export const ENDPOINT = "https://soundadventure-be.up.railway.app";
 
 // For login
 export const SET_USERNAME = "SET_USERNAME";
@@ -105,7 +107,15 @@ export const findSongs = (mood: string) => {
           payload: [mood, AllFoundSongs],
         });
       })
-      .catch((err) => console.log("Error!", err));
+      // C'è da mettere un dispatch qui, così il caricamento non va all'infinito?
+      // In realtà sarebbe da distinguere se
+      .catch((err) => {
+        console.log("Error!", err);
+        dispatch({
+          type: ALL_SONGS_MOOD,
+          payload: [mood, []],
+        });
+      });
   };
 };
 
@@ -217,7 +227,7 @@ export const deleteFavourite = (favToDel: ShowSongType) => {
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${TOKEN}` },
-        }
+        },
       );
       if (!response.ok) throw new Error("Issue while deleting");
     } catch (err) {
@@ -296,7 +306,7 @@ export const findAllPlaylists = () => {
                   console.log("Error!", err);
                   return song;
                 }
-              })
+              }),
             );
             playlists[playlist.name] = updatedSongs;
             return updatedSongs;
@@ -304,7 +314,7 @@ export const findAllPlaylists = () => {
             playlists[playlist.name] = playlist.songs;
             return playlist.songs;
           }
-        })
+        }),
       );
       dispatch({
         type: ALL_PLAYLISTS,
@@ -361,7 +371,7 @@ export const deletePlaylist = (namePlaylist: string) => {
     const playlists: Record<string, ShowSongType[]> = getState().allSongs
       .playlists as Record<string, ShowSongType[]>;
     const namePlaylists = Object.keys(getState().allSongs.playlists).filter(
-      (key) => key !== namePlaylist
+      (key) => key !== namePlaylist,
     );
     let playlistWithoutTheDeletedPlaylist: Record<string, ShowSongType[]> = {};
 
@@ -381,7 +391,7 @@ export const deletePlaylist = (namePlaylist: string) => {
 
 export const renamePlaylist = (
   oldNamePlaylist: string,
-  newNamePlaylist: string
+  newNamePlaylist: string,
 ) => {
   return async (_dispatch: AppDispatchFunction, getState: () => IRootState) => {
     const TOKEN = getState().user.token;
@@ -396,7 +406,7 @@ export const renamePlaylist = (
         headers: {
           Authorization: `Bearer ${TOKEN}`,
         },
-      }
+      },
     )
       .then((res) => {
         if (!res.ok)
@@ -411,7 +421,7 @@ export const DELETE_SONG_FROM_PLAYLIST = "DELETE_SONG_FROM_PLAYLIST";
 
 export const addSongToPlaylist = (
   newSong: ShowSongType,
-  playlistName: string
+  playlistName: string,
 ) => {
   return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
     const TOKEN = getState().user.token;
@@ -425,7 +435,7 @@ export const addSongToPlaylist = (
             "Content-Type": "application/json",
           },
           body: JSON.stringify(newSong),
-        }
+        },
       );
       if (!res.ok)
         throw new Error("There was an issue while connecting to the db");
@@ -442,7 +452,7 @@ export const addSongToPlaylist = (
 
 export const deleteSongFromPlaylist = (
   namePlaylist: string,
-  song: ShowSongType
+  song: ShowSongType,
 ) => {
   return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
     const TOKEN = getState().user.token;
@@ -454,7 +464,7 @@ export const deleteSongFromPlaylist = (
           headers: {
             Authorization: `Bearer ${TOKEN}`,
           },
-        }
+        },
       );
       if (!res.ok) throw new Error("Error while sending fetch");
     } catch (err) {
@@ -501,7 +511,7 @@ export const PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY =
 
 export const savePlaylistNotToSavePermanently = (
   country: string,
-  isPeriod?: boolean
+  isPeriod?: boolean,
 ) => {
   return async (dispatch: AppDispatchFunction, getState: () => IRootState) => {
     const TOKEN = getState().user.token;
@@ -547,7 +557,7 @@ export const savePlaylistNotToSavePermanently = (
 };
 
 export const savePlaylistNotToSavePermanentlyNotCountry = (
-  playlist: ShowSongType[]
+  playlist: ShowSongType[],
 ) => {
   return {
     type: PLAYLIST_NOT_TO_SAVE_NOT_COUNTRY,
@@ -568,7 +578,7 @@ export const SHOW_MODAL = "SHOW_MODAL";
 
 export const changeShowModal = (
   showModal: boolean,
-  songToSave: ShowSongType
+  songToSave: ShowSongType,
 ) => {
   return {
     type: SHOW_MODAL,
