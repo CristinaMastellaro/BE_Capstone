@@ -19,6 +19,14 @@ public class AWSHandler implements RequestHandler<Map<String, Object>, Map<Strin
         headers.put("Access-Control-Allow-Headers", "Content-Type,Authorization");
         headers.put("Access-Control-Allow-Credentials", "true");
 
+        // 2. Se è una richiesta OPTIONS (Preflight), rispondi subito OK senza logica
+        if (input.toString().contains("OPTIONS")) {
+            Map<String, Object> preflightResponse = new HashMap<>();
+            preflightResponse.put("statusCode", 200);
+            preflightResponse.put("headers", headers);
+            return preflightResponse;
+        }
+
         response.put("isBase64Encoded", false);
         response.put("statusCode", 200);
         response.put("headers", headers);
